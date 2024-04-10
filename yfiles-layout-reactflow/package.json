@@ -1,13 +1,13 @@
 {
   "name": "@yworks/yfiles-layout-reactflow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "yFiles for HTML team @ yWorks GmbH",
     "email": "yfileshtml@yworks.com"
   },
   "description": "yFiles Layouts for React Flow - A layout library for React Flow providing powerful yFiles layout algorithms and supporting components",
   "keywords": ["react", "yfiles", "javascript", "typescript", "library", "graph", "diagram", "layout", "reactflow"],
-  "homepage": "https://www.yworks.com/",
+  "homepage": "https://docs.yworks.com/yfiles-layout-reactflow",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
@@ -17,7 +17,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://vcs.yworks.home/rhodecode/react-yfiles/layout-for-react-flow"
+    "url": "https://github.com/yWorks/yfiles-layout-reactflow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yWorks/yfiles-layout-reactflow/issues"
   },
   "license": "SEE LICENSE IN ./LICENSE",
   "exports": {

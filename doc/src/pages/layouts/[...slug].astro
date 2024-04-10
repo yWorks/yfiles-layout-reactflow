@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro'
+
+export async function getStaticPaths() {
+  const components = await getCollection('layouts');
+  return components.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+
+const { showRightSideBar } = entry.data
+---
+
+<MainLayout headings={ headings} showRightSideBar={showRightSideBar}>
+  <Content />
+</MainLayout>

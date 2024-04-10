@@ -1,0 +1,17 @@
+---
+import NavigationBar from './NavigationBar.astro'
+const { currentPage } = Astro.props;
+---
+
+<aside title="Site Navigation">
+	<NavigationBar currentPage={currentPage}></NavigationBar>
+</aside>
+
+<script is:inline>
+	window.addEventListener('DOMContentLoaded', () => {
+		var target = document.querySelector('[aria-current="page"]');
+		if (target && target.offsetTop > window.innerHeight - 100) {
+			document.querySelector('.nav-groups').scrollTop = target.offsetTop;
+		}
+	});
+</script>

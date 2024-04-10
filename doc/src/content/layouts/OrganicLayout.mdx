@@ -1,0 +1,107 @@
+---
+title: Organic Layout
+section: 5
+tags: []
+---
+import TypeLink from '../../components/TypeLink.astro'
+
+#  Organic Layout
+
+The *organic layout algorithm* is designed to arrange nodes in an organic fashion that effectively highlight the
+underlying structure of complex graphs.
+
+The organic layout algorithm provides extensive customization options through a wide array of properties accessible
+via the `OrganicLayoutOptions`. Fundamental options include preferred edge lengths, substructure detection, minimum node distances, and more.
+It also automatically places node and edge labels when the corresponding properties are activated.
+
+Additional customization for individual graph elements, such as `edgeLabelPreferredPlacement`, `nodeHalos`, and more, can be achieved via
+the `OrganicLayoutDataProvider`.
+
+Extensive documentation detailing all available properties of the organic layout supported by *yFiles layouts for React Flow* can be
+found [here](https://docs.yworks.com/yfileshtml/#/api/OrganicLayout).
+
+```tsx
+runLayout({
+  name: 'OrganicLayout',
+  layoutOptions: {
+    integratedEdgeLabeling: true,
+    deterministic: true,
+    minimumNodeDistance: 100
+  },
+  layoutData: {
+    edgeLabelPreferredPlacement: () => ({
+      sideOfEdge: 'left-of-edge',
+      distanceToEdge: 20,
+    })
+  }
+})
+```
+
+## OrganicLayoutOptions
+
+
+The configuration options for the organic layout algorithm that arranges graphs in an organic fashion. <p> For more information on the layout algorithm and its available settings, see [OrganicLayout](https://docs.yworks.com/yfileshtml/#/api/OrganicLayout). </p>
+
+| Name |  Type |
+|---|---|
+| <div id="automaticgroupnodecompaction">automaticGroupNodeCompaction?</div> | `boolean` |
+| <div id="chainrecognition">chainRecognition?</div> | `boolean` |
+| <div id="chainsubstructuresize">chainSubstructureSize?</div> | `number` |
+| <div id="chainsubstructurestyle">chainSubstructureStyle?</div> | `"none"`  &#124; `"rectangular"`  &#124; `"rectangular-nested"`  &#124; `"straight-line"`  &#124; `"straight-line-nested"`  &#124; `"disk"`  &#124; `"disk-nested"` |
+| <div id="circlerecognition">circleRecognition?</div> | `boolean` |
+| <div id="clusterasgroupsubstructureallowed">clusterAsGroupSubstructureAllowed?</div> | `boolean` |
+| <div id="clusteringpolicy">clusteringPolicy?</div> | `"none"`  &#124; `"louvain-modularity"`  &#124; `"edge-betweenness"`  &#124; `"label-propagation"`  &#124; `"user-defined"` |
+| <div id="clusteringquality">clusteringQuality?</div> | `number` |
+| <div id="clusternodes">clusterNodes?</div> | `boolean` |
+| <div id="compactnessfactor">compactnessFactor?</div> | `number` |
+| <div id="componentlayoutenabled">componentLayoutEnabled?</div> | `boolean` |
+| <div id="considernodelabels">considerNodeLabels?</div> | `boolean` |
+| <div id="considernodesizes">considerNodeSizes?</div> | `boolean` |
+| <div id="create3dlayout">create3DLayout?</div> | `boolean` |
+| <div id="cyclesubstructuresize">cycleSubstructureSize?</div> | `number` |
+| <div id="cyclesubstructurestyle">cycleSubstructureStyle?</div> | `"none"`  &#124; `"circular"`  &#124; `"circular-nested"` |
+| <div id="deterministic">deterministic?</div> | `boolean` |
+| <div id="groupnodecompactness">groupNodeCompactness?</div> | `number` |
+| <div id="groupsubstructurescope">groupSubstructureScope?</div> | `"no-groups"`  &#124; `"groups-without-edges"`  &#124; `"groups-without-inter-edges"`  &#124; `"all-groups"` |
+| <div id="groupsubstructuresize">groupSubstructureSize?</div> | `number` |
+| <div id="hidegroupsstageenabled">hideGroupsStageEnabled?</div> | `boolean` |
+| <div id="integratededgelabeling">integratedEdgeLabeling?</div> | `boolean` |
+| <div id="labelingenabled">labelingEnabled?</div> | `boolean` |
+| <div id="layoutorientation">layoutOrientation?</div> | `"top-to-bottom"`  &#124; `"left-to-right"`  &#124; `"right-to-left"`  &#124; `"bottom-to-top"` |
+| <div id="maximumduration">maximumDuration?</div> | `number` |
+| <div id="minimumnodedistance">minimumNodeDistance?</div> | `number` |
+| <div id="nodeedgeoverlapavoided">nodeEdgeOverlapAvoided?</div> | `boolean` |
+| <div id="nodeoverlapsallowed">nodeOverlapsAllowed?</div> | `boolean` |
+| <div id="orientationlayoutenabled">orientationLayoutEnabled?</div> | `boolean` |
+| <div id="paralleledgerouterenabled">parallelEdgeRouterEnabled?</div> | `boolean` |
+| <div id="parallelsubstructuresize">parallelSubstructureSize?</div> | `number` |
+| <div id="parallelsubstructurestyle">parallelSubstructureStyle?</div> | `"none"`  &#124; `"rectangular"`  &#124; `"radial"`  &#124; `"straight-line"` |
+| <div id="parallelsubstructuretypeseparation">parallelSubstructureTypeSeparation?</div> | `boolean` |
+| <div id="preferrededgelength">preferredEdgeLength?</div> | `number` |
+| <div id="preferredminimumnodetoedgedistance">preferredMinimumNodeToEdgeDistance?</div> | `number` |
+| <div id="qualitytimeratio">qualityTimeRatio?</div> | `number` |
+| <div id="scope">scope?</div> | `"all"`  &#124; `"mainly-subset"`  &#124; `"mainly-subset-geometric"`  &#124; `"subset"` |
+| <div id="selflooprouterenabled">selfLoopRouterEnabled?</div> | `boolean` |
+| <div id="smartcomponentlayout">smartComponentLayout?</div> | `boolean` |
+| <div id="starsubstructuresize">starSubstructureSize?</div> | `number` |
+| <div id="starsubstructurestyle">starSubstructureStyle?</div> | `"none"`  &#124; `"radial"`  &#124; `"radial-nested"`  &#124; `"separated-radial"`  &#124; `"circular"`  &#124; `"circular-nested"` |
+| <div id="starsubstructuretypeseparation">starSubstructureTypeSeparation?</div> | `boolean` |
+| <div id="subgraphlayoutenabled">subgraphLayoutEnabled?</div> | `boolean` |
+| <div id="treesubstructuresize">treeSubstructureSize?</div> | `number` |
+| <div id="treesubstructurestyle">treeSubstructureStyle?</div> | `"none"`  &#124; `"balloon"`  &#124; `"oriented"`  &#124; `"radial"` |
+
+## OrganicLayoutDataProvider&lt;TNodeData, TEdgeData&gt;
+
+A provider for individual options per nodes or edges in a [OrganicLayout](https://docs.yworks.com/yfileshtml/#/api/OrganicLayout). It allows for defining a function that provide values for each element.
+
+For more information, see [OrganicLayoutData](https://docs.yworks.com/yfileshtml/#/api/OrganicLayoutData).
+
+| Name | Description | Type |
+|---|---|---|
+| <div id="affectednodes">affectedNodes?</div> |  Provides which nodes should be placed. | `(node: TNodeData<br>) => boolean` |
+| <div id="edgelabelpreferredplacement">edgeLabelPreferredPlacement?</div> |  Provides descriptors for the placement of edge labels. | `(label:` <TypeLink type="LabelData"/>`) =>` <TypeLink type="PreferredPlacementDescriptor"/> |
+| <div id="minimumedgelengths">minimumEdgeLengths?</div> |  Provides the minimal length that an edge should have. | `(edge: TEdgeData) => number` |
+| <div id="minimumnodedistances">minimumNodeDistances?</div> |  Provides the minimal distance from a node to all other nodes. | `(node: TNodeData) => number` |
+| <div id="nodehalos">nodeHalos?</div> |  Provides halos for nodes, i.e., a rectangular area around a specific node considered during the layout. | `(node: TNodeData) => `<TypeLink type="NodeHalo"/> |
+| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | `(node: TNodeData) => any` |
+| <div id="preferrededgelengths">preferredEdgeLengths?</div> |  Provides the preferred length for an edge. It is not mandatory but works as a guidance length. | `(edge: TEdgeData) => number` |

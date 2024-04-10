@@ -1,0 +1,48 @@
+.hamburger {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  overflow: hidden;
+}
+
+summary {
+  text-align: center;
+  width: 50px;
+  height: 20px;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  transition: transform 200ms ease-in-out 0s;
+  writing-mode: vertical-lr;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+
+  &::marker {
+    content: "III";
+    letter-spacing: -1px;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+details {
+  z-index: 2;
+  padding-right: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+
+    &[open] {
+      box-shadow: 5px 5px 5px #c2c2c2;
+      width: 90%;
+      height: 100vh;
+      background-color: #f1f5f9;
+    }
+  }
+}

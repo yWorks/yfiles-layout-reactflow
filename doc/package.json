@@ -1,0 +1,31 @@
+{
+  "name": "@example/docs",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "postinstall": "node tools/download-matomo.js",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "build-docs": "node tools/build-docs.js",
+    "dist": "npm run build-docs && npm run build"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.4.1",
+    "@astrojs/mdx": "^2.1.1",
+    "@astrojs/preact": "^3.1.0",
+    "@astrojs/rss": "^4.0.2",
+    "preact": "^10.19.3",
+    "sass": "^1.50.0",
+    "typescript": "^5.3.3",
+    "@prettier/sync": "^0.5.1"
+  },
+  "devDependencies": {
+    "@astrojs/tailwind": "^5.1.0",
+    "@microsoft/api-extractor": "^7.39.1",
+    "@types/node": "^20.11.30",
+    "astro": "^4.1.2",
+    "fs-extra": "^11.2.0"
+  }
+}

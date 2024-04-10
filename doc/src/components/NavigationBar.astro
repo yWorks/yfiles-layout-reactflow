@@ -1,0 +1,81 @@
+---
+import { getCollection } from "astro:content";
+const { currentPage } = Astro.props;
+const currentPageMatch = currentPage.slice(1);
+
+const isCurrentPage = (item) => {
+  if (item.link) {
+    return item.link.includes(currentPageMatch);
+  }
+  return false;
+}
+
+const getLinkClasses = (link) => {
+  let baseClasses = "block py-2 px-6  my-1 transition-colors border-l hover:border-slate-400 text-slate-500 hover:text-slate-900"
+  if (isCurrentPage(link)) {
+    return baseClasses + " border-slate-500 text-slate-900";
+  } else {
+    return baseClasses;
+  }
+}
+
+const components = await getCollection('components')
+const introductions = await getCollection('introduction')
+const features = await getCollection('features')
+const types = await getCollection('types')
+const hooks = await getCollection('hooks')
+const functions = await getCollection('functions')
+const layouts = await getCollection('layouts')
+---
+
+<nav aria-labelledby="grid-left" class="p-4 border-r navigation">
+  <h2 class="mt-4 ml-1 font-semibold text-slate-700">Introduction</h2>
+  <ul>
+    {introductions && introductions.sort((s1, s2) => s1.data.section - s2.data.section).map(section => (
+      <li class={getLinkClasses(section.data)}>
+        <a href={`${import.meta.env.BASE_URL}/introduction/${section.slug}`}>{section.data.title}</a>
+      </li>))}
+  </ul>
+  <h2 class="mt-4 ml-1 font-semibold text-slate-700">Features</h2>
+  <ul>
+    {features && features.sort((s1, s2) => s1.data.section - s2.data.section).map(section => (
+      <li class={getLinkClasses(section.data)}>
+        <a href={`${import.meta.env.BASE_URL}/features/${section.slug}`}>{section.data.title}</a>
+      </li>))}
+  </ul>
+  {layouts && <h2 class="mt-4 ml-1 font-semibold text-slate-700">Layouts</h2>}
+  <ul>
+    {layouts && layouts.sort((s1, s2) => s1.data.section - s2.data.section).map(layout => (
+      <li class={getLinkClasses(layout.data)}>
+        <a href={`${import.meta.env.BASE_URL}/layouts/${layout.slug}`}>{layout.data.title}</a>
+      </li>))}
+  </ul>
+  <h2 class="mt-4 ml-1 font-semibold text-slate-700">Hooks</h2>
+  <ul>
+    {hooks && hooks.map(hook => (
+        <li class={getLinkClasses(hook.data)}>
+          <a href={`${import.meta.env.BASE_URL}/hooks/${hook.slug}`}>{hook.data.title}()</a>
+        </li>))}
+  </ul>
+  <h2 class="mt-4 ml-1 font-semibold text-slate-700">Components</h2>
+  <ul>
+    {components && components.map(component => (
+      <li class={getLinkClasses(component.data)}>
+        <a href={`${import.meta.env.BASE_URL}/components/${component.slug}`}>&lt;{component.data.title}/&gt;</a>
+      </li>))}
+  </ul>
+  <h2 class="mt-4 ml-1 font-semibold text-slate-700">Functions</h2>
+  <ul>
+    {functions && functions.map(func => (
+        <li class={getLinkClasses(func.data)}>
+          <a href={`${import.meta.env.BASE_URL}/functions/${func.slug}`}>{func.data.title}</a>
+        </li>))}
+  </ul>
+  <h2 class="mt-4 ml-1 font-semibold text-slate-700">Types</h2>
+  <ul>
+    {types && types.map(type => (
+      <li class={getLinkClasses(type.data)}>
+        <a href={`${import.meta.env.BASE_URL}/types/${type.slug}`}>{type.data.title}</a>
+      </li>))}
+  </ul>
+</nav>

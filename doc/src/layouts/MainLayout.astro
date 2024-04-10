@@ -1,0 +1,46 @@
+---
+import HeadCommon from '../components/HeadCommon.astro';
+import Header from '../components/Header/Header.astro';
+import PageContent from '../components/PageContent.astro';
+import LeftSidebar from '../components/LeftSidebar.astro';
+import RightSidebar from '../components/RightSidebar.astro';
+import * as CONFIG from '../config';
+import '../styles/main.scss';
+
+const { content = {}, headings  = [], showRightSideBar = true } = Astro.props;
+const currentPage = new URL(Astro.request.url).pathname;
+// const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
+---
+
+<html dir={content.dir ?? 'ltr'} lang={content.lang ?? 'en-us'} class="initial">
+	<head>
+		<HeadCommon />
+		<!--<HeadSEO {content} canonicalURL={Astro.canonicalURL} />-->
+		<title>{content.title ? `${content.title} 🚀 ${CONFIG.SITE.title}` : CONFIG.SITE.title}</title>
+	</head>
+
+	<body class="bg-slate-100">
+		<div class="sticky top-0 z-10 w-full">
+			<Header currentPage={currentPage} />
+		</div>
+		<div class="grid grid-content relative">
+			<div class="sidebar-grid sticky top-0 pt-12 h-screen">
+				<div class="ml-auto left-sidebar sidebar-hidden left-sidebar-scrollbar">
+					<LeftSidebar currentPage={currentPage} />
+				</div>
+			</div>
+			<main class={`py-4 px-8 pb-32 overflow-auto ${showRightSideBar ? 'small-content-grid' : 'large-content-grid'}`}>
+				<div>
+					<PageContent content={content} currentPage={currentPage}>
+						<slot />
+					</PageContent>
+				</div>
+			</main>
+			{showRightSideBar && 
+				<div class="col-span-3 sticky top-0 h-screen right-sidebar">
+					<RightSidebar headings={headings} />
+				</div>
+			}
+		</div>
+	</body>
+</html>

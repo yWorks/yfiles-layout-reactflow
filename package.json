@@ -1,0 +1,21 @@
+{
+  "name": "@yworks/yfiles-layout-reactflow-root",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "license": "SEE LICENSE IN ./LICENSE",
+  "scripts": {
+    "tsc": "tsc",
+    "build": "npm run --prefix yfiles-layout-reactflow build",
+    "dev": "conc \"cd yfiles-layout-reactflow && npm run dev\" \"cd examples && npm run dev\"",
+    "build-docs": "npm run build && npm run --prefix doc dist"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "examples",
+    "yfiles-layout-reactflow"
+  ],
+  "private": true
+}

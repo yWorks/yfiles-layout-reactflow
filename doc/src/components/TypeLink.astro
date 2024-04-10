@@ -1,0 +1,24 @@
+---
+import fs from 'fs'
+const { type, member, text } = Astro.props;
+const excludedDirs = ['features', 'introduction']
+
+const subDirs = fs.readdirSync('src/content', { withFileTypes: true })
+  .filter(dirent => dirent.isDirectory())
+  .map(dirent => dirent.name)
+  .filter(subDir => !excludedDirs.includes(subDir))
+
+const typeDir = subDirs.find(dir =>
+  fs.existsSync(`src/content/${dir}/${type}.md`)
+)
+if (!typeDir) {
+  throw new Error(`Type link could not be resolved: ${type}`)
+}
+
+let target = `../${typeDir}/${type.toLowerCase()}`
+if (member) {
+  target += `#${member.toLowerCase()}`
+}
+const content = text ?? member ?? type
+---
+<code><a href=`${target}`>{content}</a></code>

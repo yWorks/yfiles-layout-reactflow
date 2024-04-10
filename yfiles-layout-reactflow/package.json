@@ -1,0 +1,56 @@
+{
+  "name": "@yworks/yfiles-layout-reactflow",
+  "version": "1.0.0",
+  "author": {
+    "name": "yFiles for HTML team @ yWorks GmbH",
+    "email": "yfileshtml@yworks.com"
+  },
+  "description": "yFiles Layouts for React Flow - A layout library for React Flow providing powerful yFiles layout algorithms and supporting components",
+  "keywords": ["react", "yfiles", "javascript", "typescript", "library", "graph", "diagram"],
+  "homepage": "https://www.yworks.com/",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "tsup --watch --sourcemap --dts --format esm --entry.index src/index.ts --entry.WebWorkerSupport src/layout/WebWorkerSupport.ts && api-extractor run --local",
+    "build": "tsup --clean --dts --format esm --entry.index src/index.ts --entry.WebWorkerSupport src/layout/WebWorkerSupport.ts && api-extractor run --local"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://vcs.yworks.home/rhodecode/react-yfiles/layout-for-react-flow"
+  },
+  "license": "SEE LICENSE IN ./LICENSE",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./WebWorkerSupport": {
+      "types": "./dist/WebWorkerSupport.d.ts",
+      "default": "./dist/WebWorkerSupport.js"
+    }
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "reactflow": ">=11",
+    "yfiles": ">=26"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.42.3",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "prettier": "^3.2.5",
+    "tsup": "^8.0.1",
+    "typescript": "^5.4.2"
+  },
+  "files": [
+    "LICENSE",
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.yworks.home"
+  }
+}

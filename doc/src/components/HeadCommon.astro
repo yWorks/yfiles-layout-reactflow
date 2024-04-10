@@ -1,0 +1,30 @@
+---
+
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+
+<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/favicon.svg`} />
+<link rel="alternate icon" type="image/x-icon" href={`${import.meta.env.BASE_URL}/favicon.svg`} />
+
+<!-- Scrollable a11y code helper -->
+<script src="../scripts/make-scrollable-code-focusable.js"></script>
+
+<script is:inline>
+
+  // this needs to be defined before loading the matomo script
+  window._paq = []
+
+  // This is intentionally inlined to avoid FOUC
+  const root = document.documentElement;
+  const theme = localStorage.getItem('theme');
+  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    root.classList.add('dark');
+  } else {
+    root.classList.remove('dark');
+  }
+</script>
+
+<script src="../scripts/trk.js"></script>

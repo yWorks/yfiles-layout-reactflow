@@ -1,0 +1,284 @@
+---
+title: Welcome
+section: 0
+tags: []
+showRightSideBar: false
+---
+
+import Playground from '../../components/Playground.astro'
+
+export const base = import.meta.env.BASE_URL
+
+# yFiles Layout Algorithms for React Flow
+
+*yFiles Layout Algorithms for React Flow* is a comprehensive npm module designed to seamlessly integrate the powerful layout
+capabilities of yFiles for HTML into React Flow.
+
+With *yFiles Layout Algorithms for React Flow*, developers can use the advanced
+graph layout algorithms and customization options provided by [yFiles for HTML](https://www.yworks.com/products/yfiles)
+within their React Flow projects, enabling precise control over the arrangement and appearance of nodes and edges.
+
+Refer to the [Getting Started](gettingstarted) section to
+learn how to effortlessly integrate advanced layouts in your React Flow application.
+
+<Playground
+  code={`// edge type that supports bends
+const edgeTypes = {
+  default: PolylineEdge
+}
+// node type that supports multiple handles
+const nodeTypes = {
+  default: MultiHandleNode
+}
+
+// initialize data
+const initialNodes = data.nodes
+const initialEdges = data.edges
+
+function LayoutFlow() {
+  const [nodes, , onNodesChange] = useNodesState(initialNodes);
+  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+
+  // call the useLayout-hook to get the function that invokes the layout
+  const { runLayout } = useLayout()
+
+  const handleAlgorithmChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    // Run the selected layout with a given configuration.
+    // Play around with the options and observe how the layout changes.
+    const selectedAlgorithm = event.target.value
+    runLayout({ name: selectedAlgorithm as LayoutName, layoutOptions: layoutOptionsByAlgorithm[selectedAlgorithm]})
+  }
+
+  /**
+   *  Run the initial layout after the nodes have been measured.
+   */
+  useNodesMeasuredEffect(() => {
+    runLayout({ name: 'HierarchicLayout', layoutOptions: layoutOptionsByAlgorithm['HierarchicLayout'] })
+  })
+
+  // a React Flow with a combobox with different layout algorithms
+  return (
+      <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+      >
+        <Panel position="top-left">
+          <label htmlFor="algorithm">Select an Algorithm: </label>
+          <select
+            id="algorithm"
+            onChange={handleAlgorithmChange}
+          >
+            <option value="HierarchicLayout">Hierarchic</option>
+            <option value="OrthogonalLayout">Orthogonal</option>
+            <option value="RadialLayout">Radial</option>
+            <option value="CircularLayout">Circular</option>
+            <option value="OrganicLayout">Organic</option>
+            <option value="TreeLayout">Tree</option>
+            <option value="BalloonLayout">Balloon</option>
+            <option value="EdgeRouter">EdgeRouter</option>
+          </select>
+        </Panel>
+      </ReactFlow>
+  )
+}
+
+function App() {
+  return (
+    <ReactFlowProvider>
+      <LayoutFlow></LayoutFlow>
+    </ReactFlowProvider>
+  )
+}
+
+const layoutOptionsByAlgorithm: Record<Partial<LayoutName>, LayoutAlgorithmOptions> = {
+  HierarchicLayout: {
+    orthogonalRouting: true,
+    minimumLayerDistance: 40,
+  },
+  OrthogonalLayout: {
+    gridSpacing: 10,
+  },
+  RadialLayout: {
+    centerNodesPolicy: "directed",
+    minimumLayerDistance: 50,
+  },
+  OrganicLayout: {
+    deterministic: true,
+    minimumNodeDistance: 50,
+  },
+  CircularLayout: {
+    layoutStyle: "single-cycle",
+  },
+  TreeLayout: {
+    layoutOrientation: "left-to-right",
+  },
+  GenericLabeling: {},
+  BalloonLayout: {},
+  EdgeRouter: {}
+}
+`}
+data={`{
+  "nodes": [
+    {
+      "id": "1",
+      "data": { "label": { "label": "CEO" } },
+      "position": { "x": 0, "y": 0 },
+      "className": "manager"
+    },
+    {
+      "id": "2",
+      "data": { "label": { "label": "COO"}},
+      "position": { "x": 0, "y": 0 },
+      "className": "manager"
+    },
+    {
+      "id": "3",
+      "data": { "label": { "label": "CFO"}},
+      "position": { "x": 0, "y": 0 },
+      "className": "manager"
+    },
+    {
+      "id": "4",
+      "data": { "label": { "label": "CMO"}},
+      "position": { "x": 0, "y": 0 },
+      "className": "manager"
+    },
+    {
+      "id": "5",
+      "data": { "label": { "label": "CTO"}},
+      "position": { "x": 0, "y": 0 },
+      "className": "manager"
+    },
+    {
+      "id": "6",
+      "data": { "label": { "label": "HR Director"}},
+      "position": { "x": 0, "y": 0 },
+      "className": "director"
+    },
+    {
+      "id": "7",
+      "data": { "label": { "label": "Marketing Director", "className": "wrapped-label" } },
+      "position": { "x": 0, "y": 0 },
+      "className": "director"
+    },
+    {
+      "id": "8",
+      "data": { "label": { "label": "Technology Director", "className": "wrapped-label" } },
+      "position": { "x": 0, "y": 0 },
+      "className": "director"
+    },
+    {
+      "id": "9",
+      "data": { "label": { "label": "Finance Director", "className": "wrapped-label" } },
+      "position": { "x": 0, "y": 0 },
+      "className": "director"
+    },
+    {
+      "id": "10",
+      "data": { "label": { "label": "HR Assistant" } },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "11",
+      "data": { "label": { "label": "Recruiter" } },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "12",
+      "data": { "label": { "label": "Accountant" } },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "13",
+      "data": { "label": { "label": "Financial Analyst", "className": "wrapped-label" } },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "14",
+      "data": { "label": { "label": "Marketing Assistant", "className": "wrapped-label" } },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "15",
+      "data": { "label": { "label": "Marketing Coordinator", "className": "wrapped-label" } },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "16",
+      "data": { "label": { "label": "IT Specialist" } },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "17",
+      "data": { "label": { "label": "Software Engineer", "className": "wrapped-label" } },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "18",
+      "data": { "label": { "label": "Legal Counsel", "className": "wrapped-label" } },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "19",
+      "data": { "label": { "label": "Content Writer", "className": "wrapped-label" } },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "20",
+      "data": { "label": { "label": "Designer" } },
+      "position": { "x": 0, "y": 0 }
+    }
+  ],
+  "edges": [
+    { "id": "e1-2", "source": "1", "target": "2" },
+    { "id": "e1-3", "source": "1", "target": "3" },
+    { "id": "e1-4", "source": "1", "target": "4" },
+    { "id": "e1-5", "source": "1", "target": "5" },
+    { "id": "e2-6", "source": "2", "target": "6" },
+    { "id": "e6-10", "source": "6", "target": "10" },
+    { "id": "e6-11", "source": "6", "target": "11" },
+    { "id": "e3-9", "source": "3", "target": "9" },
+    { "id": "e9-12", "source": "9", "target": "12" },
+    { "id": "e9-13", "source": "9", "target": "13" },
+    { "id": "e4-7", "source": "4", "target": "7" },
+    { "id": "e7-14", "source": "7", "target": "14" },
+    { "id": "e7-15", "source": "7", "target": "15" },
+    { "id": "e14-19", "source": "14", "target": "19" },
+    { "id": "e5-8", "source": "5", "target": "8" },
+    { "id": "e5-18", "source": "5", "target": "18" },
+    { "id": "e8-16", "source": "8", "target": "16" },
+    { "id": "e8-17", "source": "8", "target": "17" },
+    { "id": "e16-20", "source": "16", "target": "20" }
+  ]
+}
+`}
+css={`
+    .react-flow__node {
+       background-color: #ff6c00;
+       width: 60px;
+       height: 30px;
+       font-size: 8px;
+       color: white;
+    }
+
+    .manager {
+       background-color: #17bebb;
+     }
+
+     .director {
+       background-color: #76b041;
+     }
+
+     .wrapped-label {
+       white-space: normal !important;
+     }
+
+     .react-flow__handle {
+       opacity: 0;
+     }
+`}
+/>

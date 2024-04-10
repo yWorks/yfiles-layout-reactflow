@@ -1,0 +1,241 @@
+.content {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 1.77rem;
+    color: theme("colors.slate.600");
+    scroll-margin: 100px;
+  }
+
+  .table-container {
+    div {
+      scroll-margin: 100px;
+    }
+  }
+
+  h1 {
+    font-size: 22pt;
+    font-weight: 400;
+  }
+
+  h2 {
+    font-size: 17pt;
+    font-weight: 500;
+  }
+
+  h3 {
+    font-size: 15pt;
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: 13pt;
+  }
+
+  p {
+    margin-top: 0.77rem;
+    color: theme("colors.slate.600");
+  }
+
+  a {
+    color: theme("colors.blue.600");
+  }
+
+  ol {
+    list-style: decimal;
+    margin-block-end: 16px;
+    margin-block-start: 16px;
+    padding-inline-start: 40px;
+  }
+;
+
+  ul, ol {
+    color: theme("colors.slate.600");
+  }
+
+  pre.astro-code {
+    margin: 1.5rem 0;
+  }
+
+  pre.astro-code::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  pre.astro-code:hover {
+    overflow-x: scroll;
+  }
+
+  pre.astro-code::-webkit-scrollbar-thumb {
+    background-color: #bdbcbc;
+    border-radius: 20px;
+  }
+
+  pre.astro-code::-webkit-scrollbar-thumb:hover {
+    background-color: #a9a9a9;
+  }
+
+  code {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
+  .component-preview {
+    padding: 4rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    background-image: url("/grid_dot.svg");
+    background-repeat: repeat;
+    background-size: 1.5rem;
+    border-radius: 0.33rem;
+    border: 1px solid theme("colors.slate.200");
+    margin: 0.5rem;
+    resize: both;
+  }
+
+  .astro-code {
+    padding: 1rem;
+    border-radius: 0.44rem;
+  }
+
+  table {
+    margin-top: 20px;
+    border-collapse: collapse;
+
+    th {
+      text-align: left;
+      padding-bottom: 10px;
+    }
+
+    td {
+      padding: 10px 20px 10px 10px;
+      vertical-align: top;
+    }
+
+    tr {
+      border-bottom: 1px solid #e5eaf2;
+    }
+  }
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-container:hover {
+  overflow-x: scroll;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #bdbcbc;
+  border-radius: 20px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background-color: #a9a9a9;
+}
+
+.grid-content {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.small-content-grid {
+  grid-column: span 6 / span 6;
+}
+
+.large-content-grid {
+  grid-column: span 9 / span 9;
+}
+
+tr:has(:target) {
+  background-color: #a9a9a9;
+}
+
+y-play-yfiles-layout-reactflow {
+  margin-bottom: 3em;
+}
+
+
+/*
+ * Workaround tooltip placed outside shadow dom and therefore not receiving its styles
+ * TODO: remove .tooltip when fix for proper classname is deployed
+ */
+.yfiles-react-tooltip, .tooltip {
+  color: #242424;
+  background-color: white;
+  font-family: Roboto, sans-serif;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid steelblue;
+}
+
+.yfiles-tooltip {
+  z-index: 1070;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+}
+
+.component-logo {
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex: 1;
+}
+
+.component-logo--yfiles-layout-reactflow {
+  background-image: url('../yFiles-layout-for-react-flow-one-line.svg');
+}
+
+.yworks-logo {
+  align-self: stretch;
+  flex: 0 0 25vw;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.yworks-logo > img {
+  height: 38px;
+  width: auto;
+}
+
+@media (max-width: 1100px) {
+
+  .yworks-logo {
+    flex: 0 0 33vw;
+  }
+
+  .grid-content {
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+  }
+
+  .large-content-grid {
+    grid-column: span 6 / span 6;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-content {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .title-navigation {
+    margin-left: 40px !important;
+  }
+
+  .yworks-logo {
+    display: none;
+  }
+
+  .component-logo--yfiles-layout-reactflow {
+    background-image: url('../yFiles-layout-for-react-flow-two-line.svg');
+  }
+}

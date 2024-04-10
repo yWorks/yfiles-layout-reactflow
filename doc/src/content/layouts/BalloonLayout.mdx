@@ -1,0 +1,90 @@
+---
+title: Balloon Layout
+section: 8
+tags: []
+---
+import TypeLink from '../../components/TypeLink.astro'
+
+#  Balloon Layout
+
+The *balloon layout algorithm* is designed to arrange directed and undirected tree graphs.
+Subtrees rooted at a node are placed in a radial fashion around their root node. All direct children of
+one node can be placed on a common circle around their parent node (depending on the alignment policy).
+Therefore, subtrees look like balloons or stars, especially if subtrees have similar sizes.
+The edges of the tree are drawn as straight lines.
+
+The balloon layout algorithm provides extensive customization options through a wide array of properties accessible
+via the `BalloonLayoutOptions`. Fundamental options include minimum node distances, children ordering, compactness, and others.
+It also automatically places node and edge labels when the corresponding properties are activated. Node labels can also be
+placed in a ray-like manner.
+
+Additional customization for individual graph elements, such as `edgeLabelPreferredPlacement`, `nodeHalos`, and more, can be achieved via
+the `BalloonLayoutDataProvider`.
+
+Extensive documentation detailing all available properties of the balloon layout supported by *yFiles layouts for React Flow* can be
+found [here](https://docs.yworks.com/yfileshtml/#/api/BalloonLayout).
+
+```tsx
+runLayout({
+  name: 'BalloonLayout',
+  layoutOptions: {
+    integratedEdgeLabeling: true,
+    integratedNodeLabeling: true,
+    nodeLabelingPolicy: 'ray-like-leaves'
+  },
+  layoutData: {
+    edgeLabelPreferredPlacement: () => ({
+      sideOfEdge: 'left-of-edge',
+      distanceToEdge: 20,
+    })
+  }
+})
+```
+
+## BalloonLayoutOptions
+
+The configuration options for the balloon layout algorithm that arranges the subtrees of the tree graph in a balloon-like fashion. <p> For more information on the layout algorithm and its available settings, see [BalloonLayout](https://docs.yworks.com/yfileshtml/#/api/BalloonLayout).</p>
+
+| Name | Type |
+|---|---|
+| <div id="allowoverlaps">allowOverlaps?</div> | `boolean` |
+| <div id="chainstraighteningmode">chainStraighteningMode?</div> | `boolean` |
+| <div id="childalignmentpolicy">childAlignmentPolicy?</div> | `"plain"` &#124;`"same-center"` &#124; `"compact"` &#124; `"smart"` |
+| <div id="childorderingpolicy">childOrderingPolicy?</div> | `"compact"` &#124; `"symmetric"` |
+| <div id="compactnessfactor">compactnessFactor?</div> | `number` |
+| <div id="componentlayoutenabled">componentLayoutEnabled?</div> | `boolean` |
+| <div id="considernodelabels">considerNodeLabels?</div> | `boolean` |
+| <div id="edgelabelspacing">edgeLabelSpacing?</div> | `number` |
+| <div id="fromsketchmode">fromSketchMode?</div> | `boolean` |
+| <div id="hidegroupsstageenabled">hideGroupsStageEnabled?</div> | `boolean` |
+| <div id="integratededgelabeling">integratedEdgeLabeling?</div> | `boolean` |
+| <div id="integratednodelabeling">integratedNodeLabeling?</div> | `boolean` |
+| <div id="interleavedmode">interleavedMode?</div> | `"off"` &#124; `"all-nodes"` &#124; `"marked-nodes"` |
+| <div id="labelingenabled">labelingEnabled?</div> | `boolean` |
+| <div id="layoutorientation">layoutOrientation?</div> | `"top-to-bottom"` &#124; `"left-to-right"` &#124; `"right-to-left"` &#124; `"bottom-to-top"` |
+| <div id="minimumedgelength">minimumEdgeLength?</div> | `number` |
+| <div id="minimumnodedistance">minimumNodeDistance?</div> | `number` |
+| <div id="nodelabelingpolicy">nodeLabelingPolicy?</div> | `"ray-like"` &#124; `"ray-like-leaves"` &#124; `"horizontal"` |
+| <div id="nodelabelspacing">nodeLabelSpacing?</div> | `number` |
+| <div id="orientationlayoutenabled">orientationLayoutEnabled?</div> | `boolean` |
+| <div id="paralleledgerouterenabled">parallelEdgeRouterEnabled?</div> | `boolean` |
+| <div id="preferredchildwedge">preferredChildWedge?</div> | `number` |
+| <div id="preferredrootwedge">preferredRootWedge?</div> | `number` |
+| <div id="rootnodepolicy">rootNodePolicy?</div> | `"directed-root"` &#124; `"center-root"` &#124; `"weighted-center-root"` &#124; `"selected-root"` |
+| <div id="selflooprouterenabled">selfLoopRouterEnabled?</div> | `boolean` |
+| <div id="subgraphlayoutenabled">subgraphLayoutEnabled?</div> | `boolean` |
+
+
+
+## BalloonLayoutDataProvider&lt;TNodeData, TEdgeData&gt;
+
+A provider for individual options per nodes or edges in a [BalloonLayout](https://docs.yworks.com/yfileshtml/#/api/BalloonLayout). It allows for defining a function that provide values for each element.
+
+For more information, see [BalloonLayoutData](https://docs.yworks.com/yfileshtml/#/api/BalloonLayoutData).
+
+| Name | Description | Type |
+|---|---|---|
+| <div id="edgelabelpreferredplacement">edgeLabelPreferredPlacement?</div> |  Provides descriptors for the placement of edge labels. | `(label:` <TypeLink type="LabelData"/>`) =>` <TypeLink type="PreferredPlacementDescriptor"/> |
+| <div id="nodehalos">nodeHalos?</div> |  Provides halos for nodes, i.e., a rectangular area around a specific node considered during the layout. | `(node: TNodeData) => `<TypeLink type="NodeHalo"/> |
+| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | `(node: TNodeData) => any` |
+| <div id="outedgecomparer">outEdgeComparer?</div> |  Provides an order for the given edges in which the edges are arranged at a node. | `(edge1: TEdgeData,  edge2: TEdgeData) => number` |

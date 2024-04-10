@@ -1,0 +1,63 @@
+---
+title: Custom Element Types
+section: 3
+tags: []
+showRightSideBar: true
+---
+
+# Custom Element Types
+
+Incorporating layout algorithms into your React Flow application is essential for organizing nodes and edges effectively.
+These algorithms ensure that edges connect at various points on node borders, providing a comprehensive representation
+of your data flow. Additionally, they can arrange labels for both nodes and edges to enhance clarity.
+
+## Integrating the Custom Types
+
+If your flow utilizes default node and edge types, seamlessly integrate our custom components as new defaults.
+
+```tsx
+import { MultiHandleNode, PolylineEdge } from '@yworks/yfiles-layout-reactflow'
+
+const edgeTypes = {
+  default: PolylineEdge
+}
+
+const nodeTypes = {
+  default: MultiHandleNode
+}
+```
+
+For already customized nodes, you can wrap them with the `withMultiHandles` higher-order component (HOC) to enable
+placement of labels and multiple handles, enhancing their flexibility.
+
+```tsx
+import { withMultiHandles } from '@yworks/yfiles-layout-reactflow'
+import CustomNode from './CustomNode'
+
+const nodeTypes = {
+  custom: withMultiHandles(CustomNode)
+}
+```
+
+Customized edges can be adjusted using the `getPolylinePath` function. It integrates similarly to React Flow functions
+like [getBezierPath](https://reactflow.dev/api-reference/utils/get-bezier-path), allowing it to replace these functions
+to support polyline edges.
+
+```tsx
+import { BaseEdge, EdgeProps } from 'reactflow'
+import { getPolylinePath } from '@yworks/yfiles-layout-reactflow'
+
+export function CustomEdge(props: EdgeProps) {
+  const [edgePath] = getPolylinePath({
+    sourceX: props.sourceX,
+    sourceY: props.sourceY,
+    targetX: props.targetX,
+    targetY: props.targetY,
+    bends: props.data?.yData?.bends ?? []
+  })
+
+  return ( <BaseEdge path={edgePath} {...props} /> )
+}
+```
+
+Once you have prepared your graph, you can [run a layout algorithm](customizinglayouts) on it.

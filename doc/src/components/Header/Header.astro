@@ -1,0 +1,48 @@
+---
+import { SITE } from '../../config';
+import SkipToContent from './SkipToContent.astro';
+import NavigationBar from '../NavigationBar.astro'
+
+const { currentPage } = Astro.props;
+---
+
+<header class="p-3 bg-slate-100 bg-opacity-80 backdrop-blur-md border-b text-slate-900">
+	<SkipToContent />
+	<nav class="flex justify-between items-center px-4 title-navigation">
+		<a class="yworks-logo" href="https://yworks.com" target="_blank"><img width="1000" height="395" src={`${import.meta.env.BASE_URL}/yworks.svg`}></a>
+		<a href={import.meta.env.BASE_URL} class=`h-8 component-logo component-logo--${SITE.name}`></a>
+		<div class="flex gap-2">
+
+			<!-- <button onclick="toggleDarkMode()">theme</button> -->
+			{
+				SITE.github &&
+				(<a title="GitHub" class="opacity-80 hover:opacity-100 hover:bg-slate-200 w-6 ml-3 rounded-full transition-colors" href={'https://github.com/'+SITE.github} target='_blank'>
+					<img class="h-7" src={`${import.meta.env.BASE_URL}/github.svg`} alt="GitHub">
+				</a>)
+			}
+			{ SITE.twitter &&
+				(<a title="X" class="opacity-90 hover:opacity-100 hover:bg-blue-100 w-5 ml-3 rounded-full transition-colors" href={'https://twitter.com/'+SITE.twitter} target='_blank'>
+					<img class="h-7" src={`${import.meta.env.BASE_URL}/x-logo.svg`} alt="X">
+				</a>)
+			}
+			{
+				SITE.linkedin &&
+				(<a title="LinkedIn" class="opacity-80 hover:opacity-100 hover:bg-blue-50 w-6 ml-3  rounded-full transition-colors" href={'https://linkedin.com/company/'+SITE.linkedin} target='_blank'>
+					<img class="h-7" src={`${import.meta.env.BASE_URL}/linkedin.svg`} alt="LinkedIn">
+				</a>)
+			}
+		</div>
+	</nav>
+	<details class="hamburger" title="Open Navigation">
+		<summary></summary>
+		<NavigationBar currentPage={currentPage}></NavigationBar>
+	</details>
+</header>
+
+<script is:inline>
+	// function toggleDarkMode() {
+	// 	const body = document.body;
+	// 	body.classList.toggle('dark');
+	// 	console.log('dark mode toggled');
+	// }
+</script>

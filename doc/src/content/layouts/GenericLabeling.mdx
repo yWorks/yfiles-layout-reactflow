@@ -1,0 +1,71 @@
+---
+title: Generic Labeling
+section: 9
+tags: []
+---
+
+import TypeLink from '../../components/TypeLink.astro'
+
+#  Generic Labeling
+
+The *generic labeling algorithm* places the nodes and edge labels of a graph such that they,
+ideally, do not overlap with each other or with graph elements. The algorithm does not affect the node
+positions and the edge routes. It can also support rotated labels.
+
+Node labels can be placed either in the interior or the exterior of the nodes with the option for rotation.
+The information about edge label placement can be conveyed to the labeling algorithm through a
+`PreferredPlacementDescriptor`.
+
+The generic labeling algorithm provides extensive customization options through a wide array of properties accessible
+via the `GenericLabelingOptions`. It can be applied on the whole graph or only on a predefined set of nodes and edges.
+
+Additional customization for individual graph elements, such as `edgeLabelPreferredPlacement`, `affectedLabels`, and more, can be achieved via
+the `GenericLabelingDataProvider`.
+
+Extensive documentation detailing all available properties of the balloon layout supported by *yFiles layouts for React Flow* can be
+found [here](https://docs.yworks.com/yfileshtml/#/api/LabelingLayout).
+
+```tsx
+runLayout({
+  name: 'GenericLabeling',
+  layoutOptions: { placeEdgeLabels: true, placeNodeLabels: true },
+  layoutData: {
+    edgeLabelPreferredPlacement: () => ({
+      sideOfEdge: 'left-of-edge',
+      distanceToEdge: 20,
+    })
+  }
+})
+```
+
+## GenericLabelingOptions
+
+The configuration options for the labeling algorithm that places the labels of a graph. <p> For more information on the labeling algorithm and its available settings, see [GenericLabeling](https://docs.yworks.com/yfileshtml/#/api/GenericLabeling). </p>
+
+
+| Name | Type |
+|---|---|
+| <div id="autoflipping">autoFlipping?</div> |`boolean` |
+| <div id="customprofitmodelratio">customProfitModelRatio?</div> |`number` |
+| <div id="deterministic">deterministic?</div> |`boolean` |
+| <div id="edgegroupoverlapallowed">edgeGroupOverlapAllowed?</div> |`boolean` |
+| <div id="maximumduration">maximumDuration?</div> |`number` |
+| <div id="moveinternalnodelabels">moveInternalNodeLabels?</div> |`boolean` |
+| <div id="optimizationstrategy">optimizationStrategy?</div> |`"balanced"`  &#124; `"node-overlap"`  &#124; `"label-overlap"`  &#124; `"edge-overlap"`  &#124; `"preferred-placement"` &#124; `"partition-grid-overlap"`  &#124; `"none"` |
+| <div id="placeedgelabels">placeEdgeLabels?</div> |`boolean` |
+| <div id="placenodelabels">placeNodeLabels?</div> |`boolean` |
+| <div id="reduceambiguity">reduceAmbiguity?</div> |`boolean` |
+| <div id="reducelabeloverlaps">reduceLabelOverlaps?</div> |`boolean` |
+| <div id="removeedgeoverlaps">removeEdgeOverlaps?</div> |`boolean` |
+| <div id="removenodeoverlaps">removeNodeOverlaps?</div> |`boolean` |
+
+## GenericLabelingDataProvider
+
+A provider for individual options per nodes or edges in a [Labeling](https://docs.yworks.com/yfileshtml/#/api/GenericLabeling). It allows for defining a function that provide values for each element.
+
+For more information, see [LabelingData](https://docs.yworks.com/yfileshtml/#/api/LabelingData).
+
+| Name | Description | Type |
+|---|---|---|
+| <div id="affectedlabels">affectedLabels?</div> |  Provides which labels should be placed. | `(label:` <TypeLink type="LabelData"/>`) => boolean` |
+| <div id="edgelabelpreferredplacement">edgeLabelPreferredPlacement?</div> |  Provides descriptors for the placement of edge labels. | `(label:` <TypeLink type="LabelData"/>`) =>` <TypeLink type="PreferredPlacementDescriptor"/> |

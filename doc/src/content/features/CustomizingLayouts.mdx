@@ -1,0 +1,315 @@
+---
+title: Customizing Layouts
+section: 1
+tags: []
+showRightSideBar: false
+---
+
+import Playground from '../../components/Playground.astro'
+
+# Customizing Layouts
+
+Configuring layout algorithms in your React Flow project provides a powerful way to organize and display data visually.
+You can efficiently integrate layout algorithms into your application and customize them according to your requirements.
+
+> **Note:** To effectively visualize the outcome of the layout algorithm, it is essential to use
+  [Node and Edge types](customelementtypes) that are capable of accommodating multiple handles and polyline paths.
+
+The `useLayout` hook serves as the entry point for integrating yFiles layout algorithms into your React Flow components.
+It provides a callback to invoke the layout algorithm when needed.
+
+When configuring the layout, the fundamental requirement is specifying the layout name. Optionally, you can further
+refine the layout by providing additional properties, such as routing styles, and defining mappings for individual
+elements, such as port candidates.
+
+The layout is automatically executed and applied to the current node and edge data within the flow.
+
+For scenarios where the layout computation is resource-intensive or time-consuming, you can leverage asynchronous layout
+computation using web workers. By offloading the computation to a separate thread, you ensure that the main UI thread
+remains responsive.\
+To enable asynchronous layout calculation, instantiate a web worker that invokes [initializeWebWorker](../functions/initializewebworker), then pass this
+worker to the `useLayout` hook.
+
+<Playground
+    code={`// edge type that supports bends
+const edgeTypes = {
+  default: PolylineEdge
+}
+// node type that supports multiple handles
+const nodeTypes = {
+  default: MultiHandleNode
+}
+
+// initialize data
+const initialNodes = data.nodes
+const initialEdges = data.edges
+
+const layoutConfiguration: LayoutConfiguration  = {
+  name: "HierarchicLayout",
+  layoutOptions: {
+    orthogonalRouting: true,
+    minimumLayerDistance: 50,
+    integratedEdgeLabeling: true
+  },
+  layoutData: { sourceGroupIds: (edge) => edge.source, groupNodeInsets: () => 50 },
+}
+
+function LayoutFlow() {
+  const [nodes, , onNodesChange] = useNodesState(initialNodes)
+  const [edges, , onEdgesChange] = useEdgesState(initialEdges)
+
+  // call the useLayout-hook to get the function that invokes the layout
+  const { runLayout } = useLayout()
+
+  // run initial layout after the nodes have been measured
+  useNodesMeasuredEffect(() => {
+    // run the hierarchic layout with a given configuration
+    // play around with the options and observe how the layout changes
+    runLayout(layoutConfiguration)
+  })
+
+  // a React Flow with a button that triggers the layout calculation
+  return (
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+    >
+      <Panel position="top-left">
+        <button onClick={() => runLayout(layoutConfiguration) }>Run Layout</button>
+      </Panel>
+    </ReactFlow>
+  )
+}
+
+function App() {
+  return (
+    <ReactFlowProvider>
+      <LayoutFlow></LayoutFlow>
+    </ReactFlowProvider>
+  )
+}`}
+    data={`
+{
+  "nodes": [
+  {
+    "id": "0",
+    "position": { "x": 0, "y": 0 },
+    "className": "group",
+    "data": {}
+  },
+  {
+    "id": "2",
+    "position": { "x": 0, "y": 0 },
+    "className": "node",
+    "parentNode": "0",
+    "data": {}
+  },
+  {
+    "id": "3",
+    "position": { "x": 0, "y": 0 },
+    "className": "large-node",
+    "data": {
+      "label": "Analyze Sample",
+      "className": "node-label",
+    },
+    "parentNode": "0"
+  },
+  {
+    "id": "4",
+    "position": { "x": 0, "y": 0 },
+    "className": "large-node",
+    "data": {
+      "label": "Repair Equipment",
+      "className": "node-label"
+    },
+    "parentNode": "0"
+  },
+  {
+    "id": "5",
+    "position": { "x": 0, "y": 0 },
+    "className": "node",
+    "parentNode": "0",
+    "data": {}
+  },
+  {
+    "id": "6",
+    "position": { "x": 0, "y": 0 },
+    "className": "large-node",
+    "data": {
+      "label": "Check Result",
+      "className": "node-label"
+    },
+    "parentNode": "0"
+  },
+  {
+    "id": "7",
+    "position": { "x": 0, "y": 0 },
+    "className": "node",
+    "parentNode": "0",
+    "data": {}
+  },
+  {
+    "id": "8",
+    "position": { "x": 0, "y": 0 },
+    "className": "node",
+    "parentNode": "0",
+    "data": {}
+  },
+  {
+    "id": "9",
+    "position": { "x": 0, "y": 0 },
+    "className": "large-node",
+    "data": {
+      "label": "Result not plausible",
+      "className": "node-label"
+    },
+    "parentNode": "0"
+  },
+  {
+    "id": "10",
+    "position": { "x": 0, "y": 0 },
+    "className": "large-node",
+    "data": {
+      "label": "Equipment out of order",
+      "className": "node-label"
+    },
+    "parentNode": "0"
+  },
+  {
+    "id": "11",
+    "position": { "x": 0, "y": 0 },
+    "className": "node",
+    "data": {}
+  },
+  {
+    "id": "12",
+    "position": { "x": 0, "y": 0 },
+    "className": "large-node",
+    "data": {
+      "label": "Take Sampler",
+      "className": "node-label"
+    }
+  },
+  {
+    "id": "13",
+    "position": { "x": 0, "y": 0 },
+    "className": "node",
+    "data": {}
+  },
+  {
+    "id": "14",
+    "position": { "x": 0, "y": 0 },
+    "className": "node",
+    "data": {}
+  },
+  {
+    "id": "15",
+    "position": { "x": 0, "y": 0 },
+    "className": "large-node",
+    "data": {
+      "label": "External Analysis",
+      "className": "node-label"
+    }
+  },
+  {
+    "id": "16",
+    "position": { "x": 0, "y": 0 },
+    "className": "large-node",
+    "data": {
+      "label": "Repair by Manufacturer",
+      "className": "node-label"
+    }
+  },
+  {
+    "id": "17",
+    "position": { "x": 0, "y": 0 },
+    "className": "node",
+    "data": {}
+  }
+],
+  "edges": [
+    { "id": "1", "source": "2", "target": "3" },
+    { "id": "2", "source": "3", "target": "6" },
+    { "id": "3", "source": "6", "target": "7" },
+    { "id": "4", "source": "7", "target": "9" },
+    { "id": "5", "source": "3", "target": "4" },
+    { "id": "6", "source": "4", "target": "5" },
+    {
+      "id": "7",
+      "source": "5",
+      "target": "10",
+      "label": {label:  "Repair not successful",  "className": "edge-label" }
+    },
+    {
+      "id": "8",
+      "source": "7",
+      "target": "8",
+      "label": {label:  "Result plausible",  "className": "edge-label" }
+    },
+    {
+      "id": "9",
+      "source": "2",
+      "target": "5",
+      "label": {label:  "Repair successful",  "className": "edge-label" }
+    },
+    { "id": "10", "source": "11", "target": "12" },
+    { "id": "11", "source": "13", "target": "16" },
+    { "id": "12", "source": "16", "target": "17" },
+    { "id": "13", "source": "15", "target": "17" },
+    { "id": "14", "source": "0", "target": "17" },
+    { "id": "16", "source": "14", "target": "15" },
+    { "id": "17", "source": "13", "target": "14" },
+    { "id": "18", "source": "0", "target": "13" },
+    { "id": "19", "source": "0", "target": "14" },
+    { "id": "20", "source": "12", "target": "2" }
+  ]
+}
+`}
+  css={`
+    .react-flow__node {
+      background-color: #6dbc8d;
+      border-color: #2c4b38;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+
+    .react-flow__edge-path {
+      stroke: #f7f7f7;
+    }
+
+    .large-node {
+      width: 140px;
+      height: 60px;
+      background-color: #4281a4;
+      border-color: #1a3442;
+    }
+
+    .group {
+      background-color: #c1c1c16e;
+      border-color: #4d4d4d;
+      border-width: 2px;
+    }
+
+    .node-label {
+      background-color: #b3cddb;
+      border-radius: 6px;
+      font-size: 12px;
+      padding: 5px;
+      white-space: normal !important;
+    }
+
+    .edge-label {
+      color: black;
+      background-color: #a4aeb3;
+      border: 1px solid #0e0e28;
+      border-radius: 6px;
+      font-size: 12px;
+      padding: 5px;
+    }
+`}
+/>

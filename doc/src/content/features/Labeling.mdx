@@ -1,0 +1,398 @@
+---
+title: Labeling
+section: 2
+tags: []
+showRightSideBar: false
+---
+
+import Playground from '../../components/Playground.astro'
+
+# Labeling
+
+*yFiles Layout Algorithms for React Flow* includes support for labeling algorithms, enabling users to place labels
+on nodes and edges. Labels can be placed either by selecting a layout algorithm that automatically reserves
+space for the node/edge labels and places them there (e.g., [HierarchicLayout](../layouts/hierarchiclayout),
+[OrganicLayout](../layouts/organiclayout)), or by applying the [GenericLabeling](../layouts/genericlabeling)
+algorithm directly.
+
+```tsx
+const { runLayout } = useLayout()
+
+useEffect(() => {
+  runLayout({
+    name: 'HierarchicLayout',
+    layoutOptions: {
+      integratedEdgeLabeling: true,
+      considerNodeLabels: true
+    }
+  })
+}, runLayout)
+
+useEffect(() => {
+  runLayout({
+    name: 'GenericLabeling',
+    layoutOptions: {
+      placeEdgeLabels: true,
+      placeNodeLabels: true
+    }
+  })
+}, runLayout)
+```
+
+Node labels can be placed either in the interior or the exterior of the nodes with the option for rotation depending on the
+configuration of the applied layout algorithm.
+Edges can have multiple labels and edge label placement information can be conveyed to the layout/labeling algorithm through a
+`PreferredPlacementDescriptor`, which is passed via the layout data provider.
+
+```tsx
+const { runLayout } = useLayout()
+
+useEffect(() => {
+  runLayout({
+    name: 'HierarchicLayout',
+    layoutOptions: {
+      integratedEdgeLabeling: true,
+      considerNodeLabels: true
+    },
+    layoutData: {
+      edgeLabelPreferredPlacement: labelPreferredPlacement
+    }
+  })
+}, runLayout)
+
+const labelPreferredPlacement = useMemo(
+  () =>
+    (label: LabelData): PreferredPlacementDescriptor => {
+      if (label.labelIndex === 1) {
+        return {
+          sideOfEdge: 'left-of-edge',
+          distanceToEdge: 20,
+          placeAlongEdge: 'at-source',
+          angleReference: 'relative-to-edge-flow'
+        }
+      }
+      return {
+        sideOfEdge: 'on-edge',
+        placeAlongEdge: 'at-center'
+      }
+    },
+  []
+)
+```
+
+When using the [MultihandleNode](../components/multihandlenode) and
+the [PolylineEdge](../components/polylineedge), the label arrangement is supported out-of-the-box.
+However, if other custom element types are created that do not wrap the ones mentioned above, the [NodeLabel](../components/nodelabel)
+and [EdgeLabels](../components/edgelabels) components have to be employed. These components support
+the custom placement and rotation of labels after applying a layout/labeling algorithm. In both scenarios,
+layout information about a label after applying a layout algorithm can be retrieved from `data.yData.labelBoxes`.
+
+<Playground
+  code={`// edge type that supports bends
+const edgeTypes = {
+  default: PolylineEdge
+};
+// node type that supports multiple handles
+const nodeTypes = {
+  default: MultiHandleNode
+};
+
+// initialize data
+const initialNodes = data.nodes
+const initialEdges = data.edges
+
+// the layout configuration for the organic layout algorithm
+const layoutConfiguration: LayoutConfiguration = {
+  name: "OrganicLayout",
+  layoutOptions: {
+    // enable edge labeling
+    integratedEdgeLabeling: true,
+    // enable node labeling
+    considerNodeLabels: true,
+    deterministic: true,
+    preferredEdgeLength: 40,
+    considerNodeSizes: true
+  },
+  layoutData: {
+    edgeLabelPreferredPlacement: () => ({
+      sideOfEdge: 'on-edge',
+      placeAlongEdge: 'at-source',
+      angleReference: 'relative-to-edge-flow'
+    })
+  },
+}
+
+function LayoutFlow() {
+  const [nodes, , onNodesChange] = useNodesState(initialNodes)
+  const [edges, , onEdgesChange] = useEdgesState(initialEdges)
+
+  // call the useLayout-hook to get the function that invokes the layout
+  const { runLayout } = useLayout()
+
+  // run initial layout
+  useNodesMeasuredEffect(() => {
+    runLayout(layoutConfiguration)
+  })
+
+  // a React Flow with a button that triggers the layout calculation
+  return (
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+    >
+      <Panel position="top-left">
+        <button onClick={() => runLayout(layoutConfiguration) }>Run Layout</button>
+      </Panel>
+    </ReactFlow>
+  );
+}
+
+function App() {
+  return (
+    <ReactFlowProvider>
+      <LayoutFlow></LayoutFlow>
+    </ReactFlowProvider>
+  )
+}`}
+  data={`{
+           "nodes": [
+             {
+               "id": "0",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Tuebingen", "className": "node-label root-label" },
+               "className": "root"
+             },
+             {
+               "id": "1",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Location", "className": "node-label location-label" },
+               "className": "intermediate location"
+             },
+             {
+               "id": "2",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "River Neckar", "className": "node-label location-label" },
+               "className": "location"
+             },
+             {
+               "id": "3",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Swabian Alb", "className": "node-label location-label" },
+               "className": "location"
+             },
+             {
+               "id": "4",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Attractions", "className": "node-label attractions-label" },
+               "className": "intermediate attractions"
+             },
+             {
+               "id": "5",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Tuebingen Castle", "className": "node-label attractions-label" },
+               "className": "attractions"
+             },
+             {
+               "id": "7",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Neckarfront", "className": "node-label attractions-label"},
+               "className": "attractions"
+             },
+             {
+               "id": "8",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Historic City Center", "className": "node-label attractions-label"},
+               "className": "attractions"
+             },
+             {
+               "id": "9",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Botanical Garden", "className": "node-label attractions-label"},
+               "className": "attractions"
+             },
+             {
+               "id": "10",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Events", "className": "node-label events-label" },
+               "className": "intermediate events"
+             },
+             {
+               "id": "11",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Stocherkahnrennen", "className": "node-label events-label" },
+               "className": "events"
+             },
+             {
+               "id": "12",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Weihnachtsmarkt", "className": "node-label events-label" },
+               "className": "events"
+             },
+             {
+               "id": "13",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Umbrisch Markt", "className": "node-label events-label" },
+               "className": "events"
+             },
+             {
+               "id": "14",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "yWorks", "className": "node-label yworks-label"  },
+               "className": "intermediate yworks"
+             },
+             {
+               "id": "15",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Products", "className": "node-label yworks-label"  },
+               "className": "yworks"
+             },
+             {
+               "id": "16",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Technologies", "className": "node-label yworks-label"  },
+               "className": "yworks"
+             },
+             {
+               "id": "17",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Support", "className": "node-label yworks-label"  },
+               "className": "yworks"
+             },
+             {
+               "id": "18",
+               "position": {"x": 0, "y": 0},
+               "data": {"label": "Solutions", "className": "node-label yworks-label"  },
+               "className": "yworks"
+             }
+           ],
+           "edges": [
+             {
+               "id": "0",
+               "source": "0",
+               "target": "1",
+               "label": { "label": "Where?", className: "edge-label location-label" }
+             },
+             {
+               "id": "1",
+               "source": "0",
+               "target": "4",
+               "label": { "label": "What to see?", className: "edge-label attractions-label" }
+             },
+             {
+               "id": "2",
+               "source": "0",
+               "target": "10",
+               "label": { "label": "What to do?", className: "edge-label events-label" }
+             },
+             {
+               "id": "3",
+               "source": "0",
+               "target": "14",
+               "label": { "label": "Where to work?", className: "edge-label yworks-label" }
+             },
+             { "id": "4", "source": "1", "target": "2" },
+             { "id": "5", "source": "1", "target": "3" },
+             { "id": "6", "source": "4", "target": "5" },
+             { "id": "7", "source": "4", "target": "6" },
+             { "id": "8", "source": "4", "target": "7" },
+             { "id": "9", "source": "4", "target": "8" },
+             { "id": "10", "source": "4", "target": "9" },
+             { "id": "11", "source": "10", "target": "11" },
+             { "id": "12", "source": "10", "target": "12" },
+             { "id": "13", "source": "10", "target": "13" },
+             { "id": "14", "source": "14", "target": "15" },
+             { "id": "15", "source": "14", "target": "16" },
+             { "id": "16", "source": "14", "target": "17" },
+             { "id": "17", "source": "14", "target": "18" }
+           ]
+         }
+
+`}
+css={`
+  .react-flow__node {
+    width: 120px;
+    height: 30px;
+    border-radius: 10px;
+    padding: 5px !important;
+  }
+
+  .react-flow__edge-path {
+    stroke: #f7f7f7;
+  }
+
+  .react-flow__handle {
+    visibility: hidden;
+  }
+
+  .node-label {
+    padding: 4px;
+    border-radius: 5px;
+    font-size: 10px;
+  }
+
+  .edge-label {
+    font-size: 10px;
+    padding: 4px;
+    border-radius: 5px;
+  }
+
+  .root {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    background-color: #242265;
+  }
+
+  .root-label {
+    background-color: #c2c6f1;
+    color: #292d58;
+  }
+
+  .intermediate {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: #6771dc;
+  }
+
+  .location {
+    background-color: #ffc914;
+  }
+
+  .location-label {
+    background-color: #ffe9a1;
+    color: #665008;
+  }
+
+  .attractions-label {
+    background-color: #bbd3c5;
+    color: #223a2c;
+  }
+
+  .attractions  {
+    background-color: #56926e;
+  }
+
+  .events {
+    background-color: #6c4f77;
+  }
+
+  .events-label {
+    background-color: #c4b9c9;
+    color: #2b2030;
+  }
+
+  .yworks {
+    background-color: #ff6c00;
+  }
+
+  .yworks-label {
+    background-color: #ffc499;
+    color: #662b00;
+  }
+`}
+/>

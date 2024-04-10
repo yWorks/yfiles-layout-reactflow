@@ -6,7 +6,7 @@
     "email": "yfileshtml@yworks.com"
   },
   "description": "yFiles Layouts for React Flow - A layout library for React Flow providing powerful yFiles layout algorithms and supporting components",
-  "keywords": ["react", "yfiles", "javascript", "typescript", "library", "graph", "diagram"],
+  "keywords": ["react", "yfiles", "javascript", "typescript", "library", "graph", "diagram", "layout", "reactflow"],
   "homepage": "https://www.yworks.com/",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

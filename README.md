@@ -25,7 +25,7 @@ Please refer to the [yfiles-layout-reactflow library README](yfiles-layout-react
 
 ## Live Playground
 
-[![Live Playground](https://raw.githubusercontent.com/yWorks/yfiles-layout-reactflow/main/assets/welcome-playground.png)](https://docs.yworks.com/yfiles-layouts-reactflow/introduction/welcome)
+[![Live Playground](https://raw.githubusercontent.com/yWorks/yfiles-layout-reactflow/main/assets/welcome-playground.png)](https://docs.yworks.com/yfiles-layout-reactflow/introduction/welcome)
 
 Try the *yFiles Layout Algorithms for React Flow* directly in your browser with our [playground](https://docs.yworks.com/yfiles-layout-reactflow/introduction/welcome).
 

@@ -1,6 +1,6 @@
 # yFiles Layout Algorithms for React Flow
 
-![Welcome playground](https://raw.githubusercontent.com/yWorks/yfiles-layouts-reactflow/main/assets/yfiles-layouts-react-flow-hero-image.png)
+![Welcome playground](https://raw.githubusercontent.com/yWorks/yfiles-layout-reactflow/main/assets/yfiles-layouts-react-flow-hero-image.png)
 
 Welcome to the *yFiles Layout Algorithms for React Flow* module, a powerful and versatile layout add-on for React Flow based on the [yFiles](https://www.yworks.com/yfiles-overview) library.
 
@@ -128,7 +128,7 @@ within their React Flow projects, enabling precise control over the arrangement 
 
 ## Live Playground
 
-[![Live Playground](https://raw.githubusercontent.com/yWorks/yfiles-layout-reactflow/main/assets/welcome-playground.png)](https://docs.yworks.com/yfiles-layouts-reactflow/introduction/welcome)
+[![Live Playground](https://raw.githubusercontent.com/yWorks/yfiles-layout-reactflow/main/assets/welcome-playground.png)](https://docs.yworks.com/yfiles-layout-reactflow/introduction/welcome)
 
 Try the *yFiles Layout Algorithms for React Flow* directly in your browser with our [playground](https://docs.yworks.com/yfiles-layout-reactflow/introduction/welcome).
 

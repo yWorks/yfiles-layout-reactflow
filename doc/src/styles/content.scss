@@ -1,4 +1,7 @@
 .content {
+
+  color: theme("colors.slate.600");
+
   h1,
   h2,
   h3,
@@ -37,7 +40,6 @@
 
   p {
     margin-top: 0.77rem;
-    color: theme("colors.slate.600");
   }
 
   a {

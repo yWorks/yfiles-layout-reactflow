@@ -46,13 +46,19 @@
     color: theme("colors.blue.600");
   }
 
+  ul {
+    list-style: disc;
+    margin-block-end: 16px;
+    margin-block-start: 16px;
+    padding-inline-start: 40px;
+  }
   ol {
     list-style: decimal;
     margin-block-end: 16px;
     margin-block-start: 16px;
     padding-inline-start: 40px;
   }
-;
+
 
   ul, ol {
     color: theme("colors.slate.600");

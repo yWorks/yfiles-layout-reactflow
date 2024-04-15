@@ -1,0 +1,325 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="background-color:white;position:absolute;top:0;left:0;height:100%;width:100%;pointer-events:none"
+     viewBox="200 180 800 497">
+  <g style="pointer-events:visiblePainted" transform="matrix(1.2 0 0 1.2 362.8 603)" image-rendering="auto"
+     shape-rendering="auto">
+    <g>
+      <g transform="translate(-80 -312)">
+        <rect fill="rgb(224,224,224)" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="butt"
+              stroke-linejoin="miter" stroke-miterlimit="10" fill-opacity="1" width="556" height="331" x="0" y="0"
+              rx="0" ry="0"></rect>
+        <g transform="translate(0 0)">
+          <g>
+            <g transform="translate(20 0)">
+              <g transform="translate(0 0)">
+                <rect x="0" y="0" width="536" height="111" stroke="none" fill="rgb(196,215,237)"
+                      fill-opacity="1"></rect>
+                <rect x="0" y="0" width="20" height="111" stroke="none" fill="rgb(224,224,224)" fill-opacity="1"></rect>
+                <rect x="0" y="0" width="536" height="0" stroke="none" fill="rgb(224,224,224)" fill-opacity="1"></rect>
+                <rect x="536" y="0" width="0" height="111" stroke="none" fill="rgb(224,224,224)"
+                      fill-opacity="1"></rect>
+                <rect x="0" y="111" width="536" height="0" stroke="none" fill="rgb(224,224,224)"
+                      fill-opacity="1"></rect>
+                <rect x="0" y="0" width="536" height="111" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1"
+                      stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" fill="none"></rect>
+              </g>
+            </g>
+            <g transform="matrix(0 -1 1 0 20 111)">
+              <text font-family="Arial" font-size="12px" font-style="normal" font-weight="normal" text-anchor="middle"
+                    fill="rgb(0,0,0)" fill-opacity="1" dy="1em" transform="translate(55.5 3.1875)">Administration
+              </text>
+            </g>
+          </g>
+          <g>
+            <g transform="translate(20 111)">
+              <g transform="translate(0 0)">
+                <rect x="0" y="0" width="536" height="121" stroke="none" fill="rgb(171,200,226)"
+                      fill-opacity="1"></rect>
+                <rect x="0" y="0" width="20" height="121" stroke="none" fill="rgb(224,224,224)" fill-opacity="1"></rect>
+                <rect x="0" y="0" width="536" height="0" stroke="none" fill="rgb(224,224,224)" fill-opacity="1"></rect>
+                <rect x="536" y="0" width="0" height="121" stroke="none" fill="rgb(224,224,224)"
+                      fill-opacity="1"></rect>
+                <rect x="0" y="121" width="536" height="0" stroke="none" fill="rgb(224,224,224)"
+                      fill-opacity="1"></rect>
+                <rect x="0" y="0" width="536" height="121" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1"
+                      stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" fill="none"></rect>
+              </g>
+            </g>
+            <g transform="matrix(0 -1 1 0 20 232)">
+              <text font-family="Arial" font-size="12px" font-style="normal" font-weight="normal" text-anchor="middle"
+                    fill="rgb(0,0,0)" fill-opacity="1" dy="1em" transform="translate(60.5 3.1875)">Management
+              </text>
+            </g>
+          </g>
+          <g>
+            <g transform="translate(20 232)">
+              <g transform="translate(0 0)">
+                <rect x="0" y="0" width="536" height="99" stroke="none" fill="rgb(196,215,237)" fill-opacity="1"></rect>
+                <rect x="0" y="0" width="20" height="99" stroke="none" fill="rgb(224,224,224)" fill-opacity="1"></rect>
+                <rect x="0" y="0" width="536" height="0" stroke="none" fill="rgb(224,224,224)" fill-opacity="1"></rect>
+                <rect x="536" y="0" width="0" height="99" stroke="none" fill="rgb(224,224,224)" fill-opacity="1"></rect>
+                <rect x="0" y="99" width="536" height="0" stroke="none" fill="rgb(224,224,224)" fill-opacity="1"></rect>
+                <rect x="0" y="0" width="536" height="99" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1"
+                      stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" fill="none"></rect>
+              </g>
+            </g>
+            <g transform="matrix(0 -1 1 0 20 331)">
+              <text font-family="Arial" font-size="12px" font-style="normal" font-weight="normal" text-anchor="middle"
+                    fill="rgb(0,0,0)" fill-opacity="1" dy="1em" transform="translate(49.5 3.1875)">Webserver
+              </text>
+            </g>
+          </g>
+          <g>
+            <g>
+              <rect fill="rgb(255,255,255)" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1"
+                    stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" fill-opacity="0" width="516"
+                    height="331" x="40" y="0"></rect>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <path
+        d="M 100,-51.66666666666667 L 90,-51.66666666666667 Q 80,-51.66666666666667 80,-61.66666666666667 L 80,-92 Q 80,-102 70,-102 L 35,-102 Q 25,-102 25,-112 L 25,-220"
+        stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-dasharray="1,1" stroke-dashoffset="0"
+        stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" fill="none"></path>
+      <g transform="matrix(0 -1 1 0 25 -220)"
+         d="M 100,-51.66666666666667 L 90,-51.66666666666667 Q 80,-51.66666666666667 80,-61.66666666666667 L 80,-92 Q 80,-102 70,-102 L 35,-102 Q 25,-102 25,-112 L 25,-220">
+        <path d="M 4,0 L 8,3 L 4,6" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="round"
+              stroke-linejoin="round" stroke-miterlimit="10" fill="rgb(255,255,255)" fill-opacity="0"
+              transform="translate(-8 -3)"></path>
+      </g>
+    </g>
+    <g>
+      <path d="M 140,-60 L 140,-120" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-dasharray="1,1"
+            stroke-dashoffset="0" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+            fill="none"></path>
+      <g transform="matrix(0 -1 1 0 140 -120)" d="M 140,-60 L 140,-120">
+        <path d="M 4,0 L 8,3 L 4,6" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="round"
+              stroke-linejoin="round" stroke-miterlimit="10" fill="rgb(255,255,255)" fill-opacity="0"
+              transform="translate(-8 -3)"></path>
+      </g>
+    </g>
+    <g>
+      <path d="M 50.00000000000001,-35 L 91,-35" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1"
+            stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" fill="none"></path>
+      <g transform="translate(99 -35)" d="M 50.00000000000001,-35 L 91,-35">
+        <path d="M 0,0 L 8,3 L 0,6 Z" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="round"
+              stroke-linejoin="round" stroke-miterlimit="10" fill="rgb(0,0,0)" fill-opacity="1"
+              transform="translate(-8 -3)"></path>
+      </g>
+    </g>
+    <g>
+      <g transform="translate(100 -60)">
+        <rect x="0" y="0" width="80" height="50" rx="6" ry="6" stroke="rgb(0,0,139)" stroke-opacity="1" stroke-width="1"
+              stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" fill="rgb(250,250,250)"
+              fill-opacity="1"></rect>
+      </g>
+    </g>
+    <rect fill="rgb(255,255,255)" stroke="rgb(0,0,0)" fill-opacity="0" stroke-opacity="1" stroke-width="1"
+          stroke-dasharray="2,2,0.01,2" stroke-dashoffset="1" stroke-linecap="round" stroke-linejoin="miter"
+          stroke-miterlimit="10" rx="3" width="110" height="202" x="250" ry="3" y="-292"></rect>
+    <g>
+      <g transform="translate(265 -276)">
+        <g transform="translate(0 0)">
+          <rect x="0" y="0" width="80" height="50" rx="6" ry="6" stroke="rgb(0,0,139)" stroke-opacity="1"
+                stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                fill="rgb(250,250,250)" fill-opacity="1"></rect>
+          <g transform="translate(35 35)">
+            <g transform="translate(0 0)">
+              <rect x="0" y="0" width="10" height="10" rx="0" ry="0" stroke="rgb(0,0,0)" stroke-opacity="1"
+                    stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                    fill="rgb(224,224,224)" fill-opacity="0.0784313725490196"></rect>
+              <path d="M 2,5 L 8,5 M 5,2 L 5,8" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1"
+                    stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" fill="rgb(255,255,255)"
+                    fill-opacity="0" transform="translate(0 0)"></path>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g transform="translate(265 -176)">
+        <rect x="0" y="0" width="80" height="50" rx="6" ry="6" stroke="rgb(0,0,139)" stroke-opacity="1" stroke-width="1"
+              stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" fill="rgb(250,250,250)"
+              fill-opacity="1"></rect>
+      </g>
+    </g>
+    <g transform="translate(5 -281)">
+      <g transform="translate(0 0)">
+        <path d="M 0 0 L 24 0 L 40 16 L 40 60 L 0 60 Z" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1"
+              stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" fill="rgb(255,255,255)"
+              fill-opacity="1"></path>
+        <path d="M 24 0 L 24 16 L 40 16" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="butt"
+              stroke-linejoin="miter" stroke-miterlimit="10" fill="rgb(255,255,255)" fill-opacity="1"></path>
+      </g>
+    </g>
+    <g transform="translate(120 -181)">
+      <g transform="translate(0 0)">
+        <path d="M 0 0 L 24 0 L 40 16 L 40 60 L 0 60 Z" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1"
+              stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" fill="rgb(255,255,255)"
+              fill-opacity="1"></path>
+        <path d="M 24 0 L 24 16 L 40 16" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="butt"
+              stroke-linejoin="miter" stroke-miterlimit="10" fill="rgb(255,255,255)" fill-opacity="1"></path>
+      </g>
+    </g>
+    <g transform="translate(400 -276)">
+      <g transform="translate(0 0)">
+        <path
+          d="M 25,50 C 11.195,50 0,38.805 0,25 C 0,11.195 11.195,0 25,0 C 38.805,0 50,11.195 50,25 C 50,38.805 38.805,50 25,50 Z"
+          stroke="rgb(255,0,0)" stroke-opacity="1" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"
+          stroke-miterlimit="10" fill="rgb(250,250,250)" fill-opacity="1" transform="translate(0 0)"></path>
+        <path
+          d="M 19.799999999999997,39.599999999999994 C 8.866439999999999,39.599999999999994 0,30.733559999999997 0,19.799999999999997 C 0,8.866439999999999 8.866439999999999,0 19.799999999999997,0 C 30.733559999999997,0 39.599999999999994,8.866439999999999 39.599999999999994,19.799999999999997 C 39.599999999999994,30.733559999999997 30.733559999999997,39.599999999999994 19.799999999999997,39.599999999999994 Z"
+          stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
+          stroke-miterlimit="10" fill="rgb(0,0,0)" fill-opacity="1"
+          transform="translate(5.199999999999999 5.200000000000003)"></path>
+      </g>
+    </g>
+    <g transform="translate(400 -176)">
+      <g transform="translate(0 0)">
+        <path
+          d="M 25,50 C 11.195,50 0,38.805 0,25 C 0,11.195 11.195,0 25,0 C 38.805,0 50,11.195 50,25 C 50,38.805 38.805,50 25,50 Z"
+          stroke="rgb(255,0,0)" stroke-opacity="1" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"
+          stroke-miterlimit="10" fill="rgb(250,250,250)" fill-opacity="1" transform="translate(0 0)"></path>
+        <path
+          d="M 19.799999999999997,39.599999999999994 C 8.866439999999999,39.599999999999994 0,30.733559999999997 0,19.799999999999997 C 0,8.866439999999999 8.866439999999999,0 19.799999999999997,0 C 30.733559999999997,0 39.599999999999994,8.866439999999999 39.599999999999994,19.799999999999997 C 39.599999999999994,30.733559999999997 30.733559999999997,39.599999999999994 19.799999999999997,39.599999999999994 Z"
+          stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
+          stroke-miterlimit="10" fill="rgb(0,0,0)" fill-opacity="1"
+          transform="translate(5.199999999999999 5.200000000000003)"></path>
+      </g>
+    </g>
+    <g transform="translate(0 -60)">
+      <path
+        d="M 25,50 C 11.195,50 0,38.805 0,25 C 0,11.195 11.195,0 25,0 C 38.805,0 50,11.195 50,25 C 50,38.805 38.805,50 25,50 Z"
+        stroke="rgb(0,128,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
+        stroke-miterlimit="10" fill="rgb(250,250,250)" fill-opacity="1" transform="translate(0 0)"></path>
+    </g>
+    <g>
+      <path
+        d="M 180,-47.5 L 190,-47.5 Q 200,-47.5 200,-57.5 L 200,-181 Q 200,-191 210,-191 L 295,-191 Q 305,-191 305,-201 L 305,-217"
+        stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
+        stroke-miterlimit="10" fill="none"></path>
+      <g transform="matrix(0 -1 1 0 305 -225)"
+         d="M 180,-47.5 L 190,-47.5 Q 200,-47.5 200,-57.5 L 200,-181 Q 200,-191 210,-191 L 295,-191 Q 305,-191 305,-201 L 305,-217">
+        <path d="M 0,0 L 8,3 L 0,6 Z" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="round"
+              stroke-linejoin="round" stroke-miterlimit="10" fill="rgb(0,0,0)" fill-opacity="1"
+              transform="translate(-8 -3)"></path>
+      </g>
+    </g>
+    <g>
+      <path d="M 345,-251 L 391,-251" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="butt"
+            stroke-linejoin="miter" stroke-miterlimit="10" fill="none"></path>
+      <g transform="translate(399 -251)" d="M 345,-251 L 391,-251">
+        <path d="M 0,0 L 8,3 L 0,6 Z" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="round"
+              stroke-linejoin="round" stroke-miterlimit="10" fill="rgb(0,0,0)" fill-opacity="1"
+              transform="translate(-8 -3)"></path>
+      </g>
+    </g>
+    <g>
+      <path d="M 45,-251 L 264,-251" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-dasharray="1,1"
+            stroke-dashoffset="0" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+            fill="none"></path>
+      <g transform="translate(264 -251)" d="M 45,-251 L 264,-251">
+        <path d="M 4,0 L 8,3 L 4,6" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="round"
+              stroke-linejoin="round" stroke-miterlimit="10" fill="rgb(255,255,255)" fill-opacity="0"
+              transform="translate(-8 -3)"></path>
+      </g>
+    </g>
+    <g>
+      <path d="M 160,-151 L 264,-151" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-dasharray="1,1"
+            stroke-dashoffset="0" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+            fill="none"></path>
+      <g transform="translate(264 -151)" d="M 160,-151 L 264,-151">
+        <path d="M 4,0 L 8,3 L 4,6" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="round"
+              stroke-linejoin="round" stroke-miterlimit="10" fill="rgb(255,255,255)" fill-opacity="0"
+              transform="translate(-8 -3)"></path>
+      </g>
+    </g>
+    <g>
+      <path d="M 180,-22.5 L 295,-22.5 Q 305,-22.5 305,-32.5 L 305,-117" stroke="rgb(0,0,0)" stroke-opacity="1"
+            stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" fill="none"></path>
+      <g transform="matrix(0 -1 1 0 305 -125)" d="M 180,-22.5 L 295,-22.5 Q 305,-22.5 305,-32.5 L 305,-117">
+        <path d="M 0,0 L 8,3 L 0,6 Z" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="round"
+              stroke-linejoin="round" stroke-miterlimit="10" fill="rgb(0,0,0)" fill-opacity="1"
+              transform="translate(-8 -3)"></path>
+      </g>
+    </g>
+    <g>
+      <path d="M 345,-151 L 391,-151" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="butt"
+            stroke-linejoin="miter" stroke-miterlimit="10" fill="none"></path>
+      <g transform="translate(399 -151)" d="M 345,-151 L 391,-151">
+        <path d="M 0,0 L 8,3 L 0,6 Z" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1" stroke-linecap="round"
+              stroke-linejoin="round" stroke-miterlimit="10" fill="rgb(0,0,0)" fill-opacity="1"
+              transform="translate(-8 -3)"></path>
+      </g>
+    </g>
+    <g transform="matrix(0 -1 1 0 -76.8125 -85.9083)">
+      <text font-family="Arial" font-size="12px" font-style="normal" font-weight="normal" text-anchor="start"
+            fill="rgb(0,0,0)" fill-opacity="1" dy="1em" transform="translate(0 0)">Workflow Details Table
+      </text>
+    </g>
+    <g transform="translate(109.9781583500572 -50.8125)">
+      <text font-family="Arial" font-size="12px" font-style="normal" font-weight="normal" text-anchor="middle"
+            fill="rgb(0,0,0)" fill-opacity="1" transform="translate(30.021841649942797 0)">
+        <tspan x="0" dy="1em">Dispatch to</tspan>
+        <tspan x="0" dy="1.5em">Approver</tspan>
+      </text>
+    </g>
+    <g>
+      <g>
+        <g transform="translate(365.306 -71)">
+          <g transform="translate(0 0)">
+            <rect x="0" y="0" width="85.38134256741125" height="77.625" rx="0" ry="0" stroke="rgb(255,255,255)"
+                  stroke-opacity="0" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
+                  stroke-miterlimit="10" fill="rgb(250,250,250)" fill-opacity="1"></rect>
+            <path d="M 8.538134256741126,0 L 0,0 L 0,77.625 L 8.538134256741126,77.625" stroke="rgb(0,0,0)"
+                  stroke-opacity="1" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
+                  stroke-miterlimit="10" fill="rgb(255,255,255)" fill-opacity="0" transform="translate(0 0)"></path>
+          </g>
+        </g>
+        <g transform="translate(370.306 -66)">
+          <text font-family="Arial" font-size="12px" font-style="normal" font-weight="normal" text-anchor="middle"
+                fill="rgb(0,0,0)" fill-opacity="1" transform="translate(37.69067128370563 0)">
+            <tspan x="0" dy="1em">These</tspan>
+            <tspan x="0" dy="1.5em">activities can</tspan>
+            <tspan x="0" dy="1.5em">be started at</tspan>
+            <tspan x="0" dy="1.5em">the same time</tspan>
+          </text>
+        </g>
+        <g>
+          <path d="M 365.3055593978781,-32.1875 L 343.3525320688591,-90" stroke="rgb(0,0,0)" stroke-opacity="1"
+                stroke-width="1" stroke-dasharray="1,1" stroke-dashoffset="0" stroke-linecap="butt"
+                stroke-linejoin="miter" stroke-miterlimit="10" fill="none"></path>
+        </g>
+      </g>
+    </g>
+    <g transform="translate(273.3107666566636 -266.8125)">
+      <text font-family="Arial" font-size="12px" font-style="normal" font-weight="normal" text-anchor="middle"
+            fill="rgb(0,0,0)" fill-opacity="1" transform="translate(31.689233343336397 0)">
+        <tspan x="0" dy="1em">Prepare PO</tspan>
+      </text>
+    </g>
+    <g transform="translate(279.309 -166.813)">
+      <text font-family="Arial" font-size="12px" font-style="normal" font-weight="normal" text-anchor="middle"
+            fill="rgb(0,0,0)" fill-opacity="1" transform="translate(25.69072579258648 0)">
+        <tspan x="0" dy="1em">Apporove</tspan>
+        <tspan x="0" dy="1.5em">Request</tspan>
+      </text>
+    </g>
+    <g transform="translate(-12.031333619358428 -299.625)">
+      <text font-family="Arial" font-size="12px" font-style="normal" font-weight="normal" text-anchor="middle"
+            fill="rgb(0,0,0)" fill-opacity="1" dy="1em" transform="translate(37.03133361935843 0)">Purchase Info
+      </text>
+    </g>
+    <g transform="translate(67.62732141405806 -175.8125)">
+      <text font-family="Arial" font-size="12px" font-style="normal" font-weight="normal" text-anchor="middle"
+            fill="rgb(0,0,0)" fill-opacity="1" transform="translate(23.686339292970974 0)">
+        <tspan x="0" dy="1em">Approval</tspan>
+        <tspan x="0" dy="1.5em">Request</tspan>
+        <tspan x="0" dy="1.5em">Email</tspan>
+      </text>
+    </g>
+  </g>
+  <defs></defs>
+</svg>

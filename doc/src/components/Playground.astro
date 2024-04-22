@@ -7,19 +7,13 @@ const { code, data, css } = Astro.props;
 ---
 <link rel="stylesheet" href={`${playgroundBase}/playground-lib/yfiles-playground.css`} ></link>
 <y-play-yfiles-layout-reactflow id="my-playground" options="autoload executeOnLoad" yfiles="viewer" style="margin-top: 1em; height: 900px;" theme="dark">
-    <code data-init>
-    </code>
-    <span type="text/plain" data-tab="App.tsx" data-code-type="typescript" data-default>
-    {code}
-  </span>
-    <span type="text/plain" data-tab="data.json" data-code-type="json">
-    {data}
-  </span>
-    {css && <span type="text/plain" data-tab="style.css" data-code-type="css">
-    {css}
-  </span>}
-    <code data-post-evaluation>
+  <code data-init>
+  </code>
+  <script set:html={code} type="text/plain" data-tab="App.tsx" data-code-type="typescript" data-default />
+  <script  set:html={data} type="text/plain" data-tab="data.json" data-code-type="json" />
+  {css && <script set:html={css} type="text/plain" data-tab="style.css" data-code-type="css"/>}
+  <code data-post-evaluation>
 
-    </code>
+  </code>
 </y-play-yfiles-layout-reactflow>
 <script src={`${playgroundBase}/playground-lib/yfiles-playground.js`} type="module" async></script>

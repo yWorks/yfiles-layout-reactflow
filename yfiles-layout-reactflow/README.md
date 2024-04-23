@@ -1,5 +1,7 @@
 # yFiles Layout Algorithms for React Flow
 
+[![NPM version](https://img.shields.io/npm/v/@yworks/yfiles-layout-reactflow?style=flat)](https://www.npmjs.org/package/@yworks/yfiles-layout-reactflow)
+
 ![Welcome playground](https://raw.githubusercontent.com/yWorks/yfiles-layout-reactflow/main/assets/yfiles-layouts-react-flow-hero-image.png)
 
 Welcome to the *yFiles Layout Algorithms for React Flow* module, a powerful and versatile layout add-on for React Flow based on the [yFiles](https://www.yworks.com/yfiles-overview) library.

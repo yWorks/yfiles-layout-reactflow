@@ -6,6 +6,12 @@ tags: []
 
 # Getting Started
 
+## Prerequisites
+
+For using the component, [yFiles for HTML](https://www.yworks.com/products/yfiles-for-html) is required. You can evaluate yFiles for 60 days free of charge on [my.yworks.com](https://my.yworks.com/signup?product=YFILES_HTML_EVAL). See [Licensing](licensing) for more information on this topic.
+
+## Project Setup
+
 1. **Installation:**
    Install the module via npm by running the following command in your project directory:
    ```bash
@@ -30,7 +36,6 @@ tags: []
    ```
 
 2. **License:**
-   A valid version of [yFiles for HTML](https://www.yworks.com/products/yfiles-for-html) is required for using the module. You can evaluate yFiles free of charge for 60 days on [my.yworks.com](https://my.yworks.com/signup?product=YFILES_HTML_EVAL).
    Be sure to invoke the `registerLicense` function to provide the license file before using the yFiles layout module.
 
 3. **Usage:**

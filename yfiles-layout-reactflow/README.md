@@ -134,6 +134,19 @@ within their React Flow projects, enabling precise control over the arrangement 
 
 Try the *yFiles Layout Algorithms for React Flow* directly in your browser with our [playground](https://docs.yworks.com/yfiles-layout-reactflow/introduction/welcome).
 
+## Licensing
+
+All owners of a valid software license for [yFiles for HTML](https://www.yworks.com/products/yfiles-for-html)
+are allowed to use these sources as the basis for their own [yFiles for HTML](https://www.yworks.com/products/yfiles-for-html)
+powered applications.
+
+Use of such programs is governed by the rights and conditions as set out in the
+[yFiles for HTML license agreement](https://www.yworks.com/products/yfiles-for-html/sla).
+
+You can evaluate yFiles for 60 days free of charge on [my.yworks.com](https://my.yworks.com/signup?product=YFILES_HTML_EVAL).
+
+For more information, see the `LICENSE` file.
+
 ## Learn More
 For detailed instructions on how to use and configure the layout module, please refer to the comprehensive [documentation](https://docs.yworks.com/yfiles-layout-reactflow/introduction/welcome) provided.
 

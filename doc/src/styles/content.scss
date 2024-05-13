@@ -108,6 +108,7 @@
   .astro-code {
     padding: 1rem;
     border-radius: 0.44rem;
+    position: relative;
   }
 
   table {
@@ -134,6 +135,58 @@
     padding: 1rem;
     border-radius: 0.44rem;
     background-color: #dadada;
+  }
+
+  .copy-clipboard-btn {
+    background-image: url("../copy-16.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 32px;
+    height: 32px;
+    padding: 5px;
+    background-origin: content-box;
+    border: 2px solid #666666;
+    border-radius: 0.44rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .copy-clipboard-btn:hover {
+    border-color: #777777;
+  }
+
+  .snackbar {
+    display: none;
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #24292e;
+    text-align: center;
+    border-radius: 0.44rem;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+  }
+
+  .snackbar.visible {
+    display: block;
+    visibility: visible;
+    -webkit-animation: snackbar-fadein 0.5s, snackbar-fadeout 0.5s 2.5s;
+    animation: snackbar-fadein 0.5s, snackbar-fadeout 0.5s 2.5s;
+  }
+
+  @keyframes snackbar-fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+
+  @keyframes snackbar-fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
   }
 }
 

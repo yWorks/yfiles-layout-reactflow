@@ -5,33 +5,33 @@
   left: 0;
   padding: 20px;
   overflow: hidden;
-}
 
-summary {
-  text-align: center;
-  width: 50px;
-  height: 20px;
-  cursor: pointer;
-  user-select: none;
-  outline: none;
-  transition: transform 200ms ease-in-out 0s;
-  writing-mode: vertical-lr;
-  font-size: 1.5em;
-  margin-bottom: 10px;
+  summary {
+    text-align: center;
+    width: 50px;
+    height: 20px;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition: transform 200ms ease-in-out 0s;
+    writing-mode: vertical-lr;
+    font-size: 1.5em;
+    margin-bottom: 10px;
 
-  &::marker {
-    content: "III";
-    letter-spacing: -1px;
+    &::marker {
+      content: "III";
+      letter-spacing: -1px;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 
-  &:hover {
-    transform: scale(1.1);
+  details {
+    z-index: 2;
+    padding-right: 0 !important;
   }
-}
-
-details {
-  z-index: 2;
-  padding-right: 0 !important;
 }
 
 @media (max-width: 768px) {

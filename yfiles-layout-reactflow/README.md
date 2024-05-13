@@ -15,34 +15,78 @@ within their React Flow projects, enabling precise control over the arrangement 
 
 ## Getting Started
 
-1. **Installation:**
-   Install the component via npm by running the following command in your project directory:
+## Prerequisites
+
+To use the module, [yFiles for HTML](https://www.yworks.com/products/yfiles-for-html) is required.
+You can evaluate yFiles for 60 days free of charge on [my.yworks.com](https://my.yworks.com/signup?product=YFILES_HTML_EVAL).
+See [Licensing](https://www.yworks.com/docs/yfiles-react/process-mining-doc/introduction/licensing) for more information on this topic.
+
+You can learn how to work with the yFiles npm module in our [Developer’s Guide](https://docs.yworks.com/yfileshtml/#/dguide/yfiles_npm_module). A convenient way of getting access
+to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-dev-suite).
+
+## Project Setup
+
+1. **Installation**
+
+   In addition to yFiles, the module requires React to be installed in your project. If you want to start your project
+   from scratch, we recommend using vite:
+
+   ```bash
+   npm create vite@latest my-yfiles-layout-app -- --template react-ts
+   ```
+
+   Install the ReactFlow:
+   ```bash
+   npm install reactflow
+   ```
+
+   Add the yFiles dependency:
+   ```bash
+   npm install <yFiles package path>/lib-dev/yfiles-26.0.0+dev.tgz
+   ```
+
+   <details>
+
+   <summary>Sample <code>package.json</code> dependencies</summary>
+   The resulting package.json dependencies should resemble the following:
+
+   ```json
+      dependencies: {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "reactflow": "^11.11.0",
+        "yfiles": "./lib-dev/yfiles-26.0.0.tgz"
+     }
+   ```
+   </details>
+
+   Install the module via npm by running the following command in your project directory:
+
    ```bash
    npm install @yworks/yfiles-layout-reactflow
    ```
 
-   The module has certain peer dependencies that must be installed within your project. Since it is a React module that augments React Flow, `react`, `react-dom`, and `reactflow` dependencies are needed.
-
-   Additionally, the component relies on the [yFiles](https://www.yworks.com/yfiles-overview) library which is not available on the public npm registry. Find instructions on how to work with the yFiles npm module in our [Developer's Guide](https://docs.yworks.com/yfileshtml/#/dguide/yfiles_npm_module).
-
-   Ensure that the dependencies in the `package.json` file resemble the following:
-   ```json
-   {
-     "dependencies": {
-       "@yworks/yfiles-layout-reactflow": "^1.0.0",
-       "react": "^18.2.0",
-       "react-dom": "^18.2.0",
-       "reactflow": "^11.11.0",
-       "yfiles": "<yFiles package path>/lib/yfiles-26.0.0.tgz"
-     }
-   }
-   ```
-
 2. **License:**
-   Before using the component, a valid [yFiles for HTML](https://www.yworks.com/products/yfiles-for-html) version is required. You can evaluate yFiles for 60 days free of charge on [my.yworks.com](https://my.yworks.com/signup?product=YFILES_HTML_EVAL).
-   Be sure to invoke the `registerLicense` function to furnish the license file before utilizing the yFiles layout module.
 
-3. **Usage:**
+   Be sure to invoke `registerLicense` function before using the module.
+   When evaluating yFiles, the license JSON file is found in the `lib/` folder of the yFiles for HTML evaluation package.
+   For licensed users, the license data is provided separately.
+
+   <details>
+
+       <summary>License registration</summary>
+
+       Import or paste your license data and register the license, e.g. in `App.tsx`:
+
+       ```js
+       import yFilesLicense from './license.json'
+
+       registerLicense(yFilesLicense)
+       ```
+   </details>
+
+3. **Usage**
+
    Utilize the `useLayout`-hook in your React Flow application. First invoke `registerLicense` somewhere in your application.
 
    ```tsx
@@ -86,11 +130,11 @@ within their React Flow projects, enabling precise control over the arrangement 
    const nodeTypes = {
      default: MultiHandleNode
    }
-   
+
    function LayoutFlow() {
      const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
      const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-   
+
      const onConnect = useCallback(
        (connection:Connection) => setEdges((eds) => addEdge(connection, eds)),
        [setEdges]
@@ -113,7 +157,7 @@ within their React Flow projects, enabling precise control over the arrangement 
            <button onClick={() => runLayout('HierarchicLayout')}>Run Layout</button>
          </Panel>
        </ReactFlow>
-     )
+     );
    }
    
    export default function Flow() {
@@ -151,5 +195,9 @@ For more information, see the `LICENSE` file.
 For detailed instructions on how to use and configure the layout module, please refer to the comprehensive [documentation](https://docs.yworks.com/yfiles-layout-reactflow/introduction/welcome) provided.
 
 For further information about [yFiles for HTML](https://www.yworks.com/yfiles-overview) and our company, please visit [yWorks.com](https://www.yworks.com).
+
+If you are working on a specific use case (e.g., [organization chart](https://www.npmjs.com/package/@yworks/react-yfiles-orgchart),
+[supply chain](https://www.npmjs.com/package/@yworks/react-yfiles-supply-chain), [company ownsership diagram](https://www.npmjs.com/package/@yworks/react-yfiles-company-ownership))
+and require an easy-to-use React component, please take a look at the available [React components](https://www.yworks.com/yfiles-react-components) powered by yFiles!
 
 For support or feedback, please reach out to [our support team](https://www.yworks.com/contact) or open an [issue on GitHub](https://github.com/yWorks/yfiles-layout-reactflow/issues). Happy diagramming!

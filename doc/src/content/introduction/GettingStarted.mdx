@@ -10,7 +10,7 @@ import TypeLink from '../../components/TypeLink.astro'
 ## Prerequisites
 
 To use the module, [yFiles for HTML](https://www.yworks.com/products/yfiles-for-html) is required.
-You can evaluate yFiles for 60 days free of charge on [my.yworks.com](https://my.yworks.com/signup?product=YFILES_HTML_EVAL). 
+You can evaluate yFiles for 60 days free of charge on [my.yworks.com](https://my.yworks.com/signup?product=YFILES_HTML_EVAL).
 See [Licensing](licensing)  for more information on this topic.
 
 You can learn how to work with the yFiles npm module in our [Developer’s Guide](https://docs.yworks.com/yfileshtml/#/dguide/yfiles_npm_module). A convenient way of getting access
@@ -86,12 +86,12 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
    // App.tsx
    import { registerLicense } from '@yworks/yfiles-layout-reactflow'
    import yFilesLicense from './license.json'
-   
+
    function App() {
      registerLicense(yFilesLicense)
      return <Flow></Flow>
    }
-    
+
    export default App
    ```
    Then create a custom flow with a layout button.
@@ -111,10 +111,10 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
    } from 'reactflow'
    import 'reactflow/dist/style.css'
    import { MultiHandleNode, PolylineEdge, useLayout } from '@yworks/yfiles-layout-reactflow'
-   
+
    import initialNodes from './nodes.json'
    import initialEdges from './edges.json'
-   
+
    // use the node and edge types that can process the layout result
    // including multiple handles and bends in edges
    const edgeTypes = {
@@ -123,19 +123,19 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
    const nodeTypes = {
      default: MultiHandleNode
    }
-   
+
    function LayoutFlow() {
      const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
      const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-   
+
      const onConnect = useCallback(
        (connection:Connection) => setEdges((eds) => addEdge(connection, eds)),
        [setEdges]
      );
-   
+
      // use the layout-hook to configure the layout algorithm
      const { runLayout } = useLayout()
-   
+
      return (
        <ReactFlow
          nodes={nodes}
@@ -152,7 +152,7 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
        </ReactFlow>
      );
    }
-   
+
    export default function Flow() {
      return (
        <ReactFlowProvider>
@@ -175,4 +175,4 @@ If you are working on a specific use case (e.g., [organization chart](https://ww
 [supply chain](https://www.npmjs.com/package/@yworks/react-yfiles-supply-chain), [company ownsership diagram](https://www.npmjs.com/package/@yworks/react-yfiles-company-ownership))
 and require an easy-to-use React component, please take a look at the available [React components](https://www.yworks.com/yfiles-react-components) powered by yFiles!
 
-For support or feedback, please reach out to [our support team](https://www.yworks.com/contact) or open an [issue on GitHub](https://github.com/yWorks/yfiles-layout-reactflow/issues). Happy diagramming!
+For support or feedback, please reach out to [our support team](https://www.yworks.com/products/yfiles/support) or open an [issue on GitHub](https://github.com/yWorks/yfiles-layout-reactflow/issues). Happy diagramming!

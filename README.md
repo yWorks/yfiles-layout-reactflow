@@ -50,4 +50,4 @@ For detailed instructions on how to use and configure the layout module, please 
 
 For further information about [yFiles for HTML](https://www.yworks.com/yfiles-overview) and our company, please visit [yWorks.com](https://www.yworks.com).
 
-For support or feedback, please reach out to [our support team](https://www.yworks.com/contact) or open an [issue on GitHub](https://github.com/yWorks/yfiles-layout-reactflow/issues). Happy diagramming!
+For support or feedback, please reach out to [our support team](https://www.yworks.com/products/yfiles/support) or open an [issue on GitHub](https://github.com/yWorks/yfiles-layout-reactflow/issues). Happy diagramming!

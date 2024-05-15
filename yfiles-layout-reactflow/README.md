@@ -200,4 +200,4 @@ If you are working on a specific use case (e.g., [organization chart](https://ww
 [supply chain](https://www.npmjs.com/package/@yworks/react-yfiles-supply-chain), [company ownsership diagram](https://www.npmjs.com/package/@yworks/react-yfiles-company-ownership))
 and require an easy-to-use React component, please take a look at the available [React components](https://www.yworks.com/yfiles-react-components) powered by yFiles!
 
-For support or feedback, please reach out to [our support team](https://www.yworks.com/contact) or open an [issue on GitHub](https://github.com/yWorks/yfiles-layout-reactflow/issues). Happy diagramming!
+For support or feedback, please reach out to [our support team](https://www.yworks.com/products/yfiles/support) or open an [issue on GitHub](https://github.com/yWorks/yfiles-layout-reactflow/issues). Happy diagramming!

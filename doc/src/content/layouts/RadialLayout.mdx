@@ -3,7 +3,7 @@ title: Radial Layout
 section: 3
 tags: []
 ---
-
+import Playground from '../../components/Playground.astro'
 import TypeLink from '../../components/TypeLink.astro'
 
 #  Radial Layout
@@ -12,6 +12,10 @@ The *radial layout algorithm* is designed to arrange graphs in a radial fashion.
 circles (layers) around a common center based on predefined layering strategies.
 Some potential applications include visualization of social networks, data clustering and bioinformatic.
 
+<div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', margin: '40px 0'}}>
+  <img src={`${import.meta.env.BASE_URL}/radial-layout.png`} style={{maxWidth: "80%", objectFit: "cover"}} alt="Radial layout"></img>
+</div>
+
 The radial layout algorithm provides extensive customization options through a wide array of properties accessible
 via the `RadialLayoutOptions`. Fundamental options include layer spacing, center node policy, node and edge distances, and others.
 It also automatically places node labels when the corresponding properties are activated. Node labels can also be
@@ -19,6 +23,8 @@ placed in a ray-like manner.
 
 Additional customization for individual graph elements, such as `nodeTypes`, `nodeHalos`, and more, can be achieved via
 the `RadialLayoutDataProvider`.
+
+Feel free to play around with the radial layout configuration in our [online playground](#my-playground).
 
 Extensive documentation detailing all available properties of the radial layout supported by *yFiles layouts for React Flow* can be
 found [here](https://docs.yworks.com/yfileshtml/#/api/RadialLayout).
@@ -82,3 +88,455 @@ For more information, see [RadialLayoutData](https://docs.yworks.com/yfileshtml/
 | <div id="nodehalos">nodeHalos?</div> |  Provides halos for nodes, i.e., a rectangular area around a specific node considered during the layout. | `(node: TNodeData) => `<TypeLink type="NodeHalo"/> |
 | <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | `(node: TNodeData) => any` |
 | <div id="outedgecomparers">outEdgeComparers?</div> |  Provides an order for outgoing edges at the given node in which the edges are arranged. | `(node: TNodeData) => (edge1: TEdgeData, edge2: TEdgeData) => number` |
+
+
+## Playground
+
+<Playground
+  code={`// edge type that supports bends
+const edgeTypes = {
+  default: PolylineEdge,
+};
+// node type that supports multiple handles
+const nodeTypes = {
+  default: MultiHandleNode,
+};
+
+  // initialize data
+  const initialNodes = data.nodes;
+  const initialEdges = data.edges;
+
+  const layoutOptions: RadialLayoutOptions = {
+    centerNodesPolicy: "custom",
+  };
+
+  const layoutData: RadialLayoutDataProvider<NodeProps, EdgeProps> = {
+    centerNodes: (node: NodeProps) =>
+      node.id === "2" ||
+      node.id === "5" ||
+      node.id === "9" ||
+      node.id === "12" ||
+      node.id === "20",
+  };
+
+  function LayoutFlow() {
+    const [nodes, , onNodesChange] = useNodesState(initialNodes);
+    const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+
+    const { runLayout } = useLayout();
+
+    useNodesMeasuredEffect(() =>
+      runLayout({
+        name: "RadialLayout",
+        layoutOptions,
+        layoutData,
+      }),
+    );
+
+    return (
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+      ></ReactFlow>
+    );
+  }
+
+  function App() {
+    return (
+      <ReactFlowProvider>
+        <LayoutFlow></LayoutFlow>
+      </ReactFlowProvider>
+    );
+  }
+`}
+  data={`
+        {
+   "nodes": [
+     {
+       "id": "1",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "1" },
+       "className": "node"
+     },
+     {
+       "id": "2",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "2" },
+       "className": "node"
+     },
+     {
+       "id": "3",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "3" },
+       "className": "node"
+     },
+     {
+       "id": "4",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "4" },
+       "className": "node"
+     },
+     {
+       "id": "5",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "5" },
+       "className": "node"
+     },
+     {
+       "id": "6",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "6" },
+       "className": "node"
+     },
+     {
+       "id": "7",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "7" },
+       "className": "node"
+     },
+     {
+       "id": "8",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "8" },
+       "className": "node"
+     },
+     {
+       "id": "9",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "9" },
+       "className": "node"
+     },
+     {
+       "id": "10",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "10" },
+       "className": "node"
+     },
+     {
+       "id": "11",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "11" },
+       "className": "node"
+     },
+     {
+       "id": "12",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "12" },
+       "className": "node"
+     },
+     {
+       "id": "13",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "13" },
+       "className": "node"
+     },
+     {
+       "id": "14",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "14" },
+       "className": "node"
+     },
+     {
+       "id": "15",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "15" },
+       "className": "node"
+     },
+     {
+       "id": "16",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "16" },
+       "className": "node"
+     },
+     {
+       "id": "17",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "17" },
+       "className": "node"
+     },
+     {
+       "id": "18",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "18" },
+       "className": "node"
+     },
+     {
+       "id": "19",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "19" },
+       "className": "node"
+     },
+     {
+       "id": "20",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "20" },
+       "className": "node"
+     },
+     {
+       "id": "21",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "21" },
+       "className": "node"
+     },
+     {
+       "id": "22",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "22" },
+       "className": "node"
+     },
+     {
+       "id": "23",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "23" },
+       "className": "node"
+     },
+     {
+       "id": "24",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "24" },
+       "className": "node"
+     },
+     {
+       "id": "25",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "25" },
+       "className": "node"
+     },
+     {
+       "id": "26",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "26" },
+       "className": "node"
+     },
+     {
+       "id": "27",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "27" },
+       "className": "node"
+     },
+     {
+       "id": "28",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "28" },
+       "className": "node"
+     },
+     {
+       "id": "29",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "29" },
+       "className": "node"
+     },
+     {
+       "id": "30",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "30" },
+       "className": "node"
+     },
+     {
+       "id": "31",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "31" },
+       "className": "node"
+     },
+     {
+       "id": "32",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "32" },
+       "className": "node"
+     },
+     {
+       "id": "33",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "33" },
+       "className": "node"
+     },
+     {
+       "id": "34",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "34" },
+       "className": "node"
+     },
+     {
+       "id": "35",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "35" },
+       "className": "node"
+     },
+     {
+       "id": "36",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "36" },
+       "className": "node"
+     },
+     {
+       "id": "37",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "37" },
+       "className": "node"
+     },
+     {
+       "id": "38",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "38" },
+       "className": "node"
+     },
+     {
+       "id": "39",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "39" },
+       "className": "node"
+     },
+     {
+       "id": "40",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "40" },
+       "className": "node"
+     },
+     {
+       "id": "41",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "41" },
+       "className": "node"
+     },
+     {
+       "id": "42",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "42" },
+       "className": "node"
+     },
+     {
+       "id": "43",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "43" },
+       "className": "node"
+     },
+     {
+       "id": "44",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "44" },
+       "className": "node"
+     },
+     {
+       "id": "45",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "45" },
+       "className": "node"
+     },
+     {
+       "id": "46",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "46" },
+       "className": "node"
+     },
+     {
+       "id": "47",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "47" },
+       "className": "node"
+     },
+     {
+       "id": "48",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "48" },
+       "className": "node"
+     },
+     {
+       "id": "49",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "49" },
+       "className": "node"
+     },
+     {
+       "id": "50",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "50" },
+       "className": "node"
+     },
+     {
+       "id": "51",
+       "position": { "x": 0, "y": 0 },
+       "data": { "label": "51" },
+       "className": "node"
+     }
+   ],
+   "edges": [
+     { "id": "0", "source": "5", "target": "8" },
+     { "id": "1", "source": "9", "target": "10" },
+     { "id": "2", "source": "9", "target": "11" },
+     { "id": "3", "source": "0", "target": "3" },
+     { "id": "4", "source": "0", "target": "5" },
+     { "id": "5", "source": "0", "target": "6" },
+     { "id": "6", "source": "0", "target": "7" },
+     { "id": "7", "source": "0", "target": "2" },
+     { "id": "8", "source": "0", "target": "12" },
+     { "id": "9", "source": "0", "target": "13" },
+     { "id": "10", "source": "12", "target": "18" },
+     { "id": "11", "source": "12", "target": "17" },
+     { "id": "12", "source": "12", "target": "16" },
+     { "id": "13", "source": "12", "target": "15" },
+     { "id": "14", "source": "12", "target": "14" },
+     { "id": "15", "source": "13", "target": "20" },
+     { "id": "16", "source": "13", "target": "19" },
+     { "id": "17", "source": "20", "target": "21" },
+     { "id": "18", "source": "20", "target": "22" },
+     { "id": "19", "source": "2", "target": "25" },
+     { "id": "20", "source": "2", "target": "23" },
+     { "id": "21", "source": "2", "target": "24" },
+     { "id": "22", "source": "26", "target": "30" },
+     { "id": "23", "source": "26", "target": "29" },
+     { "id": "24", "source": "26", "target": "28" },
+     { "id": "25", "source": "26", "target": "27" },
+     { "id": "26", "source": "3", "target": "26" },
+     { "id": "27", "source": "20", "target": "31" },
+     { "id": "28", "source": "23", "target": "35" },
+     { "id": "29", "source": "23", "target": "33" },
+     { "id": "30", "source": "23", "target": "32" },
+     { "id": "31", "source": "23", "target": "34" },
+     { "id": "32", "source": "24", "target": "38" },
+     { "id": "33", "source": "24", "target": "37" },
+     { "id": "34", "source": "24", "target": "36" },
+     { "id": "35", "source": "5", "target": "39" },
+     { "id": "36", "source": "5", "target": "40" },
+     { "id": "37", "source": "5", "target": "1" },
+     { "id": "38", "source": "25", "target": "4" },
+     { "id": "39", "source": "3", "target": "9" },
+     { "id": "40", "source": "9", "target": "41" },
+     { "id": "41", "source": "11", "target": "46" },
+     { "id": "42", "source": "11", "target": "45" },
+     { "id": "43", "source": "11", "target": "44" },
+     { "id": "44", "source": "11", "target": "43" },
+     { "id": "45", "source": "11", "target": "42" },
+     { "id": "46", "source": "9", "target": "47" },
+     { "id": "47", "source": "9", "target": "48" },
+     { "id": "48", "source": "10", "target": "50" },
+     { "id": "49", "source": "10", "target": "49" },
+     { "id": "50", "source": "10", "target": "51" },
+     { "id": "51", "source": "14", "target": "7" },
+     { "id": "52", "source": "14", "target": "6" }
+   ]
+ }
+`}
+  css={`
+  .node {
+      padding: 20px;
+      color: #324820;
+      background-color: #76b041;
+      border-color: #2f461a;
+      border-radius: 50%;
+      width: 30px;
+  }
+
+  .react-flow__edge-path {
+      stroke: #ffffff;
+      stroke-width: 2;
+  }
+
+  .react-flow__handle {
+      visibility: hidden;
+  }
+`}
+/>

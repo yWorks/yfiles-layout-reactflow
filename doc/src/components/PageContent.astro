@@ -10,3 +10,33 @@ const title = content.title;
 	</section>
 </article>
 
+<script is:inline>
+  document.querySelectorAll('.astro-code:not(.--copy)').forEach(node => {
+      const copyBtn = document.createElement("button");
+      copyBtn.setAttribute('type', 'button')
+      copyBtn.setAttribute('title', 'Copy to Clipboard')
+      copyBtn.classList.add('copy-clipboard-btn');
+
+      const snackbar = document.createElement("div");
+      snackbar.innerText = 'Copied!';
+      snackbar.classList.add('snackbar');
+
+      node.classList.add('--copy');
+      node.appendChild(copyBtn);
+      node.appendChild(snackbar);
+      copyBtn.addEventListener("click", () => {
+        if (navigator.clipboard) {
+           const text = node.querySelector('code').innerText;
+           navigator.clipboard.writeText(text);
+
+           // show snackbar
+           const snackbar = document.querySelector(".snackbar");
+           snackbar.classList.add("visible");
+           setTimeout(() => {
+             snackbar.classList.remove("visible");
+           }, 3000);
+        }
+      })
+    })
+</script>
+

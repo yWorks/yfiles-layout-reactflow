@@ -3,15 +3,20 @@ title: Balloon Layout
 section: 8
 tags: []
 ---
+import Playground from '../../components/Playground.astro'
 import TypeLink from '../../components/TypeLink.astro'
 
-#  Balloon Layout
+# Balloon Layout
 
 The *balloon layout algorithm* is designed to arrange directed and undirected tree graphs.
 Subtrees rooted at a node are placed in a radial fashion around their root node. All direct children of
 one node can be placed on a common circle around their parent node (depending on the alignment policy).
 Therefore, subtrees look like balloons or stars, especially if subtrees have similar sizes.
 The edges of the tree are drawn as straight lines.
+
+<div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', margin: '40px 0'}}>
+  <img src={`${import.meta.env.BASE_URL}/balloon-layout.png`} style={{maxWidth: "80%", objectFit: "cover"}} alt="Balloon layout"></img>
+</div>
 
 The balloon layout algorithm provides extensive customization options through a wide array of properties accessible
 via the `BalloonLayoutOptions`. Fundamental options include minimum node distances, children ordering, compactness, and others.
@@ -20,6 +25,8 @@ placed in a ray-like manner.
 
 Additional customization for individual graph elements, such as `edgeLabelPreferredPlacement`, `nodeHalos`, and more, can be achieved via
 the `BalloonLayoutDataProvider`.
+
+Feel free to play around with the hierarchic layout configuration in our [online playground](#my-playground).
 
 Extensive documentation detailing all available properties of the balloon layout supported by *yFiles layouts for React Flow* can be
 found [here](https://docs.yworks.com/yfileshtml/#/api/BalloonLayout).
@@ -88,3 +95,1682 @@ For more information, see [BalloonLayoutData](https://docs.yworks.com/yfileshtml
 | <div id="nodehalos">nodeHalos?</div> |  Provides halos for nodes, i.e., a rectangular area around a specific node considered during the layout. | `(node: TNodeData) => `<TypeLink type="NodeHalo"/> |
 | <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | `(node: TNodeData) => any` |
 | <div id="outedgecomparer">outEdgeComparer?</div> |  Provides an order for the given edges in which the edges are arranged at a node. | `(edge1: TEdgeData,  edge2: TEdgeData) => number` |
+
+
+## Playground
+
+<Playground
+  code={`// edge type that supports bends
+const edgeTypes = {
+  default: PolylineEdge
+}
+// node type that supports multiple handles
+const nodeTypes = {
+  default: MultiHandleNode
+}
+
+  // initialize data
+  const initialNodes = data.nodes
+  const initialEdges = data.edges
+
+  const layoutOptions: BalloonLayoutOptions = {
+    integratedEdgeLabeling: true,
+    integratedNodeLabeling: true
+  }
+
+  const layoutData: BalloonLayoutDataProvider<NodeProps, EdgeProps> = {
+    outEdgeComparer: (edge1, edge2) => parseInt(edge1?.target) - parseInt(edge2?.target)
+  }
+
+  function LayoutFlow() {
+    const [nodes, , onNodesChange] = useNodesState(initialNodes)
+    const [edges, , onEdgesChange] = useEdgesState(initialEdges)
+
+    const { runLayout } = useLayout()
+
+    useNodesMeasuredEffect(() =>
+      runLayout({
+        name: "BalloonLayout",
+        layoutOptions,
+        layoutData
+      })
+    )
+
+    return (
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        minZoom={0.1}
+      ></ReactFlow>
+    )
+  }
+
+  function App() {
+    return (
+      <ReactFlowProvider>
+        <LayoutFlow></LayoutFlow>
+      </ReactFlowProvider>
+    )
+  }
+`}
+  data={`{
+  "nodes": [
+    {
+      "id": "0",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 0",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "1",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 1",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "2",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 2",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "3",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 3",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "4",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 4",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "5",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 5",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "6",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 6",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "7",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 7",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "8",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 8",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "9",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 9",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "10",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 10",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "11",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 11",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "12",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 12",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "13",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 13",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "14",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 14",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "15",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 15",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "16",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 16",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "17",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 17",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "18",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 18",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "19",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 19",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "20",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 20",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "21",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 21",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "22",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 22",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "23",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 23",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "24",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 24",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "25",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 25",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "26",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 26",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "27",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 27",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "28",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 28",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "29",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 29",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "30",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 30",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "31",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 31",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "32",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 32",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "33",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 33",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "34",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 34",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "35",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 35",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "36",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 36",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "37",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 37",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "38",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 38",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "39",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 39",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "40",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 40",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "41",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 41",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "42",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 42",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "43",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 43",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "44",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 44",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "45",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 45",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "46",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 46",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "47",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 47",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "48",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 48",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "49",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 49",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "50",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 50",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "51",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 51",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "52",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 52",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "53",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 53",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "54",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 54",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "55",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 55",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "56",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 56",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "57",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 57",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "58",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 58",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "59",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 59",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "60",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 60",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "61",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 61",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "62",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 62",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "63",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 63",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "64",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 64",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "65",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 65",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "66",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 66",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "67",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 67",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "68",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 68",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "69",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 69",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "70",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 70",
+        "className": "node-label"
+      },
+      "className": "node"
+    },
+    {
+      "id": "71",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 71",
+        "className": "node-label"
+      },
+      "className": "node"
+    }
+  ],
+  "edges": [
+    {
+      "id": "0",
+      "source": "0",
+      "target": "1",
+      "label": {
+        "label": "0 → 1",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "1",
+      "source": "0",
+      "target": "2",
+      "label": {
+        "label": "0 → 2",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "2",
+      "source": "0",
+      "target": "3",
+      "label": {
+        "label": "0 → 3",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "3",
+      "source": "0",
+      "target": "4",
+      "label": {
+        "label": "0 → 4",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "4",
+      "source": "0",
+      "target": "5",
+      "label": {
+        "label": "0 → 5",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "5",
+      "source": "0",
+      "target": "6",
+      "label": {
+        "label": "0 → 6",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "6",
+      "source": "6",
+      "target": "7",
+      "label": {
+        "label": "6 → 7",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "7",
+      "source": "6",
+      "target": "8",
+      "label": {
+        "label": "6 → 8",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "8",
+      "source": "6",
+      "target": "9",
+      "label": {
+        "label": "6 → 9",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "9",
+      "source": "9",
+      "target": "10",
+      "label": {
+        "label": "9 → 10",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "10",
+      "source": "9",
+      "target": "11",
+      "label": {
+        "label": "9 → 11",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "11",
+      "source": "9",
+      "target": "12",
+      "label": {
+        "label": "9 → 12",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "12",
+      "source": "8",
+      "target": "13",
+      "label": {
+        "label": "8 → 13",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "13",
+      "source": "8",
+      "target": "14",
+      "label": {
+        "label": "8 → 14",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "14",
+      "source": "8",
+      "target": "15",
+      "label": {
+        "label": "8 → 15",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "15",
+      "source": "7",
+      "target": "16",
+      "label": {
+        "label": "7 → 16",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "16",
+      "source": "7",
+      "target": "17",
+      "label": {
+        "label": "7 → 17",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "17",
+      "source": "7",
+      "target": "18",
+      "label": {
+        "label": "7 → 18",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "18",
+      "source": "5",
+      "target": "19",
+      "label": {
+        "label": "5 → 19",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "19",
+      "source": "5",
+      "target": "20",
+      "label": {
+        "label": "5 → 20",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "20",
+      "source": "4",
+      "target": "21",
+      "label": {
+        "label": "4 → 21",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "21",
+      "source": "21",
+      "target": "22",
+      "label": {
+        "label": "21 → 22",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "22",
+      "source": "21",
+      "target": "23",
+      "label": {
+        "label": "21 → 23",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "23",
+      "source": "21",
+      "target": "24",
+      "label": {
+        "label": "21 → 24",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "24",
+      "source": "24",
+      "target": "25",
+      "label": {
+        "label": "24 → 25",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "25",
+      "source": "24",
+      "target": "26",
+      "label": {
+        "label": "24 → 26",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "26",
+      "source": "24",
+      "target": "27",
+      "label": {
+        "label": "24 → 27",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "27",
+      "source": "24",
+      "target": "28",
+      "label": {
+        "label": "24 → 28",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "28",
+      "source": "24",
+      "target": "29",
+      "label": {
+        "label": "24 → 29",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "29",
+      "source": "24",
+      "target": "30",
+      "label": {
+        "label": "24 → 30",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "30",
+      "source": "24",
+      "target": "31",
+      "label": {
+        "label": "24 → 31",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "31",
+      "source": "24",
+      "target": "32",
+      "label": {
+        "label": "24 → 32",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "32",
+      "source": "24",
+      "target": "33",
+      "label": {
+        "label": "24 → 33",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "33",
+      "source": "24",
+      "target": "34",
+      "label": {
+        "label": "24 → 34",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "34",
+      "source": "24",
+      "target": "35",
+      "label": {
+        "label": "24 → 35",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "35",
+      "source": "24",
+      "target": "36",
+      "label": {
+        "label": "24 → 36",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "36",
+      "source": "24",
+      "target": "37",
+      "label": {
+        "label": "24 → 37",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "37",
+      "source": "23",
+      "target": "38",
+      "label": {
+        "label": "23 → 38",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "38",
+      "source": "23",
+      "target": "39",
+      "label": {
+        "label": "23 → 39",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "39",
+      "source": "23",
+      "target": "40",
+      "label": {
+        "label": "23 → 40",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "40",
+      "source": "23",
+      "target": "41",
+      "label": {
+        "label": "23 → 41",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "41",
+      "source": "23",
+      "target": "42",
+      "label": {
+        "label": "23 → 42",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "42",
+      "source": "22",
+      "target": "43",
+      "label": {
+        "label": "22 → 43",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "43",
+      "source": "22",
+      "target": "44",
+      "label": {
+        "label": "22 → 44",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "44",
+      "source": "22",
+      "target": "45",
+      "label": {
+        "label": "22 → 45",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "45",
+      "source": "22",
+      "target": "46",
+      "label": {
+        "label": "22 → 46",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "46",
+      "source": "22",
+      "target": "47",
+      "label": {
+        "label": "22 → 47",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "47",
+      "source": "22",
+      "target": "48",
+      "label": {
+        "label": "22 → 48",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "48",
+      "source": "3",
+      "target": "49",
+      "label": {
+        "label": "3 → 49",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "49",
+      "source": "3",
+      "target": "50",
+      "label": {
+        "label": "3 → 50",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "50",
+      "source": "50",
+      "target": "51",
+      "label": {
+        "label": "50 → 51",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "51",
+      "source": "50",
+      "target": "52",
+      "label": {
+        "label": "50 → 52",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "52",
+      "source": "49",
+      "target": "53",
+      "label": {
+        "label": "49 → 53",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "53",
+      "source": "49",
+      "target": "54",
+      "label": {
+        "label": "49 → 54",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "54",
+      "source": "2",
+      "target": "55",
+      "label": {
+        "label": "2 → 55",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "55",
+      "source": "2",
+      "target": "56",
+      "label": {
+        "label": "2 → 56",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "56",
+      "source": "2",
+      "target": "57",
+      "label": {
+        "label": "2 → 57",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "57",
+      "source": "2",
+      "target": "58",
+      "label": {
+        "label": "2 → 58",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "58",
+      "source": "2",
+      "target": "59",
+      "label": {
+        "label": "2 → 59",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "59",
+      "source": "58",
+      "target": "60",
+      "label": {
+        "label": "58 → 60",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "60",
+      "source": "58",
+      "target": "61",
+      "label": {
+        "label": "58 → 61",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "61",
+      "source": "57",
+      "target": "62",
+      "label": {
+        "label": "57 → 62",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "62",
+      "source": "62",
+      "target": "63",
+      "label": {
+        "label": "62 → 63",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "63",
+      "source": "62",
+      "target": "64",
+      "label": {
+        "label": "62 → 64",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "64",
+      "source": "55",
+      "target": "65",
+      "label": {
+        "label": "55 → 65",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "65",
+      "source": "55",
+      "target": "66",
+      "label": {
+        "label": "55 → 66",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "66",
+      "source": "66",
+      "target": "67",
+      "label": {
+        "label": "66 → 67",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "67",
+      "source": "66",
+      "target": "68",
+      "label": {
+        "label": "66 → 68",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "68",
+      "source": "65",
+      "target": "69",
+      "label": {
+        "label": "65 → 69",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "69",
+      "source": "1",
+      "target": "70",
+      "label": {
+        "label": "1 → 70",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    },
+    {
+      "id": "70",
+      "source": "1",
+      "target": "71",
+      "label": {
+        "label": "1 → 71",
+        "className": "edge-label"
+      },
+      "className": "edge"
+    }
+  ]
+}
+`}
+  css={`
+.node {
+    padding: 20px;
+    color: #324820;
+    background-color: #76b041;
+    border-color: #2f461a;
+    border-radius: 50%;
+    width: 30px;
+}
+
+.node-label {
+    padding: 4px;
+    border-radius: 5px;
+    font-size: 10px;
+    background-color: #c8dfb3;
+    color: #2f461a;
+}
+
+.edge-label {
+    padding: 4px;
+    border-radius: 5px;
+    font-size: 10px;
+    background-color: #acb5a3;
+    color: #2f461a;
+}
+
+.react-flow__edge-path {
+    stroke: #ffffff;
+    stroke-width: 2;
+}
+
+.react-flow__handle {
+    visibility: hidden;
+}
+`}
+/>

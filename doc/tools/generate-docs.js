@@ -53,14 +53,19 @@ export function generateDocs(componentName, config) {
   function returnsJSXElement(functionMember) {
     const tokenRange = getExcerptTokens(functionMember, functionMember.returnTypeTokenRange)
     return tokenRange.some(
-      token => token.canonicalReference === '@types/react!JSX.Element:interface'
+      token =>
+        token.canonicalReference === '@types/react!JSX.Element:interface' ||
+        token.canonicalReference === '@types/react!React.ReactElement:interface'
     )
   }
 
   function isHOCFunction(member) {
     const tokenRange = getExcerptTokens(member, member.variableTypeTokenRange)
     return (
-      tokenRange[tokenRange.length - 1].canonicalReference === '@types/react!JSX.Element:interface'
+      tokenRange[tokenRange.length - 1].canonicalReference ===
+        '@types/react!JSX.Element:interface' ||
+      tokenRange[tokenRange.length - 1].canonicalReference ===
+        '@types/react!React.ReactElement:interface'
     )
   }
 
@@ -106,6 +111,8 @@ export function generateDocs(componentName, config) {
 
     // all exported interfaces that are not component props
     const interfaces = allMembers.filter(member => member.kind === 'Interface')
+    // all exported classes
+    const classes = allMembers.filter(member => member.kind === 'Class')
     // all exported types
     const types = allMembers.filter(member => member.kind === 'TypeAlias')
     const hooks = allMembers.filter(
@@ -131,9 +138,10 @@ export function generateDocs(componentName, config) {
       }
       if (
         interfaces.find(member => member.name === memberName) ||
+        classes.find(member => member.name === memberName) ||
         types.find(member => member.name === memberName)
       ) {
-        return resolvePath([interfaces, types], origin, linkText, 'types')
+        return resolvePath([interfaces, classes, types], origin, linkText, 'types')
       }
       if (hooks.find(member => member.name === memberName)) {
         return resolvePath([hooks], origin, linkText, 'hooks')
@@ -272,8 +280,11 @@ export function generateDocs(componentName, config) {
         const typeString = excerptTokensToString(typeTokens, origin, refMap)
         return `${param.parameterName}: ${typeString}`
       })
-      const returnTypeTokens = getExcerptTokens(member, member.returnTypeTokenRange)
-      const returnTypeString = excerptTokensToString(returnTypeTokens, origin, refMap)
+      let returnTypeString = 'void'
+      if (member.returnTypeTokenRange) {
+        const returnTypeTokens = getExcerptTokens(member, member.returnTypeTokenRange)
+        returnTypeString = excerptTokensToString(returnTypeTokens, origin, refMap)
+      }
       const paramsString = `${parameters.join(', ')}`
       const methodTypeString = prettifyType(`(${paramsString}) => ${returnTypeString}`, refMap)
       return `<pre>${methodTypeString}</pre>`
@@ -287,6 +298,8 @@ export function generateDocs(componentName, config) {
         case 'PropertySignature':
           return getPropertyType(member, origin)
         case 'MethodSignature':
+        case 'Method':
+        case 'Constructor':
           return getMethodType(member, origin)
         default:
           return 'unknown'
@@ -328,6 +341,109 @@ export function generateDocs(componentName, config) {
       return ''
     }
 
+    function getReferenceTokens(tokens) {
+      // filter generic parameter types
+      const filteredTokens = []
+      let ignore = false
+      tokens.forEach(token => {
+        if (!ignore && token.kind === 'Reference') {
+          filteredTokens.push(token)
+        } else if (token.kind === 'Content' && token.text === '<') {
+          if (token.text === '<') {
+            ignore = true
+          } else if (token.text === '>') {
+            ignore = false
+          }
+        }
+      })
+      return filteredTokens
+    }
+
+    function getExtendsString(type) {
+      let extendsString = ''
+      if (type.extendsTokenRanges && type.extendsTokenRanges.length) {
+        extendsString += ' extends '
+        const tokensList = type.extendsTokenRanges.map(tokenRange =>
+          getExcerptTokens(type, tokenRange)
+        )
+
+        extendsString += tokensList
+          .map(tokens => {
+            return tokens
+              .map(token => {
+                const text = token.text
+                if (token.kind === 'Reference') {
+                  const member = allMembers.find(member => {
+                    return member.name === token.text
+                  })
+                  if (typeof member !== 'undefined') {
+                    const typeUrl = getMemberUrl(text, type.name)
+                    return `<a href="${typeUrl}">${text}</a>`
+                  } else {
+                    console.warn(
+                      `Warning: Base type ${token.text} of ${type.name} could not be resolved! Maybe you're missing an export.`
+                    )
+                  }
+                }
+
+                return text
+              })
+              .join('')
+          })
+          .join(', ')
+      }
+      return extendsString
+    }
+
+    function getBaseTypesRecursively(type) {
+      const baseTypes = new Set()
+      if (type.extendsTokenRanges && type.extendsTokenRanges.length) {
+        type.extendsTokenRanges
+          .map(tokenRange => getExcerptTokens(type, tokenRange))
+          .flatMap(tokens => getReferenceTokens(tokens))
+          .map(token =>
+            allMembers.find(member => {
+              return member.name === token.text
+            })
+          )
+          .filter(baseType => typeof baseType !== 'undefined')
+          .forEach(baseType => {
+            baseTypes.add(baseType)
+            getBaseTypesRecursively(baseType).forEach(baseTypeRec => {
+              baseTypes.add(baseTypeRec)
+            })
+          })
+      }
+      return [...baseTypes]
+    }
+
+    function getMembersTable(type, componentName) {
+      const baseTypesRec = getBaseTypesRecursively(type)
+      const baseTypeMembers = baseTypesRec.flatMap(baseType =>
+        baseType.members.map(member => ({ ...member, definedIn: baseType.name }))
+      )
+
+      const members = [...type.members, ...baseTypeMembers].sort((m1, m2) =>
+        m1.name.localeCompare(m2.name)
+      )
+
+      return members
+        .map(member => {
+          const definedIn = member.definedIn
+            ? `<p>Defined in <a href="${getMemberUrl(member.definedIn, componentName ?? type)}">${member.definedIn}</a></p>`
+            : ''
+
+          return `| <div id="${member.name.toLowerCase()}">${member.name}${
+            member.isOptional ? '?' : ''
+          }</div> | ${processDocComment(
+            member.docComment,
+            componentName ?? type.name,
+            true
+          )}${definedIn} | ${getTypeString(member, componentName ?? type.name)} |`
+        })
+        .join('\n')
+    }
+
     const reactComponentPropTypes = reactComponents.reduce((map, component) => {
       const propsParameter = component.parameters[0]
       const typeTokens = getExcerptTokens(component, propsParameter.parameterTypeTokenRange).filter(
@@ -343,6 +459,12 @@ export function generateDocs(componentName, config) {
     const propsHeader = `| Name | Description | Type |
 |---|---|---|`
 
+    const constructorsHeader = `| Description | Type |
+|---|---|`
+
+    const methodsHeader = `| Name | Description | Type |
+|---|---|---|`
+
     const parametersHeader = `| Name | Description | Type |
 |---|---|---|`
 
@@ -355,20 +477,8 @@ export function generateDocs(componentName, config) {
     // process react components
     reactComponents.forEach(component => {
       const componentPropsTypes = reactComponentPropTypes.get(component.name)
-      const propsMembersTable =
-        componentPropsTypes.length > 0 &&
-        componentPropsTypes[0].members
-          ?.map(
-            member =>
-              `| <div id="${member.name.toLowerCase()}">${member.name}${
-                member.isOptional ? '?' : ''
-              }</div> | ${processDocComment(
-                member.docComment,
-                component.name,
-                true
-              )} | ${getTypeString(member, component.name)} |`
-          )
-          .join('\n')
+      const propsMembersTable = componentPropsTypes.length > 0 && getMembersTable(componentPropsTypes[0], component.name)
+      const propsLink = componentPropsTypes.length > 0 && getMemberUrl(componentPropsTypes[0].name, component.name)
 
       let markdown = `---
 title: ${component.name}
@@ -381,6 +491,7 @@ ${processDocComment(component.docComment, component.name)}`
       if (propsMembersTable) {
         markdown += `
 ### Props
+<a href="${propsLink}">${componentPropsTypes[0].name}</a>
 
 <div class="table-container">
 
@@ -408,24 +519,15 @@ ${processDocComment(component.docComment, component.name)}`
 
     // process interfaces
     interfaces.forEach(interfaceType => {
-      const membersTable = interfaceType.members
-        .map(
-          member =>
-            `| <div id="${member.name.toLowerCase()}">${member.name}${
-              member.isOptional ? '?' : ''
-            }</div> | ${processDocComment(
-              member.docComment,
-              interfaceType.name,
-              true
-            )} | ${getTypeString(member, interfaceType.name)} |`
-        )
-        .join('\n')
+      const extendsString = getExtendsString(interfaceType)
+
+      const membersTable = getMembersTable(interfaceType)
 
       const markdown = `---
 title: ${interfaceType.name}
 tags: ['TODO']
 ---
-## ${interfaceType.name}${getTypeParametersString(interfaceType, interfaceType.name)}
+## ${interfaceType.name}${getTypeParametersString(interfaceType, interfaceType.name)}${extendsString}
 
 ${processDocComment(interfaceType.docComment, interfaceType.name)}
 
@@ -436,6 +538,53 @@ ${membersTable}
     `
 
       writeFile(`./src/content/types/${interfaceType.name}.md`, markdown)
+    })
+
+    // process classes
+    classes.forEach(classType => {
+      const constructorsTable = classType.members
+        .filter(member => member.kind === 'Constructor')
+        .map(
+          member =>
+            `| ${processDocComment(
+              member.docComment,
+              classType.name,
+              true
+            )} | ${getTypeString(member, classType.name)} |`
+        )
+        .join('\n')
+      const methodsTable = classType.members
+        .filter(member => member.kind === 'Method')
+        .map(
+          member =>
+            `| <div id="${member.name.toLowerCase()}">${member.name}${
+              member.isOptional ? '?' : ''
+            }</div> | ${processDocComment(
+              member.docComment,
+              classType.name,
+              true
+            )} | ${getTypeString(member, classType.name)} |`
+        )
+        .join('\n')
+
+      const markdown = `---
+title: ${classType.name}
+tags: ['TODO']
+---
+## ${classType.name}${getTypeParametersString(classType, classType.name)}
+
+${processDocComment(classType.docComment, classType.name)}
+
+### Constructors
+${constructorsHeader}
+${constructorsTable}
+
+### Methods
+${methodsHeader}
+${methodsTable}
+`
+
+      writeFile(`./src/content/types/${classType.name}.md`, markdown)
     })
 
     // process type aliases

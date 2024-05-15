@@ -1,5 +1,6 @@
 import { RefObject, useCallback, useEffect, useMemo, useState } from 'react'
 import {
+  DefaultGraph,
   FreeEdgeLabelModel,
   FreeNodeLabelModel,
   GraphBuilder,
@@ -199,7 +200,9 @@ export function useLayout<
   return {
     runLayout: useCallback(
       (configuration: LayoutConfiguration | LayoutName) => {
-        checkLicense()
+        if (!checkLicense()) {
+          return
+        }
 
         setRunning(true)
         const graph = buildGraph(getNodes(), getEdges(), getZoom(), context?.reactFlowRef)
@@ -399,7 +402,9 @@ function buildGraph(
   zoom: number,
   reactFlowRef?: RefObject<HTMLDivElement>
 ): IGraph {
-  checkLicense()
+  if (!checkLicense()) {
+    return new DefaultGraph()
+  }
 
   const builder = new GraphBuilder()
   const nodesSource = builder.createNodesSource({
@@ -518,7 +523,9 @@ function buildGraph(
 }
 
 function transferLayout(graph: IGraph): { arrangedNodes: Node[]; arrangedEdges: Edge[] } {
-  checkLicense()
+  if (!checkLicense()) {
+    return { arrangedNodes: [], arrangedEdges: []}
+  }
 
   const nodeOffsets = new Map()
 

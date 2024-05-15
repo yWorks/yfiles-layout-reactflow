@@ -1,6 +1,6 @@
 {
   "name": "@yworks/yfiles-layout-reactflow-root",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "license": "SEE LICENSE IN ./LICENSE",

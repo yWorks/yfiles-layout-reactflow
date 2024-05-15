@@ -18,6 +18,12 @@ With *yFiles Layout Algorithms for React Flow*, developers can use the advanced
 graph layout algorithms and customization options provided by [yFiles for HTML](https://www.yworks.com/products/yfiles)
 within their React Flow projects, enabling precise control over the arrangement and appearance of nodes and edges.
 
+<div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', margin: '40px 0'}}>
+  <img src={`${import.meta.env.BASE_URL}/hierarchic-layout.png`} style={{maxWidth: "560px", objectFit: "cover"}} alt="swimlanes and tables"></img>
+  <img src={`${import.meta.env.BASE_URL}/generic-labeling.png`} style={{maxWidth: "560px", objectFit: "cover"}} alt="edge-bundling"></img>
+  <img src={`${import.meta.env.BASE_URL}/organic-layout.png`} style={{maxWidth: "560px", objectFit: "cover"}} alt="heat map"></img>
+</div>
+
 Refer to the [Getting Started](gettingstarted) section to
 learn how to effortlessly integrate advanced layouts in your React Flow application.
 
@@ -31,47 +37,53 @@ const nodeTypes = {
   default: MultiHandleNode
 }
 
-// initialize data
-const initialNodes = data.nodes
-const initialEdges = data.edges
+  // initialize data
+  const initialNodes = data.nodes
+  const initialEdges = data.edges
 
-function LayoutFlow() {
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  function LayoutFlow() {
+    const [nodes, , onNodesChange] = useNodesState(initialNodes)
+    const [edges, , onEdgesChange] = useEdgesState(initialEdges)
 
-  // call the useLayout-hook to get the function that invokes the layout
-  const { runLayout } = useLayout()
+    // call the useLayout-hook to get the function that invokes the layout
+    const { runLayout } = useLayout()
 
-  const handleAlgorithmChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    // Run the selected layout with a given configuration.
-    // Play around with the options and observe how the layout changes.
-    const selectedAlgorithm = event.target.value
-    runLayout({ name: selectedAlgorithm as LayoutName, layoutOptions: layoutOptionsByAlgorithm[selectedAlgorithm]})
-  }
+    const handleAlgorithmChange = (
+      event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+      // Run the selected layout with a given configuration.
+      // Play around with the options and observe how the layout changes.
+      const selectedAlgorithm = event.target.value;
+      runLayout({
+        name: selectedAlgorithm as LayoutName,
+        layoutOptions: layoutOptionsByAlgorithm[selectedAlgorithm]
+      })
+    }
 
-  /**
-   *  Run the initial layout after the nodes have been measured.
-   */
-  useNodesMeasuredEffect(() => {
-    runLayout({ name: 'HierarchicLayout', layoutOptions: layoutOptionsByAlgorithm['HierarchicLayout'] })
-  })
+    /**
+     *  Run the initial layout after the nodes have been measured.
+     */
+    useNodesMeasuredEffect(() => {
+      runLayout({
+        name: "HierarchicLayout",
+        layoutOptions: layoutOptionsByAlgorithm["HierarchicLayout"]
+      })
+    })
 
-  // a React Flow with a combobox with different layout algorithms
-  return (
+    // a React Flow with a combobox with different layout algorithms
+    return (
       <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          nodeTypes={nodeTypes}
-          edgeTypes={edgeTypes}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        minZoom={0.1}
       >
         <Panel position="top-left">
           <label htmlFor="algorithm">Select an Algorithm: </label>
-          <select
-            id="algorithm"
-            onChange={handleAlgorithmChange}
-          >
+          <select id="algorithm" onChange={handleAlgorithmChange}>
             <option value="HierarchicLayout">Hierarchic</option>
             <option value="OrthogonalLayout">Orthogonal</option>
             <option value="RadialLayout">Radial</option>
@@ -79,206 +91,580 @@ function LayoutFlow() {
             <option value="OrganicLayout">Organic</option>
             <option value="TreeLayout">Tree</option>
             <option value="BalloonLayout">Balloon</option>
-            <option value="EdgeRouter">EdgeRouter</option>
           </select>
         </Panel>
       </ReactFlow>
-  )
-}
+    )
+  }
 
-function App() {
-  return (
-    <ReactFlowProvider>
-      <LayoutFlow></LayoutFlow>
-    </ReactFlowProvider>
-  )
-}
+  function App() {
+    return (
+      <ReactFlowProvider>
+        <LayoutFlow></LayoutFlow>
+      </ReactFlowProvider>
+    )
+  }
 
-const layoutOptionsByAlgorithm: Record<Partial<LayoutName>, LayoutAlgorithmOptions> = {
-  HierarchicLayout: {
-    orthogonalRouting: true,
-    minimumLayerDistance: 40,
-  },
-  OrthogonalLayout: {
-    gridSpacing: 10,
-  },
-  RadialLayout: {
-    centerNodesPolicy: "directed",
-    minimumLayerDistance: 50,
-  },
-  OrganicLayout: {
-    deterministic: true,
-    minimumNodeDistance: 50,
-  },
-  CircularLayout: {
-    layoutStyle: "single-cycle",
-  },
-  TreeLayout: {
-    layoutOrientation: "left-to-right",
-  },
-  GenericLabeling: {},
-  BalloonLayout: {},
-  EdgeRouter: {}
-}
+  const layoutOptionsByAlgorithm: Record<
+    Partial<LayoutName>,
+    LayoutAlgorithmOptions
+  > = {
+    HierarchicLayout: {
+      orthogonalRouting: true,
+      minimumLayerDistance: 40
+    },
+    OrthogonalLayout: {
+      gridSpacing: 10
+    },
+    RadialLayout: {
+      centerNodesPolicy: "directed"
+    },
+    OrganicLayout: {
+      deterministic: true,
+      minimumNodeDistance: 50
+    },
+    CircularLayout: {
+      partitionStyle: "organic"
+    },
+    TreeLayout: {
+      defaultNodePlacer: new yfiles.CompactNodePlacer()
+    },
+    BalloonLayout: {
+      rootNodePolicy: "center-root"
+    },
+    EdgeRouter: {},
+    GenericLabeling: {}
+  }
 `}
 data={`{
   "nodes": [
     {
+      "id": "0",
+      "data": { "label": "Node 0" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
+    },
+    {
       "id": "1",
-      "data": { "label": { "label": "CEO" } },
-      "position": { "x": 0, "y": 0 },
-      "className": "manager"
+      "data": { "label": "Node 1" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "2",
-      "data": { "label": { "label": "COO"}},
-      "position": { "x": 0, "y": 0 },
-      "className": "manager"
+      "data": { "label": "Node 2" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "3",
-      "data": { "label": { "label": "CFO"}},
-      "position": { "x": 0, "y": 0 },
-      "className": "manager"
+      "data": { "label": "Node 3" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "4",
-      "data": { "label": { "label": "CMO"}},
-      "position": { "x": 0, "y": 0 },
-      "className": "manager"
+      "data": { "label": "Node 4" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "5",
-      "data": { "label": { "label": "CTO"}},
-      "position": { "x": 0, "y": 0 },
-      "className": "manager"
+      "data": { "label": "Node 5" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "6",
-      "data": { "label": { "label": "HR Director"}},
-      "position": { "x": 0, "y": 0 },
-      "className": "director"
+      "data": { "label": "Node 6" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "7",
-      "data": { "label": { "label": "Marketing Director", "className": "wrapped-label" } },
-      "position": { "x": 0, "y": 0 },
-      "className": "director"
+      "data": { "label": "Node 7" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "8",
-      "data": { "label": { "label": "Technology Director", "className": "wrapped-label" } },
-      "position": { "x": 0, "y": 0 },
-      "className": "director"
+      "data": { "label": "Node 8" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "9",
-      "data": { "label": { "label": "Finance Director", "className": "wrapped-label" } },
-      "position": { "x": 0, "y": 0 },
-      "className": "director"
+      "data": { "label": "Node 9" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "10",
-      "data": { "label": { "label": "HR Assistant" } },
-      "position": { "x": 0, "y": 0 }
+      "data": { "label": "Node 10" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "11",
-      "data": { "label": { "label": "Recruiter" } },
-      "position": { "x": 0, "y": 0 }
+      "data": { "label": "Node 11" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "12",
-      "data": { "label": { "label": "Accountant" } },
-      "position": { "x": 0, "y": 0 }
+      "data": { "label": "Node 12" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "13",
-      "data": { "label": { "label": "Financial Analyst", "className": "wrapped-label" } },
-      "position": { "x": 0, "y": 0 }
+      "data": { "label": "Node 13" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "14",
-      "data": { "label": { "label": "Marketing Assistant", "className": "wrapped-label" } },
-      "position": { "x": 0, "y": 0 }
+      "data": { "label": "Node 14" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "15",
-      "data": { "label": { "label": "Marketing Coordinator", "className": "wrapped-label" } },
-      "position": { "x": 0, "y": 0 }
+      "data": { "label": "Node 15" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
     },
     {
       "id": "16",
-      "data": { "label": { "label": "IT Specialist" } },
-      "position": { "x": 0, "y": 0 }
+      "data": { "label": "Node 16" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
     },
     {
       "id": "17",
-      "data": { "label": { "label": "Software Engineer", "className": "wrapped-label" } },
-      "position": { "x": 0, "y": 0 }
+      "data": { "label": "Node 17" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
     },
     {
       "id": "18",
-      "data": { "label": { "label": "Legal Counsel", "className": "wrapped-label" } },
-      "position": { "x": 0, "y": 0 }
+      "data": { "label": "Node 18" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
     },
     {
       "id": "19",
-      "data": { "label": { "label": "Content Writer", "className": "wrapped-label" } },
-      "position": { "x": 0, "y": 0 }
+      "data": { "label": "Node 19" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
     },
     {
       "id": "20",
-      "data": { "label": { "label": "Designer" } },
-      "position": { "x": 0, "y": 0 }
+      "data": { "label": "Node 20" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
+    },
+    {
+      "id": "21",
+      "data": { "label": "Node 21" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
+    },
+    {
+      "id": "22",
+      "data": { "label": "Node 22" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
+    },
+    {
+      "id": "23",
+      "data": { "label": "Node 23" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
+    },
+    {
+      "id": "24",
+      "data": { "label": "Node 24" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
+    },
+    {
+      "id": "25",
+      "data": { "label": "Node 25" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
+    },
+    {
+      "id": "26",
+      "data": { "label": "Node 26" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
+    },
+    {
+      "id": "27",
+      "data": { "label": "Node 27" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
+    },
+    {
+      "id": "28",
+      "data": { "label": "Node 28" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
+    },
+    {
+      "id": "29",
+      "data": { "label": "Node 29" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "green-node"
+    },
+    {
+      "id": "30",
+      "data": { "label": "Node 30" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "31",
+      "data": { "label": "Node 31" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "32",
+      "data": { "label": "Node 32" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "33",
+      "data": { "label": "Node 33" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "34",
+      "data": { "label": "Node 34" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "35",
+      "data": { "label": "Node 35" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
+    },
+    {
+      "id": "36",
+      "data": { "label": "Node 36" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "blue-node"
+    },
+    {
+      "id": "37",
+      "data": { "label": "Node 37" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "38",
+      "data": { "label": "Node 38" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "39",
+      "data": { "label": "Node 39" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "40",
+      "data": { "label": "Node 40" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "41",
+      "data": { "label": "Node 41" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "42",
+      "data": { "label": "Node 42" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "43",
+      "data": { "label": "Node 43" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "44",
+      "data": { "label": "Node 44" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "45",
+      "data": { "label": "Node 45" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "46",
+      "data": { "label": "Node 46" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "47",
+      "data": { "label": "Node 47" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "48",
+      "data": { "label": "Node 48" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
+    },
+    {
+      "id": "49",
+      "data": { "label": "Node 49" },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node"
     }
   ],
   "edges": [
-    { "id": "e1-2", "source": "1", "target": "2" },
-    { "id": "e1-3", "source": "1", "target": "3" },
-    { "id": "e1-4", "source": "1", "target": "4" },
-    { "id": "e1-5", "source": "1", "target": "5" },
-    { "id": "e2-6", "source": "2", "target": "6" },
-    { "id": "e6-10", "source": "6", "target": "10" },
-    { "id": "e6-11", "source": "6", "target": "11" },
-    { "id": "e3-9", "source": "3", "target": "9" },
-    { "id": "e9-12", "source": "9", "target": "12" },
-    { "id": "e9-13", "source": "9", "target": "13" },
-    { "id": "e4-7", "source": "4", "target": "7" },
-    { "id": "e7-14", "source": "7", "target": "14" },
-    { "id": "e7-15", "source": "7", "target": "15" },
-    { "id": "e14-19", "source": "14", "target": "19" },
-    { "id": "e5-8", "source": "5", "target": "8" },
-    { "id": "e5-18", "source": "5", "target": "18" },
-    { "id": "e8-16", "source": "8", "target": "16" },
-    { "id": "e8-17", "source": "8", "target": "17" },
-    { "id": "e16-20", "source": "16", "target": "20" }
+    { "id": "0", "source": "1", "target": "0" },
+    { "id": "1", "source": "1", "target": "2" },
+    { "id": "2", "source": "1", "target": "3" },
+    { "id": "3", "source": "4", "target": "1" },
+    { "id": "4", "source": "1", "target": "36" },
+    { "id": "5", "source": "1", "target": "35" },
+    { "id": "6", "source": "34", "target": "35" },
+    { "id": "7", "source": "33", "target": "34" },
+    { "id": "8", "source": "33", "target": "37" },
+    { "id": "9", "source": "37", "target": "40" },
+    { "id": "10", "source": "40", "target": "42" },
+    { "id": "11", "source": "40", "target": "41" },
+    { "id": "12", "source": "32", "target": "33" },
+    { "id": "13", "source": "11", "target": "30" },
+    { "id": "14", "source": "30", "target": "31" },
+    { "id": "15", "source": "31", "target": "32" },
+    { "id": "16", "source": "32", "target": "38" },
+    { "id": "17", "source": "31", "target": "39" },
+    { "id": "18", "source": "5", "target": "4" },
+    { "id": "19", "source": "6", "target": "5" },
+    { "id": "20", "source": "34", "target": "6" },
+    { "id": "21", "source": "30", "target": "6" },
+    { "id": "22", "source": "7", "target": "8" },
+    { "id": "23", "source": "11", "target": "10" },
+    { "id": "24", "source": "10", "target": "9" },
+    { "id": "25", "source": "9", "target": "8" },
+    { "id": "26", "source": "15", "target": "7" },
+    { "id": "27", "source": "15", "target": "16" },
+    { "id": "28", "source": "16", "target": "17" },
+    { "id": "29", "source": "28", "target": "17" },
+    { "id": "30", "source": "11", "target": "28" },
+    { "id": "31", "source": "28", "target": "29" },
+    { "id": "32", "source": "12", "target": "11" },
+    { "id": "33", "source": "12", "target": "13" },
+    { "id": "34", "source": "13", "target": "14" },
+    { "id": "35", "source": "30", "target": "43" },
+    { "id": "36", "source": "43", "target": "45" },
+    { "id": "37", "source": "45", "target": "47" },
+    { "id": "38", "source": "45", "target": "48" },
+    { "id": "39", "source": "45", "target": "49" },
+    { "id": "40", "source": "33", "target": "49" },
+    { "id": "41", "source": "45", "target": "46" },
+    { "id": "42", "source": "43", "target": "44" },
+    { "id": "43", "source": "29", "target": "18" },
+    { "id": "44", "source": "18", "target": "15" },
+    { "id": "45", "source": "18", "target": "25" },
+    { "id": "46", "source": "18", "target": "22" },
+    { "id": "47", "source": "18", "target": "19" },
+    { "id": "48", "source": "19", "target": "20" },
+    { "id": "49", "source": "19", "target": "21" },
+    { "id": "50", "source": "22", "target": "23" },
+    { "id": "51", "source": "22", "target": "24" },
+    { "id": "52", "source": "25", "target": "27" },
+    { "id": "53", "source": "25", "target": "26" }
   ]
 }
 `}
-css={`
-    .react-flow__node {
-       background-color: #ff6c00;
-       width: 60px;
-       height: 30px;
-       font-size: 8px;
-       color: white;
+css={`.react-flow__node {
+    background-color: #ff6c00;
+    width: 60px;
+    height: 30px;
+    font-size: 8px;
+    color: white;
+}
+
+    .blue-node {
+        background-color: #17bebb;
     }
 
-    .manager {
-       background-color: #17bebb;
-     }
+    .green-node {
+        background-color: #76b041;
+    }
 
-     .director {
-       background-color: #76b041;
-     }
-
-     .wrapped-label {
-       white-space: normal !important;
-     }
-
-     .react-flow__handle {
-       opacity: 0;
-     }
+    .react-flow__handle {
+        opacity: 0;
+    }
 `}
 />

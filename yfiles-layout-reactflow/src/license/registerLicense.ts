@@ -32,8 +32,10 @@ export function checkLicense() {
   g.createNode()
 
   if (g.nodes.size !== 1) {
-    throw new Error(
+    console.error(
       'yFiles Layout Algorithms for React Flow requires a valid yFiles for HTML license. You can evaluate yFiles for 60 days free of charge on my.yworks.com.'
     )
+    return false
   }
+  return true
 }

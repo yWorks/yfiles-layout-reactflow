@@ -3,13 +3,17 @@ title: Circular Layout
 section: 4
 tags: []
 ---
-
+import Playground from '../../components/Playground.astro'
 import TypeLink from '../../components/TypeLink.astro'
 
 #  Circular Layout
 
 The *circular layout algorithm* is designed to arrange nodes in a circular fashion, providing a clear visual representation
 of relationships within the graph.
+
+<div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', margin: '40px 0'}}>
+  <img src={`${import.meta.env.BASE_URL}/circular-layout.png`} style={{maxWidth: "80%", objectFit: "cover"}} alt="Circlar layout"></img>
+</div>
 
 The circular layout algorithm provides extensive customization options through a wide array of properties accessible
 via the `CircularLayoutOptions`. Fundamental options include various layout styles including separate graph partitions,
@@ -19,6 +23,8 @@ placed in a ray-like manner.
 
 Additional customization for individual graph elements, such as `nodeTypes`, `nodeHalos`, and more, can be achieved via
 the `CircularLayoutDataProvider`.
+
+Feel free to play around with the hierarchic layout configuration in our [online playground](#my-playground).
 
 Extensive documentation detailing all available properties of the circular layout supported by *yFiles layouts for React Flow* can be
 found [here](https://docs.yworks.com/yfileshtml/#/api/CircularLayout).
@@ -81,3 +87,283 @@ For more information, see [CircularLayoutData](https://docs.yworks.com/yfileshtm
 | <div id="edgedirectedness">edgeDirectedness?</div> |  Provides 0, 1, or -1 for each edge to indicate if it is undirected, in layout direction, or against layout direction. | `(edge: TEdgeData) => number` |
 | <div id="nodehalos">nodeHalos?</div> |  Provides halos for nodes, i.e., a rectangular area around a specific node considered during the layout. | `(node: TNodeData) => `<TypeLink type="NodeHalo"/> |
 | <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | `(node: TNodeData) => any` |
+
+
+## Playground
+
+<Playground
+  code={`// edge type that supports bends
+const edgeTypes = {
+  default: PolylineEdge
+};
+// node type that supports multiple handles
+const nodeTypes = {
+  default: MultiHandleNode
+};
+
+  // initialize data
+  const initialNodes = data.nodes
+  const initialEdges = data.edges
+
+  const layoutOptions: CircularLayoutOptions = {
+    integratedNodeLabeling: true
+  };
+
+  function LayoutFlow() {
+    const [nodes, , onNodesChange] = useNodesState(initialNodes)
+    const [edges, , onEdgesChange] = useEdgesState(initialEdges)
+
+    const { runLayout } = useLayout()
+
+    useNodesMeasuredEffect(() =>
+      runLayout({
+        name: "CircularLayout",
+        layoutOptions
+      }),
+    );
+
+    return (
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+      ></ReactFlow>
+    );
+  }
+
+  function App() {
+    return (
+      <ReactFlowProvider>
+        <LayoutFlow></LayoutFlow>
+      </ReactFlowProvider>
+    );
+  }
+`}
+  data={`{
+  "nodes": [
+    {
+      "id": "0",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 0", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "1",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 1", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "2",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 2", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "3",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 3", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "4",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 4", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "5",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 5", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "6",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 6", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "7",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 7", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "8",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 8", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "9",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 9", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "10",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 10", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "11",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 11", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "12",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 12", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "13",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 13", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "14",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 14", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "15",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 15", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "16",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 16", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "17",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 17", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "18",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 18", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "19",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 19", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "20",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 20", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "21",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 21", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "22",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 22", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "23",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 23", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "24",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 24", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "25",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 25", "className": "node-label" },
+      "className": "node"
+    },
+    {
+      "id": "26",
+      "position": { "x": 0, "y": 0 },
+      "data": { "label": "Node 26", "className": "node-label" },
+      "className": "node"
+    }
+  ],
+  "edges": [
+    { "id": "0", "source": "1", "target": "0" },
+    { "id": "1", "source": "0", "target": "3" },
+    { "id": "2", "source": "3", "target": "4" },
+    { "id": "3", "source": "2", "target": "1" },
+    { "id": "4", "source": "7", "target": "8" },
+    { "id": "5", "source": "7", "target": "5" },
+    { "id": "6", "source": "9", "target": "10" },
+    { "id": "7", "source": "9", "target": "11" },
+    { "id": "8", "source": "11", "target": "13" },
+    { "id": "9", "source": "10", "target": "12" },
+    { "id": "10", "source": "5", "target": "6" },
+    { "id": "11", "source": "2", "target": "14" },
+    { "id": "12", "source": "14", "target": "16" },
+    { "id": "13", "source": "16", "target": "15" },
+    { "id": "14", "source": "17", "target": "9" },
+    { "id": "15", "source": "9", "target": "18" },
+    { "id": "16", "source": "16", "target": "19" },
+    { "id": "17", "source": "16", "target": "20" },
+    { "id": "18", "source": "16", "target": "21" },
+    { "id": "19", "source": "16", "target": "22" },
+    { "id": "20", "source": "16", "target": "23" },
+    { "id": "21", "source": "16", "target": "24" },
+    { "id": "22", "source": "4", "target": "2" },
+    { "id": "23", "source": "3", "target": "9" },
+    { "id": "24", "source": "1", "target": "7" },
+    { "id": "25", "source": "0", "target": "25" },
+    { "id": "26", "source": "0", "target": "26" },
+    { "id": "27", "source": "4", "target": "0" },
+    { "id": "28", "source": "1", "target": "4" }
+  ]
+}
+`}
+  css={`.node {
+    padding: 20px;
+    color: #324820;
+    background-color: #76b041;
+    border-color: #2f461a;
+    border-radius: 50%;
+    width: 30px;
+  }
+
+  .node-label {
+    padding: 4px;
+    border-radius: 5px;
+    font-size: 10px;
+    background-color: #c8dfb3;
+    color: #2f461a;
+  }
+
+  .react-flow__edge-path {
+    stroke: #ffffff;
+    stroke-width: 2;
+  }
+
+  .react-flow__handle {
+    visibility: hidden;
+  }
+`}
+/>

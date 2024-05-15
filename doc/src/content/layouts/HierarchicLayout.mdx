@@ -3,14 +3,19 @@ title: Hierarchic Layout
 section: 1
 tags: []
 ---
+import Playground from '../../components/Playground.astro'
 import TypeLink from '../../components/TypeLink.astro'
 
-#  Hierarchic Layout
+# Hierarchic Layout
 
 The *hierarchic layout algorithm* arranges graphs in a hierarchic fashion. It aims to highlight the main direction 
 or flow within a directed graph. The nodes of a graph are placed in hierarchically arranged layers such that 
 the (majority of) edges of the graph show the same overall orientation, for example, top-to-bottom. Additionally, 
 the ordering of the nodes within each layer is chosen in such a way that the number of edge crossings is small.
+
+<div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', margin: '40px 0'}}>
+  <img src={`${import.meta.env.BASE_URL}/hierarchic-layout.png`} style={{maxWidth: "80%", objectFit: "cover"}} alt="Hierachic layout with groups"></img>
+</div>
 
 The hierarchical layout algorithm offers extensive customization options through a wide array of properties accessible
 via `HierarchicLayoutOptions`. Fundamental options include layout orientation, orthogonal edge routing, layer distance, and others.
@@ -19,6 +24,8 @@ corresponding properties are activated.
 
 Additional customization for individual graph elements, such as `sourcePortCandidates`, `nodeHalos`, and more, can be achieved via
 the `HierarchicLayoutDataProvider`.
+
+Feel free to play around with the hierarchic layout configuration in our [online playground](#my-playground).
 
 Extensive documentation detailing all available properties of the hierarchic layout supported by *yFiles layouts for React Flow* can be
 found [here](https://docs.yworks.com/yfileshtml/#/dguide/hierarchical_layout#hierarchical_layout).
@@ -96,3 +103,406 @@ For more information, see [HierarchicLayoutData](https://docs.yworks.com/yfilesh
 | <div id="sourceportcandidates">sourcePortCandidates?</div> | Provides the directions in which an edge can leave its source node. | `(edge: TEdgeData) => (keyof typeof` <TypeLink type="PortDirections"/>`)[]` |
 | <div id="targetgroupids">targetGroupIds?</div> | Provides which edges should be grouped at target, i.e., share the end of their routes. | `(edge: TEdgeData) => any` |
 | <div id="targetportcandidates">targetPortCandidates?</div> | Provides the directions in which an edge can enter its target node. | `(edge: TEdgeData) => (keyof typeof` <TypeLink type="PortDirections"/>`)[]` |
+
+
+## Playground
+
+<Playground
+  code={`
+  // edge type that supports bends
+const edgeTypes = {
+  default: PolylineEdge
+}
+// node type that supports multiple handles
+const nodeTypes = {
+  default: MultiHandleNode
+}
+
+  // initialize data
+  const initialNodes = data.nodes
+  const initialEdges = data.edges
+
+  const layoutOptions: HierarchicLayoutOptions = {
+    minimumLayerDistance: 50,
+    integratedEdgeLabeling: true,
+    nodeToEdgeDistance: 50
+  }
+
+  const layoutData: HierarchicLayoutDataProvider<NodeProps, EdgeProps> = {
+    groupNodeInsets: () => 30
+  }
+
+  function LayoutFlow() {
+    const [nodes, , onNodesChange] = useNodesState(initialNodes)
+    const [edges, , onEdgesChange] = useEdgesState(initialEdges)
+
+    const { runLayout } = useLayout()
+
+    useNodesMeasuredEffect(() =>
+      runLayout({
+        name: "HierarchicLayout",
+        layoutOptions
+      })
+    )
+
+    return (
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+      ></ReactFlow>
+    )
+  }
+
+  function App() {
+    return (
+      <ReactFlowProvider>
+        <LayoutFlow></LayoutFlow>
+      </ReactFlowProvider>
+    );
+  }
+`}
+data={`{
+  "nodes": [
+    {
+      "id": "0",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "group"
+    },
+    {
+      "id": "1",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": "0"
+      },
+      "className": "group",
+      "parentNode": "0"
+    },
+    {
+      "id": "2",
+      "data": {
+        "label": "Node 1"
+      },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "node",
+      "parentNode": "1"
+    },
+    {
+      "id": "3",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "group",
+      "parentNode": "0"
+    },
+    {
+      "id": "4",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "className": "group",
+      "parentNode": "3"
+    },
+    {
+      "id": "5",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 2"
+      },
+      "className": "node"
+    },
+    {
+      "id": "6",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 3"
+      },
+      "className": "node"
+    },
+    {
+      "id": "7",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 4"
+      },
+      "className": "node",
+      "parentNode": "0"
+    },
+    {
+      "id": "8",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 5"
+      },
+      "className": "node",
+      "parentNode": "0"
+    },
+    {
+      "id": "9",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 6"
+      },
+      "className": "node",
+      "parentNode": "0"
+    },
+    {
+      "id": "10",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 7"
+      },
+      "className": "node",
+      "parentNode": "1"
+    },
+    {
+      "id": "11",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 8"
+      },
+      "className": "node",
+      "parentNode": "1"
+    },
+    {
+      "id": "12",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 9"
+      },
+      "className": "node",
+      "parentNode": "1"
+    },
+    {
+      "id": "13",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 10"
+      },
+      "className": "node",
+      "parentNode": "3"
+    },
+    {
+      "id": "14",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 11"
+      },
+      "className": "node",
+      "parentNode": "3"
+    },
+    {
+      "id": "15",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 12"
+      },
+      "className": "node",
+      "parentNode": "4"
+    },
+    {
+      "id": "16",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 13"
+      },
+      "className": "node",
+      "parentNode": "4"
+    },
+    {
+      "id": "17",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Node 14"
+      },
+      "className": "node",
+      "parentNode": "4"
+    }
+  ],
+  "edges": [
+    {
+      "id": "0",
+      "source": "5",
+      "target": "6"
+    },
+    {
+      "id": "1",
+      "source": "6",
+      "target": "7"
+    },
+    {
+      "id": "2",
+      "source": "7",
+      "target": "8"
+    },
+    {
+      "id": "3",
+      "source": "7",
+      "target": "13"
+    },
+    {
+      "id": "4",
+      "source": "7",
+      "target": "9",
+      "label": {
+        "label": "Node 4 → Node 6",
+        "className": "edge-label"
+      }
+    },
+    {
+      "id": "5",
+      "source": "8",
+      "target": "10"
+    },
+    {
+      "id": "6",
+      "source": "10",
+      "target": "11"
+    },
+    {
+      "id": "7",
+      "source": "11",
+      "target": "9",
+      "label": {
+        "label": "Node 8 → Node 6",
+        "className": "edge-label"
+      }
+    },
+    {
+      "id": "8",
+      "source": "12",
+      "target": "9",
+      "label": {
+        "label": "Node 9 → Node 6",
+        "className": "edge-label"
+      }
+    },
+    {
+      "id": "9",
+      "source": "13",
+      "target": "14"
+    },
+    {
+      "id": "10",
+      "source": "14",
+      "target": "9"
+    },
+    {
+      "id": "11",
+      "source": "10",
+      "target": "13"
+    },
+    {
+      "id": "12",
+      "source": "2",
+      "target": "11"
+    },
+    {
+      "id": "13",
+      "source": "10",
+      "target": "2"
+    },
+    {
+      "id": "14",
+      "source": "17",
+      "target": "15"
+    },
+    {
+      "id": "15",
+      "source": "15",
+      "target": "9"
+    },
+    {
+      "id": "16",
+      "source": "17",
+      "target": "16"
+    },
+    {
+      "id": "17",
+      "source": "16",
+      "target": "9"
+    },
+    {
+      "id": "18",
+      "source": "13",
+      "target": "17"
+    }
+  ]
+}
+`}
+css={`.group {
+    padding: 20px;
+    color: #094c4b;
+    background-color: #17bebb55;
+    border-radius: 10px;
+}
+
+    .node {
+        padding: 20px;
+        color: #665008;
+        background-color: #ffc914;
+        border-radius: 10px;
+    }
+
+    .edge-label {
+        padding: 5px;
+        color: #665008;
+        background-color: #c2b99c;
+        border-radius: 3px;
+    }
+`}
+/>

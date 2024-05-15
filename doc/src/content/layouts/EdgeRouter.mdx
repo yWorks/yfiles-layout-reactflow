@@ -5,11 +5,16 @@ tags: []
 ---
 
 import TypeLink from '../../components/TypeLink.astro'
+import Playground from '../../components/Playground.astro'
 
 #  Edge Router
 
 The *edge router algorithm* applies polyline routes to the edges of the graph. Edges are by default routed in an orthogonal fashion,
 i.e., they only consist of horizontal and vertical segments. The edge router algorithm does not affect the node placement.
+
+<div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', margin: '40px 0'}}>
+  <img src={`${import.meta.env.BASE_URL}/edgerouter.png`} style={{maxWidth: "80%", objectFit: "cover"}} alt="Edge router"></img>
+</div>
 
 The edge router algorithm provides customization options through a wide array of properties accessible
 via the `EdgeRouterOptions`. The edge router can be applied on the whole graph set or only on a set of selected edges.
@@ -18,15 +23,18 @@ It also automatically places node and edge labels when the corresponding propert
 Additional customization for individual graph elements, such as `sourcePortCandidates`, `nodeHalos`, and more, can be achieved via
 the `EdgeRouterDataProvider`.
 
+Feel free to play around with the orthogonal layout configuration in our [online playground](edgerouter#playground).
+
 Extensive documentation detailing all available properties of the orthogonal layout supported by *yFiles layouts for React Flow* can be
 found [here](https://docs.yworks.com/yfileshtml/#/api/EdgeRouter).
+
 
 ```tsx
 runLayout({
   name: 'EdgeRouter',
   layoutOptions: {
     polylineRouting: true,
-    scope: 'route-affected-edges',
+    scope: 'route-all-edges',
     integratedEdgeLabeling: true
   },
   layoutData: {
@@ -72,3 +80,253 @@ For more information, see [EdgeRouterData](https://docs.yworks.com/yfileshtml/#/
 | <div id="sourceportcandidates">sourcePortCandidates?</div> |  Provides the directions in which an edge can leave its source node. | `(edge: TEdgeData) => (keyof typeof` <TypeLink type="PortDirections"/>`)[]` |
 | <div id="targetgroupids">targetGroupIds?</div> |  Provides which edges should be grouped at target, i.e., share the end of their routes. | `(edge: TEdgeData) => any` |
 | <div id="targetportcandidates">targetPortCandidates?</div> |  Provides the directions in which an edge can enter its target node. | `(edge: TEdgeData) => (keyof typeof` <TypeLink type="PortDirections"/>`)[]` |
+
+
+## Playground
+
+<Playground
+    code={`
+    // edge type that supports bends
+    const edgeTypes = {
+      default: PolylineEdge,
+    };
+    // node type that supports multiple handles
+    const nodeTypes = {
+      default: MultiHandleNode,
+    };
+
+    // initialize data
+    const initialNodes = data.nodes;
+    const initialEdges = data.edges;
+
+    const layoutOptions: EdgeRouterOptions = {
+      scope: "route-all-edges",
+      minimumNodeToEdgeDistance: 20,
+    };
+
+    function LayoutFlow() {
+      const [nodes, , onNodesChange] = useNodesState(initialNodes);
+      const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+
+      // call the useLayout-hook to get the function that invokes the layout
+      const { runLayout } = useLayout();
+
+      // run initial layout
+      useNodesMeasuredEffect(() => {
+        runLayout({
+          name: "EdgeRouter",
+          layoutOptions
+        })
+      });
+
+      return (
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          minZoom={0.1}
+        ></ReactFlow>
+      );
+    }
+
+    function App() {
+      return (
+        <ReactFlowProvider>
+          <LayoutFlow></LayoutFlow>
+        </ReactFlowProvider>
+      );
+    }
+`}
+   data={`{
+  "nodes": [
+    {
+      "id": 0,
+      "position": { "x": -232, "y": 405 },
+      "data": {},
+      "className": "horizontal-node"
+    },
+    {
+      "id": 1,
+      "position": { "x": -237, "y": 151 },
+      "data": {},
+      "className": "horizontal-node"
+    },
+    {
+      "id": 2,
+      "position": { "x": -45, "y": 404 },
+      "data": {}
+    },
+    {
+      "id": 3,
+      "position": { "x": -44, "y": 458 },
+      "data": {}
+    },
+    {
+      "id": 4,
+      "position": { "x": 36, "y": 404 },
+      "data": {},
+      "className": "horizontal-node"
+    },
+    {
+      "id": 5,
+      "position": { "x": 65, "y": 457 },
+      "data": {},
+      "className": "vertical-small-node"
+    },
+    {
+      "id": 6,
+      "position": { "x": -360, "y": 431 },
+      "data": {}
+    },
+    {
+      "id": 7,
+      "position": { "x": -358, "y": 573 },
+      "data": {}
+    },
+    {
+      "id": 8,
+      "position": { "x": -230, "y": 573 },
+      "data": {},
+      "className": "horizontal-node"
+    },
+    {
+      "id": 9,
+      "position": { "x": -42, "y": 574 },
+      "data": {}
+    },
+    {
+      "id": 10,
+      "position": { "x": 64, "y": 577 },
+      "data": {}
+    },
+    {
+      "id": 11,
+      "position": { "x": -43, "y": 153 },
+      "data": {}
+    },
+    {
+      "id": 12,
+      "position": { "x": -42, "y": 199 },
+      "data": {}
+    },
+    {
+      "id": 13,
+      "position": { "x": -42, "y": 245 },
+      "data": {}
+    },
+    {
+      "id": 14,
+      "position": { "x": -362, "y": 273 },
+      "data": {},
+      "className": "vertical-large-node"
+    },
+    {
+      "id": 15,
+      "position": { "x": 35, "y": 267 },
+      "data": {},
+      "className": "vertical-wide-node"
+    }
+  ],
+  "edges": [
+    { "id": 0, "source": 0, "target": 1 },
+    { "id": 1, "source": 0, "target": 1 },
+    { "id": 2, "source": 0, "target": 1 },
+    { "id": 3, "source": 0, "target": 1 },
+    { "id": 4, "source": 0, "target": 1 },
+    { "id": 5, "source": 0, "target": 1 },
+    { "id": 6, "source": 0, "target": 2 },
+    { "id": 7, "source": 4, "target": 2 },
+    { "id": 8, "source": 2, "target": 4 },
+    { "id": 9, "source": 5, "target": 3 },
+    { "id": 10, "source": 3, "target": 5 },
+    { "id": 11, "source": 0, "target": 3 },
+    { "id": 12, "source": 0, "target": 8 },
+    { "id": 13, "source": 7, "target": 8 },
+    { "id": 14, "source": 7, "target": 6 },
+    { "id": 15, "source": 6, "target": 7 },
+    { "id": 16, "source": 9, "target": 3 },
+    { "id": 17, "source": 3, "target": 2 },
+    { "id": 18, "source": 4, "target": 5 },
+    { "id": 19, "source": 5, "target": 10 },
+    { "id": 20, "source": 13, "target": 1 },
+    { "id": 21, "source": 12, "target": 1 },
+    { "id": 22, "source": 11, "target": 1 },
+    { "id": 23, "source": 13, "target": 12 },
+    { "id": 24, "source": 12, "target": 11 },
+    { "id": 25, "source": 14, "target": 15 },
+    { "id": 28, "source": 14, "target": 15 },
+    { "id": 29, "source": 14, "target": 15 },
+    { "id": 30, "source": 14, "target": 15 },
+    { "id": 31, "source": 14, "target": 15 },
+    { "id": 32, "source": 14, "target": 1 },
+    { "id": 33, "source": 1, "target": 14 },
+    { "id": 34, "source": 15, "target": 11 },
+    { "id": 35, "source": 11, "target": 15 },
+    { "id": 38, "source": 14, "target": 15 },
+    { "id": 41, "source": 14, "target": 8 },
+    { "id": 42, "source": 14, "target": 7 },
+    { "id": 43, "source": 14, "target": 8 },
+    { "id": 44, "source": 14, "target": 7 },
+    { "id": 45, "source": 3, "target": 9 },
+    { "id": 46, "source": 10, "target": 5 },
+    { "id": 47, "source": 4, "target": 15 },
+    { "id": 48, "source": 4, "target": 15 },
+    { "id": 49, "source": 4, "target": 15 },
+    { "id": 50, "source": 4, "target": 15 },
+    { "id": 51, "source": 8, "target": 0 },
+    { "id": 52, "source": 8, "target": 9 },
+    { "id": 53, "source": 9, "target": 8 },
+    { "id": 55, "source": 0, "target": 15 },
+    { "id": 56, "source": 0, "target": 15 }
+  ]
+}`}
+    css={`
+      .react-flow__node {
+          background-color: #00b4d4;
+          width: 30px;
+          height: 30px;
+          border-radius: 10px;
+          border-color: #510518;
+      }
+
+      .horizontal-node {
+          width: 110px;
+          height: 35px;
+          border-radius: 10px;
+          background-color: #00d8ff;
+      }
+
+      .vertical-small-node {
+          width: 30px;
+          height: 60px;
+          border-radius: 10px;
+          background-color: #00d8ff;
+      }
+
+      .vertical-large-node {
+          width: 30px;
+          height: 101px;
+          border-radius: 10px;
+          background-color: #00d8ff;
+      }
+
+      .vertical-wide-node {
+          width: 113px;
+          height: 87px;
+          border-radius: 10px;
+          background-color: #0090ab;
+      }
+
+      .react-flow__edge-path {
+          stroke: #c1c1c1;
+          stroke-width: 2px;
+      }
+
+      .react-flow__handle {
+          visibility: hidden;
+      }
+    `}
+/>

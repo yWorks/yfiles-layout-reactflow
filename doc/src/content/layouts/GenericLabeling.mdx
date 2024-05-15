@@ -5,6 +5,7 @@ tags: []
 ---
 
 import TypeLink from '../../components/TypeLink.astro'
+import Playground from '../../components/Playground.astro'
 
 #  Generic Labeling
 
@@ -16,11 +17,17 @@ Node labels can be placed either in the interior or the exterior of the nodes wi
 The information about edge label placement can be conveyed to the labeling algorithm through a
 `PreferredPlacementDescriptor`.
 
+<div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', margin: '40px 0'}}>
+  <img src={`${import.meta.env.BASE_URL}/generic-labeling.png`} style={{maxWidth: "80%", objectFit: "cover"}} alt="Generic labeling"></img>
+</div>
+
 The generic labeling algorithm provides extensive customization options through a wide array of properties accessible
 via the `GenericLabelingOptions`. It can be applied on the whole graph or only on a predefined set of nodes and edges.
 
 Additional customization for individual graph elements, such as `edgeLabelPreferredPlacement`, `affectedLabels`, and more, can be achieved via
 the `GenericLabelingDataProvider`.
+
+Feel free to play around with the orthogonal layout configuration in our [online playground](genericlabeling#playground).
 
 Extensive documentation detailing all available properties of the balloon layout supported by *yFiles layouts for React Flow* can be
 found [here](https://docs.yworks.com/yfileshtml/#/api/LabelingLayout).
@@ -37,6 +44,7 @@ runLayout({
   }
 })
 ```
+
 
 ## GenericLabelingOptions
 
@@ -69,3 +77,567 @@ For more information, see [LabelingData](https://docs.yworks.com/yfileshtml/#/ap
 |---|---|---|
 | <div id="affectedlabels">affectedLabels?</div> |  Provides which labels should be placed. | `(label:` <TypeLink type="LabelData"/>`) => boolean` |
 | <div id="edgelabelpreferredplacement">edgeLabelPreferredPlacement?</div> |  Provides descriptors for the placement of edge labels. | `(label:` <TypeLink type="LabelData"/>`) =>` <TypeLink type="PreferredPlacementDescriptor"/> |
+
+## Playground
+
+<Playground
+    code={`
+    // edge type that supports bends
+    const edgeTypes = {
+      default: PolylineEdge,
+    };
+    // node type that supports multiple handles
+    const nodeTypes = {
+      default: MultiHandleNode,
+    };
+
+    // initialize data
+    const initialNodes = data.nodes;
+    const initialEdges = data.edges;
+
+    const layoutOptions: GenericLabelingOptions = {
+      placeEdgeLabels: true,
+      placeNodeLabels: true
+    };
+
+    const layoutData: GenericLabelingDataProvider = {
+     edgeLabelPreferredPlacement: () => ({
+       sideOfEdge: "on-edge",
+       placeAlongEdge: "at-center"
+     })
+    }
+
+    function LayoutFlow() {
+      const [nodes, , onNodesChange] = useNodesState(initialNodes);
+      const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+
+      // call the useLayout-hook to get the function that invokes the layout
+      const { runLayout } = useLayout();
+
+      // run initial layout
+      useNodesMeasuredEffect(() => {
+        runLayout({
+          name: 'GenericLabeling',
+          layoutOptions,
+          layoutData
+        });
+      });
+
+      return (
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          minZoom={0.000000000001}
+        >
+        </ReactFlow>
+      );
+    }
+
+    function App() {
+      return (
+        <ReactFlowProvider>
+          <LayoutFlow></LayoutFlow>
+        </ReactFlowProvider>
+      );
+    }
+`}
+ data={`{
+  "nodes": [
+    {
+      "id": "0",
+      "position": { "x": 0, "y": 958 },
+      "data": { "label": { "label": "TABLET 0" } },
+      "className": "tablet"
+    },
+    {
+      "id": "1",
+      "position": { "x": 209, "y": 1095 },
+      "data": { "label": { "label": "PC 1" } },
+      "className": "pc"
+    },
+    {
+      "id": "2",
+      "position": { "x": 88, "y": 840 },
+      "data": { "label": { "label": "TABLET 2" } },
+      "className": "tablet"
+    },
+    {
+      "id": "3",
+      "position": { "x": 65, "y": 1078 },
+      "data": { "label": { "label": "SERVER 3" } },
+      "className": "server"
+    },
+    {
+      "id": "4",
+      "position": { "x": 141, "y": 969 },
+      "data": { "label": { "label": "SWITCH 4" } },
+      "className": "switch"
+    },
+    {
+      "id": "5",
+      "position": { "x": 452, "y": 830 },
+      "data": { "label": { "label": "SWITCH 5" } },
+      "className": "switch"
+    },
+    {
+      "id": "6",
+      "position": { "x": 627, "y": 802 },
+      "data": { "label": { "label": "SWITCH 6" } },
+      "className": "switch"
+    },
+    {
+      "id": "7",
+      "position": { "x": 626, "y": 473 },
+      "data": { "label": { "label": "SWITCH 7" } },
+      "className": "switch"
+    },
+    {
+      "id": "8",
+      "position": { "x": 708, "y": 631 },
+      "data": { "label": { "label": "SWITCH 8" } },
+      "className": "switch"
+    },
+    {
+      "id": "9",
+      "position": { "x": 331, "y": 763 },
+      "data": { "label": { "label": "SWITCH 9" } },
+      "className": "switch"
+    },
+    {
+      "id": "10",
+      "position": { "x": 691, "y": 977 },
+      "data": { "label": { "label": "SWITCH 10" } },
+      "className": "switch"
+    },
+    {
+      "id": "11",
+      "position": { "x": 815, "y": 884 },
+      "data": { "label": { "label": "PC 11" } },
+      "className": "pc"
+    },
+    {
+      "id": "12",
+      "position": { "x": 608, "y": 1107 },
+      "data": { "label": { "label": "LAPTOP 12" } },
+      "className": "laptop"
+    },
+    {
+      "id": "13",
+      "position": { "x": 845, "y": 1027 },
+      "data": { "label": { "label": "PC 13" } },
+      "className": "pc"
+    },
+    {
+      "id": "14",
+      "position": { "x": 742, "y": 1123 },
+      "data": { "label": { "label": "PC 14" } },
+      "className": "pc"
+    },
+    {
+      "id": "15",
+      "position": { "x": 560, "y": 985 },
+      "data": { "label": { "label": "TABLET 15" } },
+      "className": "tablet"
+    },
+    {
+      "id": "16",
+      "position": { "x": 294, "y": 894 },
+      "data": { "label": { "label": "SWITCH 16" } },
+      "className": "switch"
+    },
+    {
+      "id": "17",
+      "position": { "x": 1074, "y": 525 },
+      "data": { "label": { "label": "SERVER 17" } },
+      "className": "server"
+    },
+    {
+      "id": "18",
+      "position": { "x": 886, "y": 580 },
+      "data": { "label": { "label": "SWITCH 18" } },
+      "className": "switch"
+    },
+    {
+      "id": "19",
+      "position": { "x": 967, "y": 436 },
+      "data": { "label": { "label": "DB 19" } },
+      "className": "db"
+    },
+    {
+      "id": "20",
+      "position": { "x": 830, "y": 445 },
+      "data": { "label": { "label": "SERVER 20" } },
+      "className": "server"
+    },
+    {
+      "id": "21",
+      "position": { "x": 1030, "y": 654 },
+      "data": { "label": { "label": "SERVER 21" } },
+      "className": "server"
+    },
+    {
+      "id": "22",
+      "position": { "x": 902, "y": 707 },
+      "data": { "label": { "label": "SERVER 22" } },
+      "className": "server"
+    },
+    {
+      "id": "23",
+      "position": { "x": 564, "y": 309 },
+      "data": { "label": { "label": "SWITCH 23" } },
+      "className": "switch"
+    },
+    {
+      "id": "24",
+      "position": { "x": 419, "y": 210 },
+      "data": { "label": { "label": "WLAN 24" } },
+      "className": "wlan"
+    },
+    {
+      "id": "25",
+      "position": { "x": 655, "y": 153 },
+      "data": { "label": { "label": "WLAN 30" } },
+      "className": "wlan"
+    },
+    {
+      "id": "26",
+      "position": { "x": 639, "y": 0 },
+      "data": { "label": { "label": "PC 31" } },
+      "className": "pc"
+    },
+    {
+      "id": "27",
+      "position": { "x": 799, "y": 94 },
+      "data": { "label": { "label": "PC 27" } },
+      "className": "pc"
+    },
+    {
+      "id": "28",
+      "position": { "x": 278, "y": 152 },
+      "data": { "label": { "label": "LAPTOP 28" } },
+      "className": "laptop"
+    },
+    {
+      "id": "29",
+      "position": { "x": 301, "y": 309 },
+      "data": { "label": { "label": "PC 29" } },
+      "className": "pc"
+    },
+    {
+      "id": "30",
+      "position": { "x": 414, "y": 53 },
+      "data": { "label": { "label": "PC 30" } },
+      "className": "pc"
+    }
+  ],
+  "edges": [
+    {
+      "id": "0",
+      "source": "1",
+      "target": "5",
+      "label": { "label": "3%", "className": "edge-label" }
+    },
+    {
+      "id": "1",
+      "source": "5",
+      "target": "6",
+      "label": { "label": "12%", "className": "edge-label" }
+    },
+    {
+      "id": "2",
+      "source": "6",
+      "target": "8",
+      "label": { "label": "33%", "className": "edge-label" }
+    },
+    {
+      "id": "3",
+      "source": "7",
+      "target": "8",
+      "label": { "label": "14%", "className": "edge-label" }
+    },
+    {
+      "id": "4",
+      "source": "9",
+      "target": "5",
+      "label": { "label": "2%", "className": "edge-label" }
+    },
+    {
+      "id": "5",
+      "source": "10",
+      "target": "11",
+      "label": { "label": "12%", "className": "edge-label" }
+    },
+    {
+      "id": "6",
+      "source": "10",
+      "target": "12",
+      "label": { "label": "32%", "className": "edge-label" }
+    },
+    {
+      "id": "7",
+      "source": "10",
+      "target": "13",
+      "label": { "label": "3%", "className": "edge-label" }
+    },
+    {
+      "id": "8",
+      "source": "10",
+      "target": "14",
+      "label": { "label": "16%", "className": "edge-label" }
+    },
+    {
+      "id": "9",
+      "source": "10",
+      "target": "15",
+      "label": { "label": "1%", "className": "edge-label" }
+    },
+    {
+      "id": "10",
+      "source": "5",
+      "target": "16",
+      "label": { "label": "10%", "className": "edge-label" }
+    },
+    {
+      "id": "11",
+      "source": "10",
+      "target": "6",
+      "label": { "label": "1%", "className": "edge-label" }
+    },
+    {
+      "id": "12",
+      "source": "17",
+      "target": "18",
+      "label": { "label": "13%", "className": "edge-label" }
+    },
+    {
+      "id": "13",
+      "source": "19",
+      "target": "18",
+      "label": { "label": "12%", "className": "edge-label" }
+    },
+    {
+      "id": "14",
+      "source": "20",
+      "target": "18",
+      "label": { "label": "6%", "className": "edge-label" }
+    },
+    {
+      "id": "15",
+      "source": "21",
+      "target": "18",
+      "label": { "label": "11%", "className": "edge-label" }
+    },
+    {
+      "id": "16",
+      "source": "22",
+      "target": "18",
+      "label": { "label": "5%", "className": "edge-label" }
+    },
+    {
+      "id": "17",
+      "source": "18",
+      "target": "8",
+      "label": { "label": "36%", "className": "edge-label" }
+    },
+    {
+      "id": "18",
+      "source": "7",
+      "target": "23",
+      "label": { "label": "21%", "className": "edge-label" }
+    },
+    {
+      "id": "19",
+      "source": "23",
+      "target": "24",
+      "label": { "label": "1%", "className": "edge-label" }
+    },
+    {
+      "id": "20",
+      "source": "23",
+      "target": "25",
+      "label": { "label": "2%", "className": "edge-label" }
+    },
+    {
+      "id": "21",
+      "source": "25",
+      "target": "26",
+      "label": { "label": "12%", "className": "edge-label" }
+    },
+    {
+      "id": "22",
+      "source": "25",
+      "target": "27",
+      "label": { "label": "42%", "className": "edge-label" }
+    },
+    {
+      "id": "23",
+      "source": "33",
+      "target": "24",
+      "label": { "label": "2%", "className": "edge-label" }
+    },
+    {
+      "id": "24",
+      "source": "28",
+      "target": "24",
+      "label": { "label": "2%", "className": "edge-label" }
+    },
+    {
+      "id": "25",
+      "source": "29",
+      "target": "24",
+      "label": { "label": "3%", "className": "edge-label" }
+    },
+    {
+      "id": "26",
+      "source": "30",
+      "target": "24",
+      "label": { "label": "3%", "className": "edge-label" }
+    },
+    {
+      "id": "27",
+      "source": "37",
+      "target": "24",
+      "label": { "label": "3%", "className": "edge-label" }
+    },
+    {
+      "id": "28",
+      "source": "39",
+      "target": "24",
+      "label": { "label": "13%", "className": "edge-label" }
+    },
+    {
+      "id": "29",
+      "source": "40",
+      "target": "24",
+      "label": { "label": "45%", "className": "edge-label" }
+    },
+    {
+      "id": "30",
+      "source": "16",
+      "target": "4",
+      "label": { "label": "23%", "className": "edge-label" }
+    },
+    {
+      "id": "31",
+      "source": "3",
+      "target": "4",
+      "label": { "label": "21%", "className": "edge-label" }
+    },
+    {
+      "id": "32",
+      "source": "2",
+      "target": "4",
+      "label": { "label": "13%", "className": "edge-label" }
+    },
+    {
+      "id": "33",
+      "source": "1",
+      "target": "4",
+      "label": { "label": "3%", "className": "edge-label" }
+    },
+    {
+      "id": "34",
+      "source": "0",
+      "target": "4",
+      "label": { "label": "10%", "className": "edge-label" }
+    },
+    {
+      "id": "35",
+      "source": "47",
+      "target": "4",
+      "label": { "label": "4%", "className": "edge-label" }
+    },
+    {
+      "id": "36",
+      "source": "48",
+      "target": "4",
+      "label": { "label": "4%", "className": "edge-label" }
+    },
+    {
+      "id": "37",
+      "source": "16",
+      "target": "9",
+      "label": { "label": "4%", "className": "edge-label" }
+    }
+  ]
+}
+`}
+    css={`
+    .react-flow__node {
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .wlan {
+        width: 65px;
+        height: 65px;
+        border-radius: 20px;
+        background-color: #db3a34;
+    }
+
+    .laptop {
+        width: 65px;
+        height: 45px;
+        border-radius: 10px;
+        background-color: #4281a4;
+    }
+
+    .server {
+        width: 40px;
+        height: 65px;
+        border-radius: 0px;
+        background-color: #c1c1c1;
+    }
+
+    .pc {
+        width: 65px;
+        height: 65px;
+        border-radius: 10px;
+        background-color: #67b7dc;
+    }
+
+    .tablet {
+        width: 55px;
+        height: 40px;
+        border-radius: 5px;
+        background-color: #56926e;
+    }
+
+    .switch {
+        width: 70px;
+        height: 40px;
+        border-radius: 0;
+        background-color: #6c4f77;
+    }
+
+    .db {
+        width: 40px;
+        height: 55px;
+        border-radius: 0;
+        background-color: #f0c808;
+    }
+
+    .react-flow__edge-path {
+        stroke: #f7f7f7;
+        stroke-width: 2px;
+    }
+
+    .react-flow__handle {
+        visibility: hidden;
+    }
+
+    .edge-label {
+        background-color: white;
+        border: 2px solid #6c4f77;
+        border-radius: 10px;
+        padding: 2px 5px;
+        color: #6c4f77;
+        font-weight: bold;
+    }
+`}
+/>

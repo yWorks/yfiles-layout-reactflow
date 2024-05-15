@@ -94,6 +94,19 @@ const LayoutFlow = () => {
         >
           Hierarchic
         </button>
+        <button
+          onClick={() =>
+            runLayout({
+              name: 'TreeLayout',
+              layoutOptions: { layoutOrientation: 'left-to-right' },
+              layoutData: { outEdgeComparers: () => (edge1: EdgeProps, edge2: EdgeProps) => parseInt(edge1.target) - parseInt(edge2.target)
+              }
+            })
+          }
+          disabled={layoutRunning}
+        >
+          Tree
+        </button>
       </Panel>
     </ReactFlow>
   )

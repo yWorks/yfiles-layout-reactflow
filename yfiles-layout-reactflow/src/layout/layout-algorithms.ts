@@ -6,6 +6,7 @@ import {
   GroupingKeys,
   HierarchicLayoutData,
   ICollection,
+  IEdge,
   ILayoutAlgorithm,
   IModelItem,
   INode,
@@ -22,12 +23,12 @@ import {
   YInsets
 } from 'yfiles'
 import {
-  PreferredPlacementDescriptor,
   Insets,
   LayoutDataProvider,
   LayoutName,
   NodeHalo,
-  PortDirections
+  PortDirections,
+  PreferredPlacementDescriptor
 } from './layout-types.ts'
 
 export async function getLayoutAlgorithm(
@@ -167,6 +168,8 @@ function translateLayoutDataDescriptor<TNodeData, TEdgeData>(
       } else if (key === 'sourcePortCandidates' || key === 'targetPortCandidates') {
         translatedLayoutDataDescriptor[key] = (item: IModelItem) =>
           translatePortCandidates(originalFunction(item.tag) as unknown as PortDirections[])
+      } else if (key === 'outEdgeComparers') {
+        translatedLayoutDataDescriptor[key] = (item: IModelItem) => translateOutEdgeComparers<TEdgeData>(originalFunction(item.tag) as (edge1: TEdgeData, edge2: TEdgeData) => number)
       } else {
         translatedLayoutDataDescriptor[key] = (item: IModelItem) => originalFunction(item.tag)
       }
@@ -174,6 +177,11 @@ function translateLayoutDataDescriptor<TNodeData, TEdgeData>(
   })
 
   return translatedLayoutDataDescriptor
+}
+
+function translateOutEdgeComparers<TEdgeData>(outEdgeComparer: (edge1: TEdgeData, edge2: TEdgeData) => number) {
+  console.log('translateOutEdgeComparers')
+  return (e1: IEdge, e2: IEdge) => outEdgeComparer(e1.tag, e2.tag)
 }
 
 function translatePortCandidates(sides: PortDirections[]): ICollection<PortCandidate> {

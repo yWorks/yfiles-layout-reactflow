@@ -121,7 +121,7 @@ export type LayoutConfiguration<
                   layoutOptions?: BalloonLayoutOptions
                   layoutData?: BalloonLayoutDataProvider<TNodeData, TEdgeData>
                 }
-              : LayoutType extends 'EdgeRouterLayout'
+              : LayoutType extends 'EdgeRouter'
                 ? {
                     name: LayoutType
                     layoutOptions?: EdgeRouterOptions

@@ -20,7 +20,7 @@ The edge router algorithm provides customization options through a wide array of
 via the `EdgeRouterOptions`. The edge router can be applied on the whole graph set or only on a set of selected edges.
 It also automatically places node and edge labels when the corresponding properties are activated.
 
-Additional customization for individual graph elements, such as `sourcePortCandidates`, `nodeHalos`, and more, can be achieved via
+Additional customization for individual graph elements, such as `sourcePortCandidates`, `nodeMargins`, and more, can be achieved via
 the `EdgeRouterDataProvider`.
 
 Feel free to play around with the orthogonal layout configuration in our [online playground](edgerouter#playground).
@@ -34,13 +34,12 @@ runLayout({
   name: 'EdgeRouter',
   layoutOptions: {
     polylineRouting: true,
-    scope: 'route-all-edges',
-    integratedEdgeLabeling: true
+    edgeLabelPlacement: 'integrated'
   },
   layoutData: {
     sourcePortCandidates: (edge: EdgeProps) =>
       parseInt(edge.target) % 2 === 0 ? ['east'] : ['west'],
-    nodeHalos: () => 20
+    nodeMargins: () => 20
   }
 })
 ```
@@ -51,18 +50,13 @@ The configuration options for the edge routing algorithm that applies polyline r
 
 | Name | Type |
 |---|---|
-| <div id="consideredgelabels">considerEdgeLabels?</div> | `boolean` |
-| <div id="considernodelabels">considerNodeLabels?</div> | `boolean` |
-| <div id="grid">grid?</div> | [`Grid`](https://docs.yworks.com/yfileshtml/#/api/Grid) &#124; `null` |
-| <div id="ignoreinnernodelabels">ignoreInnerNodeLabels?</div> | `boolean` |
-| <div id="integratededgelabeling">integratedEdgeLabeling?</div> | `boolean` |
-| <div id="maximumduration">maximumDuration?</div> | `number` |
-| <div id="maximumpolylinesegmentratio">maximumPolylineSegmentRatio?</div> | `number` |
-| <div id="minimumnodetoedgedistance">minimumNodeToEdgeDistance?</div> | `number` |
-| <div id="polylinerouting">polylineRouting?</div> | `boolean` |
-| <div id="preferredpolylinesegmentlength">preferredPolylineSegmentLength?</div> | `number` |
-| <div id="rerouting">rerouting?</div> | `boolean` |
-| <div id="scope">scope?</div> | `"route-all-edges"`  &#124; `"route-affected-edges"`  &#124; `"route-edges-at-affected-nodes"` |
+| <div id="defaultedgedescriptor">defaultEdgeDescriptor?</div> | <pre>EdgeRouterEdgeDescriptor</pre> |
+| <div id="edgelabelplacement">edgeLabelPlacement?</div> | <pre>"consider-unaffected-edge-labels" &#124; "generic" &#124; "ignore" &#124; "integrated"</pre> |
+| <div id="gridspacing">gridSpacing?</div> | <pre>number</pre> |
+| <div id="minimumnodetoedgedistance">minimumNodeToEdgeDistance?</div> | <pre>number</pre> |
+| <div id="nodelabelplacement">nodeLabelPlacement?</div> | <pre>"consider" &#124; "generic" &#124; "ignore" &#124; "ignore-group-labels"</pre> |
+| <div id="rerouting">rerouting?</div> | <pre>boolean</pre> |
+| <div id="stopduration">stopDuration?</div> | <pre>number</pre> |
 
 ## EdgeRouterDataProvider&lt;TNodeData, TEdgeData&gt;
 
@@ -72,16 +66,12 @@ For more information, see [EdgeRouterData](https://docs.yworks.com/yfileshtml/#/
 
 | Name | Description | Type |
 |---|---|---|
-| <div id="affectededges">affectedEdges?</div> |  Provides which edges should be routed. | `(edge: TEdgeData) => boolean` |
-| <div id="affectednodes">affectedNodes?</div> |  Provides if the edges of the given nodes should be routed. | `(node: TNodeData) => boolean` |
-| <div id="edgelabelpreferredplacement">edgeLabelPreferredPlacement?</div> |  Provides descriptors for the placement of edge labels. | `(label:` <TypeLink type="LabelData"/>`) =>` <TypeLink type="PreferredPlacementDescriptor"/>  |
-| <div id="nodehalos">nodeHalos?</div> |  Provides halos for nodes, i.e., a rectangular area around a specific node considered during the layout. | `(node: TNodeData) => `<TypeLink type="NodeHalo"/> |
-| <div id="sourcegroupids">sourceGroupIds?</div> |  Provides which edges should be grouped at source, i.e., share the beginning of their routes. | `(edge: TEdgeData) => any` |
-| <div id="sourceportcandidates">sourcePortCandidates?</div> |  Provides the directions in which an edge can leave its source node. | `(edge: TEdgeData) => (keyof typeof` <TypeLink type="PortDirections"/>`)[]` |
-| <div id="targetgroupids">targetGroupIds?</div> |  Provides which edges should be grouped at target, i.e., share the end of their routes. | `(edge: TEdgeData) => any` |
-| <div id="targetportcandidates">targetPortCandidates?</div> |  Provides the directions in which an edge can enter its target node. | `(edge: TEdgeData) => (keyof typeof` <TypeLink type="PortDirections"/>`)[]` |
-
-
+| <div id="edgelabelpreferredplacements">edgeLabelPreferredPlacements?</div> |  Provides descriptors for the placement of edge labels. | <pre>(label: [LabelData](labeldata)) =&gt; [EdgeLabelPreferredPlacement](edgelabelpreferredplacement)</pre> |
+| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; [NodeMargins](nodemargins)</pre> |
+| <div id="ports">ports?</div> |  Provides information about how an edge connects to its nodes. | <pre>[PortDataProvider](portdataprovider)&lt;TEdgeData&gt;</pre> |
+| <div id="scope">scope?</div> |  Provides which edges should be routed. | <pre>[EdgeRouterScopeDataProvider](edgerouterscopedataprovider)&lt;TNodeData,TEdgeData&gt;</pre> |
+| <div id="sourcegroupids">sourceGroupIds?</div> |  Provides which edges should be grouped at source, i.e., share the beginning of their routes. | <pre>(edge: TEdgeData) =&gt; any</pre> |
+| <div id="targetgroupids">targetGroupIds?</div> |  Provides which edges should be grouped at target, i.e., share the end of their routes. | <pre>(edge: TEdgeData) =&gt; any</pre> |
 ## Playground
 
 <Playground
@@ -100,7 +90,6 @@ For more information, see [EdgeRouterData](https://docs.yworks.com/yfileshtml/#/
     const initialEdges = data.edges;
 
     const layoutOptions: EdgeRouterOptions = {
-      scope: "route-all-edges",
       minimumNodeToEdgeDistance: 20,
     };
 

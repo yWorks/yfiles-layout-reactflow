@@ -11,7 +11,7 @@ import ReactFlow, {
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 import {
-  HierarchicLayoutOptions,
+  HierarchicalLayoutOptions,
   LayoutAlgorithmOptions,
   MultiHandleNode,
   PolylineEdge,
@@ -46,8 +46,8 @@ const LayoutFlow = () => {
   // run initial layout
   useNodesMeasuredEffect(() => {
     runLayout({
-      name: 'HierarchicLayout',
-      layoutOptions: layoutOptions as HierarchicLayoutOptions
+      name: 'HierarchicalLayout',
+      layoutOptions: layoutOptions as HierarchicalLayoutOptions
     })
   })
 
@@ -74,12 +74,12 @@ const LayoutFlow = () => {
       >
         <div>
           <div>
-            <label htmlFor="orthogonal-routing">Orthogonal Routing</label>
+            <label htmlFor="automatic-edge-grouping">Automatic Edge Grouping</label>
             <input
               type="checkbox"
-              id="orthogonal-routing"
+              id="automatic-edge-grouping"
               onInput={(event: FormEvent<HTMLInputElement>) =>
-                updateLayoutConfiguration({ orthogonalRouting: event.currentTarget.checked })
+                updateLayoutConfiguration({ automaticEdgeGrouping: event.currentTarget.checked })
               }
             />
           </div>
@@ -101,8 +101,8 @@ const LayoutFlow = () => {
         <button
           onClick={() =>
             runLayout({
-              name: 'HierarchicLayout',
-              layoutOptions: layoutOptions as HierarchicLayoutOptions
+              name: 'HierarchicalLayout',
+              layoutOptions: layoutOptions as HierarchicalLayoutOptions
             })
           }
           disabled={running}

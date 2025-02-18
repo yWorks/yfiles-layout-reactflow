@@ -1,12 +1,5 @@
 import { useCallback } from 'react'
-import {
-  HierarchicLayout,
-  HierarchicLayoutData,
-  ICollection,
-  IEdge,
-  PortCandidate,
-  PortDirections
-} from 'yfiles'
+import { EdgePortCandidates, HierarchicalLayout, HierarchicalLayoutData, IEdge, PortSides } from '@yfiles/yfiles'
 import { useLayoutSupport } from '@yworks/yfiles-layout-reactflow'
 import { useReactFlow } from 'reactflow'
 
@@ -20,20 +13,25 @@ export function useCustomLayout() {
     const graph = buildGraph(getNodes(), getEdges(), getZoom())
 
     // configure a layout
-    const hierarchicLayout = new HierarchicLayout()
-    const hierarchicLayoutData = new HierarchicLayoutData({
-      sourcePortCandidates: (edge: IEdge) => {
-        if (edge.tag.id === 'e0') {
-          return ICollection.from([PortCandidate.createCandidate(PortDirections.WEST)])
-        } else if (edge.tag.id === 'e1') {
-          return ICollection.from([PortCandidate.createCandidate(PortDirections.EAST)])
+    const hierarchicalLayout = new HierarchicalLayout()
+    const hierarchicalLayoutData = new HierarchicalLayoutData({
+      ports: {
+        sourcePortCandidates: (edge: IEdge) => {
+          const candidates = new EdgePortCandidates()
+          if (edge.tag.id === 'e0') {
+            candidates.addFreeCandidate(PortSides.LEFT)
+          } else if (edge.tag.id === 'e1') {
+            candidates.addFreeCandidate(PortSides.RIGHT)
+          } else {
+            candidates.addFreeCandidate(PortSides.START_IN_FLOW)
+          }
+          return candidates
         }
-        return ICollection.from([PortCandidate.createCandidate(PortDirections.WITH_THE_FLOW)])
       }
     })
 
     // apply the layout
-    graph.applyLayout(hierarchicLayout, hierarchicLayoutData)
+    graph.applyLayout(hierarchicalLayout, hierarchicalLayoutData)
 
     // transfer the new coordinates to the data
     const { arrangedEdges, arrangedNodes } = transferLayout(graph)

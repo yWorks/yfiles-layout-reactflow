@@ -45,13 +45,12 @@ const initialNodes = data.nodes
 const initialEdges = data.edges
 
 const layoutConfiguration: LayoutConfiguration  = {
-  name: "HierarchicLayout",
+  name: "HierarchicalLayout",
   layoutOptions: {
-    orthogonalRouting: true,
     minimumLayerDistance: 50,
-    integratedEdgeLabeling: true
+    edgeLabelPlacement: 'integrated'
   },
-  layoutData: { sourceGroupIds: (edge) => edge.source, groupNodeInsets: () => 50 },
+  layoutData: { sourceGroupIds: (edge) => edge.source, groupNodePadding: () => 50 },
 }
 
 function LayoutFlow() {

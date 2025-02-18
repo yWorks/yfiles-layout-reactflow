@@ -13,7 +13,7 @@ import ReactFlow, {
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 import {
-  PreferredPlacementDescriptor,
+  EdgeLabelPreferredPlacement,
   LabelData,
   MultiHandleNode,
   PolylineEdge,
@@ -44,24 +44,24 @@ const LayoutFlow = () => {
 
   const labelPreferredPlacement = useMemo(
     () =>
-      (label: LabelData): PreferredPlacementDescriptor => {
+      (label: LabelData): EdgeLabelPreferredPlacement => {
         if (label.labelIndex === 1) {
           return {
-            sideOfEdge: 'left-of-edge',
+            edgeSide: 'left-of-edge',
             distanceToEdge: 0,
-            placeAlongEdge: 'at-source',
+            placementAlongEdge: 'at-source',
             angleReference: 'relative-to-edge-flow'
           }
         } else if (label.labelIndex === 2) {
           return {
-            sideOfEdge: 'right-of-edge',
+            edgeSide: 'right-of-edge',
             distanceToEdge: 0,
-            placeAlongEdge: 'at-target'
+            placementAlongEdge: 'at-target'
           }
         } else {
           return {
-            sideOfEdge: 'on-edge',
-            placeAlongEdge: 'at-center'
+            edgeSide: 'on-edge',
+            placementAlongEdge: 'at-center'
           }
         }
       },
@@ -76,14 +76,13 @@ const LayoutFlow = () => {
   // run initial layout
   useNodesMeasuredEffect(() => {
     runLayout({
-      name: 'HierarchicLayout',
+      name: 'HierarchicalLayout',
       layoutOptions: {
-        integratedEdgeLabeling: true,
-        considerNodeLabels: true,
-        orthogonalRouting: true
+        edgeLabelPlacement: 'integrated',
+        nodeLabelPlacement: 'consider',
       },
       layoutData: {
-        edgeLabelPreferredPlacement: labelPreferredPlacement
+        edgeLabelPreferredPlacements: labelPreferredPlacement
       }
     })
   })
@@ -107,9 +106,9 @@ const LayoutFlow = () => {
           onClick={() =>
             runLayout({
               name: 'GenericLabeling',
-              layoutOptions: { placeEdgeLabels: true, placeNodeLabels: true },
+              layoutOptions: { scope: 'node-labels' },
               layoutData: {
-                edgeLabelPreferredPlacement: labelPreferredPlacement
+                edgeLabelPreferredPlacements: labelPreferredPlacement
               }
             })
           }
@@ -120,14 +119,13 @@ const LayoutFlow = () => {
         <button
           onClick={() =>
             runLayout({
-              name: 'HierarchicLayout',
+              name: 'HierarchicalLayout',
               layoutOptions: {
-                integratedEdgeLabeling: true,
-                considerNodeLabels: true,
-                orthogonalRouting: true
+                edgeLabelPlacement: 'integrated',
+                nodeLabelPlacement: 'consider',
               },
               layoutData: {
-                edgeLabelPreferredPlacement: labelPreferredPlacement
+                edgeLabelPreferredPlacements: labelPreferredPlacement
               }
             })
           }
@@ -138,20 +136,19 @@ const LayoutFlow = () => {
         <button
           onClick={() =>
             runLayout({
-              name: 'BalloonLayout',
+              name: 'RadialTreeLayout',
               layoutOptions: {
-                integratedEdgeLabeling: true,
-                integratedNodeLabeling: true,
-                nodeLabelingPolicy: 'ray-like-leaves'
+                edgeLabelPlacement: 'integrated',
+                nodeLabelPlacement: 'ray-like-leaves'
               },
               layoutData: {
-                edgeLabelPreferredPlacement: labelPreferredPlacement
+                edgeLabelPreferredPlacements: labelPreferredPlacement
               }
             })
           }
           disabled={layoutRunning}
         >
-          Balloon Layout
+          Radial Tree Layout
         </button>
       </Panel>
     </ReactFlow>

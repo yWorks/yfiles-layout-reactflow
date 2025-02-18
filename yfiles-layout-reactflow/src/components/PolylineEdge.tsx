@@ -1,5 +1,5 @@
 import { BaseEdge, EdgeLabelRenderer, EdgeProps } from 'reactflow'
-import { GeneralPath } from 'yfiles'
+import { GeneralPath } from '@yfiles/yfiles'
 import { ReactNode } from 'react'
 import { EdgeLabels, Label } from './Labels.tsx'
 
@@ -50,7 +50,7 @@ export function PolylineEdge(props: EdgeProps) {
 
   let labels: (Label | string | ReactNode)[] = []
   if (props.label) {
-    labels.push(props.label)
+    labels.push(props.label as string)
   }
   if (props.data?.labels?.length > 0) {
     labels = labels.concat(props.data?.labels)

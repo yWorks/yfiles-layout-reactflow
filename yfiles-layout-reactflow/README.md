@@ -55,7 +55,7 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "reactflow": "^11.11.0",
-        "yfiles": "./lib-dev/yfiles-26.0.0.tgz"
+        "@yfiles/yfiles": "./lib-dev/yfiles-30.0.0.tgz"
      }
    ```
    </details>
@@ -154,7 +154,7 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
          edgeTypes={edgeTypes}
        >
          <Panel position="top-left">
-           <button onClick={() => runLayout('HierarchicLayout')}>Run Layout</button>
+           <button onClick={() => runLayout('HierarchicalLayout')}>Run Layout</button>
          </Panel>
        </ReactFlow>
      );

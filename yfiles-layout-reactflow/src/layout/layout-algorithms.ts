@@ -1,34 +1,45 @@
 import {
-  BalloonLayoutData,
+  CircularLayout,
   CircularLayoutData,
+  EdgeLabelPreferredPlacement as YFilesEdgeLabelPreferredPlacement,
+  EdgePortCandidates,
+  EdgeRouter,
   EdgeRouterData,
+  GenericLabeling,
+  GenericLabelingData,
   GenericLayoutData,
-  GroupingKeys,
-  HierarchicLayoutData,
-  ICollection,
-  IEdge,
+  HierarchicalLayout,
+  HierarchicalLayoutData,
   ILayoutAlgorithm,
   IModelItem,
   INode,
-  LabelingData,
+  Insets as YFilesInsets,
   LayoutData,
   LayoutDescriptor,
-  NodeHalo as YFilesNodeHalo,
+  LayoutKeys,
+  OrganicEdgeRouter,
+  OrganicLayout,
   OrganicLayoutData,
+  OrthogonalLayout,
   OrthogonalLayoutData,
-  PortCandidate,
-  PreferredPlacementDescriptor as YFilesPreferredPlacementDescriptor,
+  RadialLayout,
   RadialLayoutData,
+  RadialTreeLayout,
+  RadialTreeLayoutData,
+  TreeLayout,
   TreeLayoutData,
-  YInsets
-} from 'yfiles'
+  TreeReductionStage
+} from '@yfiles/yfiles'
 import {
+  ChildOrderDataProvider,
+  EdgeLabelPreferredPlacement,
+  EdgeRouterScopeDataProvider,
   Insets,
   LayoutDataProvider,
   LayoutName,
-  NodeHalo,
-  PortDirections,
-  PreferredPlacementDescriptor
+  OrganicScopeDataProvider,
+  PortDataProvider,
+  PortSides
 } from './layout-types.ts'
 
 export async function getLayoutAlgorithm(
@@ -36,56 +47,39 @@ export async function getLayoutAlgorithm(
 ): Promise<ILayoutAlgorithm> {
   switch (layoutDescriptor.name) {
     case 'GenericLabeling': {
-      const { GenericLabeling } = await import('yfiles/layout-core')
       return new GenericLabeling(layoutDescriptor.properties)
     }
-    case 'BalloonLayout': {
-      const [{ BalloonLayout }, { TreeReductionStage }, { OrganicEdgeRouter }] = await Promise.all([
-        import('yfiles/layout-core'),
-        import('yfiles/layout-tree'),
-        import('yfiles/router-other.js')
-      ])
+    case 'RadialTreeLayout': {
       return new TreeReductionStage({
-        coreLayout: new BalloonLayout(layoutDescriptor.properties),
+        coreLayout: new RadialTreeLayout(layoutDescriptor.properties),
         nonTreeEdgeRouter: new OrganicEdgeRouter()
       })
     }
-    case 'HierarchicLayout': {
-      const { HierarchicLayout } = await import('yfiles/layout-hierarchic')
-      return new HierarchicLayout(layoutDescriptor.properties)
+    case 'HierarchicalLayout': {
+      return new HierarchicalLayout(layoutDescriptor.properties)
     }
     case 'CircularLayout': {
-      const { CircularLayout } = await import('yfiles/layout-organic')
       return new CircularLayout(layoutDescriptor.properties)
     }
     case 'OrganicLayout': {
-      const { OrganicLayout } = await import('yfiles/layout-organic')
       return new OrganicLayout(layoutDescriptor.properties)
     }
     case 'OrthogonalLayout': {
-      const { OrthogonalLayout } = await import('yfiles/layout-orthogonal')
       return new OrthogonalLayout(layoutDescriptor.properties)
     }
     case 'EdgeRouter': {
-      const { EdgeRouter } = await import('yfiles/router-polyline')
       return new EdgeRouter(layoutDescriptor.properties)
     }
     case 'RadialLayout': {
-      const { RadialLayout } = await import('yfiles/layout-radial')
       return new RadialLayout(layoutDescriptor.properties)
     }
     case 'TreeLayout': {
-      const [{ TreeLayout, TreeReductionStage }, { EdgeRouter }] = await Promise.all([
-        import('yfiles/layout-tree'),
-        import('yfiles/router-polyline')
-      ])
       return new TreeReductionStage({
         coreLayout: new TreeLayout(layoutDescriptor.properties),
         nonTreeEdgeRouter: new EdgeRouter()
       })
     }
     default: {
-      const { OrganicLayout } = await import('yfiles/layout-organic')
       return new OrganicLayout()
     }
   }
@@ -96,26 +90,22 @@ export function getLayoutData<TNodeData, TEdgeData>(
   layoutDataDescriptor?: LayoutDataProvider<TNodeData, TEdgeData>,
   reactFlowElement?: HTMLDivElement
 ): LayoutData | null {
-  const layoutData = new GenericLayoutData({
-    nodeItemMappings: [
-      [
-        GroupingKeys.GROUP_NODE_INSETS_DP_KEY,
-        (node: INode) =>
-          // @ts-expect-error property-groupNodeInsets-does-not-exist-on-type-LayoutDataProvider
-          translateInsets(node, layoutDataDescriptor?.groupNodeInsets?.(node.tag), reactFlowElement)
-      ]
-    ]
-  })
+  const layoutData = new GenericLayoutData()
+  layoutData.addItemMapping(LayoutKeys.GROUP_NODE_PADDING_DATA_KEY,
+    (node: INode) =>
+      // @ts-expect-error property-groupNodePadding-does-not-exist-on-type-LayoutDataProvider
+      translatePadding(node, layoutDataDescriptor?.groupNodePadding?.(node.tag), reactFlowElement))
+
 
   switch (layoutName) {
     case 'GenericLabeling':
-      layoutData.add(new LabelingData(translateLayoutDataDescriptor(layoutDataDescriptor)))
+      layoutData.add(new GenericLabelingData(translateLayoutDataDescriptor(layoutDataDescriptor)))
       break
-    case 'BalloonLayout':
-      layoutData.add(new BalloonLayoutData(translateLayoutDataDescriptor(layoutDataDescriptor)))
+    case 'RadialTreeLayout':
+      layoutData.add(new RadialTreeLayoutData(translateLayoutDataDescriptor(layoutDataDescriptor)))
       break
-    case 'HierarchicLayout':
-      layoutData.add(new HierarchicLayoutData(translateLayoutDataDescriptor(layoutDataDescriptor)))
+    case 'HierarchicalLayout':
+      layoutData.add(new HierarchicalLayoutData(translateLayoutDataDescriptor(layoutDataDescriptor)))
       break
     case 'CircularLayout':
       layoutData.add(new CircularLayoutData(translateLayoutDataDescriptor(layoutDataDescriptor)))
@@ -149,27 +139,36 @@ function translateLayoutDataDescriptor<TNodeData, TEdgeData>(
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const translatedLayoutDataDescriptor: { [key: string]: (item: IModelItem) => unknown } = {}
+  const translatedLayoutDataDescriptor: {
+    [key: string]: ((item: IModelItem) => unknown) | { [key: string]: (item: IModelItem) => unknown } | {
+      [key: string]: (item: IModelItem) => (item1: IModelItem, item2: IModelItem) => unknown
+    }
+  } = {}
   Object.keys(layoutDataDescriptor).forEach((key: string) => {
     const originalFunction: (item: IModelItem) => unknown =
       layoutDataDescriptor[key as keyof LayoutDataProvider<TNodeData, TEdgeData>]
     if (originalFunction) {
-      // @ts-expect-error property-groupNodeInsets-does-not-exist-on-type-LayoutDataProvider
-      if (layoutDataDescriptor.groupNodeInsets) {
-        return
-      } else if (key === 'edgeLabelPreferredPlacement') {
+      // @ts-expect-error property-groupNodePadding-does-not-exist-on-type-LayoutDataProvider
+      if (layoutDataDescriptor.groupNodePadding) {
+        return translatedLayoutDataDescriptor.groupNodePadding = (item: IModelItem) =>
+          translateNodeMargins(originalFunction(item.tag) as Insets)
+      } else if (key === 'edgeLabelPreferredPlacements') {
         translatedLayoutDataDescriptor[key] = (item: IModelItem) =>
-          translatePreferredPlacementDescriptor(
-            originalFunction(item.tag) as PreferredPlacementDescriptor
+          translateEdgeLabelPreferredPlacement(
+            originalFunction(item.tag) as EdgeLabelPreferredPlacement
           )
-      } else if (key === 'nodeHalos') {
+      } else if (key === 'nodeMargins') {
         translatedLayoutDataDescriptor[key] = (item: IModelItem) =>
-          translateNodeHalo(originalFunction(item.tag) as NodeHalo)
-      } else if (key === 'sourcePortCandidates' || key === 'targetPortCandidates') {
-        translatedLayoutDataDescriptor[key] = (item: IModelItem) =>
-          translatePortCandidates(originalFunction(item.tag) as unknown as PortDirections[])
-      } else if (key === 'outEdgeComparers') {
-        translatedLayoutDataDescriptor[key] = (item: IModelItem) => translateOutEdgeComparers<TEdgeData>(originalFunction(item.tag) as (edge1: TEdgeData, edge2: TEdgeData) => number)
+          translateNodeMargins(originalFunction(item.tag) as Insets)
+      } else if (key === 'ports') {
+        // @ts-expect-error property-ports-does-not-exist-on-type-LayoutDataProvider
+        translatedLayoutDataDescriptor[key] = translatePortDataProvider(layoutDataDescriptor[key] as PortDataProvider<TEdgeData>)
+      } else if (key === 'childOrder') {
+        // @ts-expect-error property-childOrder-does-not-exist-on-type-LayoutDataProvider
+        translatedLayoutDataDescriptor[key] = translateChildOrderDataProvider(layoutDataDescriptor[key] as ChildOrderDataProvider<TNodeData, TEdgeData>)
+      } else if (key === 'scope') {
+        // @ts-expect-error property-scope-does-not-exist-on-type-LayoutDataProvider
+        translatedLayoutDataDescriptor[key] = translateScopeDataProvider(layoutDataDescriptor[key] as (OrganicScopeDataProvider<TNodeData> | EdgeRouterScopeDataProvider<TNodeData, TEdgeData>))
       } else {
         translatedLayoutDataDescriptor[key] = (item: IModelItem) => originalFunction(item.tag)
       }
@@ -179,43 +178,86 @@ function translateLayoutDataDescriptor<TNodeData, TEdgeData>(
   return translatedLayoutDataDescriptor
 }
 
-function translateOutEdgeComparers<TEdgeData>(outEdgeComparer: (edge1: TEdgeData, edge2: TEdgeData) => number) {
-  console.log('translateOutEdgeComparers')
-  return (e1: IEdge, e2: IEdge) => outEdgeComparer(e1.tag, e2.tag)
+function translateChildOrderDataProvider<TNodeData, TEdgeData>(childOrder: PortDataProvider<TEdgeData>): {
+  [key: string]: (item: IModelItem) => (item1: IModelItem, item2: IModelItem) => unknown
+} {
+  const translatedChildOrderData: {
+    [key: string]: (item: IModelItem) => (item1: IModelItem, item2: IModelItem) => unknown
+  } = {}
+  Object.keys(childOrder).forEach((key: string) => {
+    const originalFunction: (item: IModelItem) => unknown =
+      childOrder[key as keyof LayoutDataProvider<TNodeData, TEdgeData>]
+    translatedChildOrderData[key] = (node: IModelItem) => translateOutEdgeComparers<TEdgeData>(originalFunction(node.tag) as (edge1: TEdgeData, edge2: TEdgeData) => number)
+  })
+  return translatedChildOrderData
 }
 
-function translatePortCandidates(sides: PortDirections[]): ICollection<PortCandidate> {
-  return ICollection.from(sides.map(side => PortCandidate.createCandidate(side)))
+function translateOutEdgeComparers<TEdgeData>(outEdgeComparer: (edge1: TEdgeData, edge2: TEdgeData) => number): (item1: IModelItem, item2: IModelItem) => number {
+  return (e1: IModelItem, e2: IModelItem) => outEdgeComparer(e1.tag, e2.tag)
 }
 
-function translateNodeHalo(nodeHalo: NodeHalo): YFilesNodeHalo {
-  if (typeof nodeHalo === 'number') {
-    return YFilesNodeHalo.create(nodeHalo)
+function translatePortDataProvider<TNodeData, TEdgeData>(ports: PortDataProvider<TEdgeData>): {
+  [key: string]: (item: IModelItem) => unknown
+} {
+  const translatedPortData: { [key: string]: (item: IModelItem) => unknown } = {}
+  Object.keys(ports).forEach((key: string) => {
+    const originalFunction: (item: IModelItem) => unknown =
+      ports[key as keyof LayoutDataProvider<TNodeData, TEdgeData>]
+    translatedPortData[key] = key === 'sourcePortCandidates' || key === 'targetPortCandidates'
+      ? (item: IModelItem) => translatePortCandidates(originalFunction(item.tag) as unknown as PortSides[])
+      : (item: IModelItem) => originalFunction(item.tag)
+  })
+  return translatedPortData
+}
+
+function translatePortCandidates(sides: PortSides[]): EdgePortCandidates {
+  const portCandidates = new EdgePortCandidates()
+  sides.forEach(side => {
+    portCandidates.addFreeCandidate(side)
+  })
+  return portCandidates
+}
+
+function translateScopeDataProvider<TNodeData, TEdgeData>(scope: OrganicScopeDataProvider<TNodeData> | EdgeRouterScopeDataProvider<TNodeData, TEdgeData>): {
+  [key: string]: (item: IModelItem) => unknown
+} {
+  const translatedScopeData: { [key: string]: (item: IModelItem) => unknown } = {}
+  Object.keys(scope).forEach((key: string) => {
+    const originalFunction: (item: IModelItem) => unknown =
+      scope[key as keyof LayoutDataProvider<TNodeData, TEdgeData>]
+    translatedScopeData[key] = (item: IModelItem) => originalFunction(item.tag)
+  })
+  return translatedScopeData
+}
+
+function translateNodeMargins(insets: Insets | number): YFilesInsets {
+  if (typeof insets === 'number') {
+    return new YFilesInsets(insets)
   }
-  return YFilesNodeHalo.create(nodeHalo.top, nodeHalo.left, nodeHalo.bottom, nodeHalo.right)
+  return new YFilesInsets(insets.top, insets.right, insets.bottom, insets.left)
 }
 
-function translateInsets(
+function translatePadding(
   node: INode,
   insets?: Insets,
   reactFlowElement?: HTMLDivElement
-): YInsets | null {
+): YFilesInsets | null {
   if (insets) {
     if (typeof insets === 'number') {
-      return new YInsets(insets, insets, insets, insets)
+      return new YFilesInsets(insets, insets, insets, insets)
     }
-    return new YInsets(insets.top, insets.left, insets.bottom, insets.right)
+    return new YFilesInsets(insets.top, insets.right, insets.bottom, insets.left)
   }
-  return getGroupNodeInsets(node, reactFlowElement)
+  return getGroupNodePadding(node, reactFlowElement)
 }
 
-function translatePreferredPlacementDescriptor(
-  descriptor: PreferredPlacementDescriptor
-): YFilesPreferredPlacementDescriptor {
-  return new YFilesPreferredPlacementDescriptor(descriptor)
+function translateEdgeLabelPreferredPlacement(
+  descriptor: EdgeLabelPreferredPlacement
+): YFilesEdgeLabelPreferredPlacement {
+  return new YFilesEdgeLabelPreferredPlacement(descriptor)
 }
 
-function getGroupNodeInsets(node: INode, reactFlowElement?: HTMLDivElement) {
+function getGroupNodePadding(node: INode, reactFlowElement?: HTMLDivElement): YFilesInsets {
   const root = getRootNode(reactFlowElement)
   const nodeElement = root.querySelector(`[data-id="${node.tag.id}"]`)
   if (nodeElement) {
@@ -224,9 +266,9 @@ function getGroupNodeInsets(node: INode, reactFlowElement?: HTMLDivElement) {
     const paddingLeft = parseInt(computedStyle.getPropertyValue('padding-left')) ?? 0
     const paddingBottom = parseInt(computedStyle.getPropertyValue('padding-bottom')) ?? 0
     const paddingRight = parseInt(computedStyle.getPropertyValue('padding-right')) ?? 0
-    return new YInsets(paddingTop, paddingLeft, paddingBottom, paddingRight)
+    return new YFilesInsets(paddingTop, paddingLeft, paddingBottom, paddingRight)
   }
-  return new YInsets(0, 0, 0, 0)
+  return new YFilesInsets(0, 0, 0, 0)
 }
 
 export function getRootNode(

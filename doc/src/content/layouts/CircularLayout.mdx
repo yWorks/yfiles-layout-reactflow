@@ -21,7 +21,7 @@ several edge routing styles for internal and external edges, and others.
 It also automatically places node and edge labels when the corresponding properties are activated. Node labels can also be
 placed in a ray-like manner.
 
-Additional customization for individual graph elements, such as `nodeTypes`, `nodeHalos`, and more, can be achieved via
+Additional customization for individual graph elements, such as `nodeTypes`, `nodeMargins`, and more, can be achieved via
 the `CircularLayoutDataProvider`.
 
 Feel free to play around with the hierarchic layout configuration in our [online playground](#my-playground).
@@ -33,13 +33,11 @@ found [here](https://docs.yworks.com/yfileshtml/#/api/CircularLayout).
 runLayout({
   name: 'CircularLayout',
   layoutOptions: {
-    integratedEdgeLabeling: true,
-    integratedNodeLabeling: true,
-    nodeLabelingPolicy: 'ray-like-leaves',
-    layoutStyle: 'single-cycle'
+    edgeLabelPlacement: 'integrated',
+    nodeLabelPlacement: 'ray-like-leaves',
   },
   layoutData: {
-    nodeHalos: () => 10
+    nodeMargins: () => 10
   }
 })
 ```
@@ -48,31 +46,21 @@ runLayout({
 
 The configuration options for the circular layout algorithm that arranges graphs in a circular fashion. <p> For more information on the layout algorithm and its available settings, see [CircularLayout](https://docs.yworks.com/yfileshtml/#/api/CircularLayout). </p>
 
-| Name  | Type |
+| Name | Type |
 |---|---|
-| <div id="componentlayoutenabled">componentLayoutEnabled?</div> | `boolean` |
-| <div id="considernodelabels">considerNodeLabels?</div> | `boolean` |
-| <div id="defaultedgelayoutdescriptor">defaultEdgeLayoutDescriptor?</div> | [`CircularLayoutEdgeLayoutDescriptor`](https://docs.yworks.com/yfileshtml/#/api/CircularLayoutEdgeLayoutDescriptor) |
-| <div id="edgeroutingpolicy">edgeRoutingPolicy?</div> | `"interior"`  &#124; `"automatic"`  &#124; `"exterior"`  &#124; `"marked-exterior"` |
-| <div id="exterioredgelayoutdescriptor">exteriorEdgeLayoutDescriptor?</div> | [`ExteriorEdgeLayoutDescriptor`](https://docs.yworks.com/yfileshtml/#/search/ExteriorEdgeLayoutDescriptor) |
-| <div id="fromsketchmode">fromSketchMode?</div> | `boolean` |
-| <div id="hidegroupsstageenabled">hideGroupsStageEnabled?</div> | `boolean` |
-| <div id="integratednodelabeling">integratedNodeLabeling?</div> | `boolean` |
-| <div id="labelingenabled">labelingEnabled?</div> | `boolean` |
-| <div id="layoutorientation">layoutOrientation?</div> | `"top-to-bottom"` &#124; `"left-to-right"`  &#124; `"right-to-left"`  &#124; `"bottom-to-top"` |
-| <div id="layoutstyle">layoutStyle?</div> | `"bcc-compact"`  &#124; `"bcc-isolated"`  &#124; `"custom-groups"`  &#124; `"single-cycle"` |
-| <div id="maximumdeviationangle">maximumDeviationAngle?</div> | `number` |
-| <div id="nodelabelingpolicy">nodeLabelingPolicy?</div> | `"ray-like"`  &#124; `"ray-like-leaves"`  &#124; `"horizontal"` |
-| <div id="nodelabelspacing">nodeLabelSpacing?</div> | `number` |
-| <div id="orientationlayoutenabled">orientationLayoutEnabled?</div> | `boolean` |
-| <div id="paralleledgerouterenabled">parallelEdgeRouterEnabled?</div> | `boolean` |
-| <div id="partitionstyle">partitionStyle?</div> | `"cycle"`  &#124; `"disk"`  &#124; `"organic"`  &#124; `"compact-disk"` |
-| <div id="placechildrenoncommonradius">placeChildrenOnCommonRadius?</div> | `boolean` |
-| <div id="selflooprouterenabled">selfLoopRouterEnabled?</div> | `boolean` |
-| <div id="starsubstructuresize">starSubstructureSize?</div> | `number` |
-| <div id="starsubstructurestyle">starSubstructureStyle?</div> | `"none"`  &#124; `"radial"`  &#124; `"separated-radial"` |
-| <div id="starsubstructuretypeseparation">starSubstructureTypeSeparation?</div> | `boolean` |
-| <div id="subgraphlayoutenabled">subgraphLayoutEnabled?</div> | `boolean` |
+| <div id="edgedescriptor">edgeDescriptor?</div> | <pre>CircularLayoutEdgeDescriptor</pre> |
+| <div id="edgeroutingpolicy">edgeRoutingPolicy?</div> | <pre>"interior" &#124; "automatic" &#124; "exterior"</pre> |
+| <div id="exterioredgedescriptor">exteriorEdgeDescriptor?</div> | <pre>CircularLayoutExteriorEdgeDescriptor</pre> |
+| <div id="fromsketchmode">fromSketchMode?</div> | <pre>boolean</pre> |
+| <div id="maximumdeviationangle">maximumDeviationAngle?</div> | <pre>number</pre> |
+| <div id="nodelabelplacement">nodeLabelPlacement?</div> | <pre>"consider" &#124; "generic" &#124; "ignore" &#124; "ray-like" &#124; "ray-like-leaves" &#124; "horizontal"</pre> |
+| <div id="nodelabelspacing">nodeLabelSpacing?</div> | <pre>number</pre> |
+| <div id="partitiondescriptor">partitionDescriptor?</div> | <pre>PartitionDescriptor</pre> |
+| <div id="partitioningpolicy">partitioningPolicy?</div> | <pre>"bcc-compact" &#124; "bcc-isolated" &#124; "single-cycle"</pre> |
+| <div id="placechildrenoncommonradius">placeChildrenOnCommonRadius?</div> | <pre>boolean</pre> |
+| <div id="starsubstructuresize">starSubstructureSize?</div> | <pre>number</pre> |
+| <div id="starsubstructurestyle">starSubstructureStyle?</div> | <pre>"none" &#124; "radial" &#124; "separated-radial"</pre> |
+| <div id="starsubstructuretypeseparation">starSubstructureTypeSeparation?</div> | <pre>boolean</pre> |
 
 
 ## CircularLayoutDataProvider&lt;TNodeData, TEdgeData&gt;
@@ -84,11 +72,10 @@ For more information, see [CircularLayoutData](https://docs.yworks.com/yfileshtm
 
 | Name | Description | Type |
 |---|---|---|
-| <div id="edgedirectedness">edgeDirectedness?</div> |  Provides 0, 1, or -1 for each edge to indicate if it is undirected, in layout direction, or against layout direction. | `(edge: TEdgeData) => number` |
-| <div id="nodehalos">nodeHalos?</div> |  Provides halos for nodes, i.e., a rectangular area around a specific node considered during the layout. | `(node: TNodeData) => `<TypeLink type="NodeHalo"/> |
-| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | `(node: TNodeData) => any` |
-
-
+| <div id="edgedirectedness">edgeDirectedness?</div> |  Provides 0, 1, or -1 for each edge to indicate if it is undirected, in layout direction, or against layout direction. | <pre>(edge: TEdgeData) =&gt; number</pre> |
+| <div id="groupnodepadding">groupNodePadding?</div> |  Provides the paddings for the group nodes, i.e., a rectangular area like padding in the interior of the node. | <pre>(node: TNodeData) =&gt; [Insets](insets)</pre> |
+| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; [NodeMargins](nodemargins)</pre> |
+| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | <pre>(node: TNodeData) =&gt; any</pre> |
 ## Playground
 
 <Playground
@@ -106,7 +93,7 @@ const nodeTypes = {
   const initialEdges = data.edges
 
   const layoutOptions: CircularLayoutOptions = {
-    integratedNodeLabeling: true
+    nodeLabelPlacement: 'ray-like'
   };
 
   function LayoutFlow() {

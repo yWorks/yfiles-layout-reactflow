@@ -23,7 +23,7 @@ via the `TreeLayoutOptions`. Fundamental options include the custom ordering of 
 the arrangement of the nodes for each subtree., and others.
 It also automatically places node labels when the corresponding properties are activated.
 
-Additional customization for individual graph elements, such as `edgeLabelPreferredPlacement`, `nodeHalos`, and more, can be achieved via
+Additional customization for individual graph elements, such as `edgeLabelPreferredPlacements`, `nodeMargins`, and more, can be achieved via
 the `TreeLayoutDataProvider`.
 
 Feel free to play around with the hierarchic layout configuration in our [online playground](#my-playground).
@@ -35,13 +35,13 @@ found [here](https://docs.yworks.com/yfileshtml/#/api/TreeLayout).
 runLayout({
   name: 'TreeLayout',
   layoutOptions: {
-    multiParentAllowed: true,
-    integratedEdgeLabeling: true,
+    allowMultiParent: true,
+    edgeLabelPlacement: 'integrated',
     layoutOrientation: 'left-to-right'
   },
   layoutData: {
-    edgeLabelPreferredPlacement: () => ({
-      sideOfEdge: 'left-of-edge',
+    edgeLabelPreferredPlacements: () => ({
+      edgeSize: 'left-of-edge',
       distanceToEdge: 20,
     }),
   }
@@ -55,20 +55,11 @@ The configuration options for the tree layout algorithm that arranges graphs wit
 
 | Name | Type |
 |---|---|
-| <div id="componentlayoutenabled">componentLayoutEnabled?</div> | `boolean` |
-| <div id="considernodelabels">considerNodeLabels?</div> | `boolean` |
-| <div id="defaultleafplacer">defaultLeafPlacer?</div> | [`ITreeLayoutNodePlacer`](https://docs.yworks.com/yfileshtml/#/api/ITreeLayoutNodePlacer) |
-| <div id="defaultnodeplacer">defaultNodePlacer?</div> | [`ITreeLayoutNodePlacer`](https://docs.yworks.com/yfileshtml/#/api/ITreeLayoutNodePlacer) |
-| <div id="groupingsupported">groupingSupported?</div> | `boolean` |
-| <div id="hidegroupsstageenabled">hideGroupsStageEnabled?</div> | `boolean` |
-| <div id="integratededgelabeling">integratedEdgeLabeling?</div> | `boolean` |
-| <div id="labelingenabled">labelingEnabled?</div> | `boolean` |
-| <div id="layoutorientation">layoutOrientation?</div> | `"top-to-bottom"` &#124; `"left-to-right"`  &#124; `"right-to-left"`  &#124; `"bottom-to-top"` |
-| <div id="multiparentallowed">multiParentAllowed?</div> | `boolean` |
-| <div id="orientationlayoutenabled">orientationLayoutEnabled?</div> | `boolean` |
-| <div id="paralleledgerouterenabled">parallelEdgeRouterEnabled?</div> | `boolean` |
-| <div id="selflooprouterenabled">selfLoopRouterEnabled?</div> | `boolean` |
-| <div id="subgraphlayoutenabled">subgraphLayoutEnabled?</div> | `boolean` |
+| <div id="allowmultiparent">allowMultiParent?</div> | <pre>boolean</pre> |
+| <div id="defaultsubtreeplacer">defaultSubtreePlacer?</div> | <pre>ISubtreePlacer</pre> |
+| <div id="edgelabelplacement">edgeLabelPlacement?</div> | <pre>"generic" &#124; "ignore" &#124; "integrated"</pre> |
+| <div id="layoutorientation">layoutOrientation?</div> | <pre>"top-to-bottom" &#124; "left-to-right" &#124; "right-to-left" &#124; "bottom-to-top"</pre> |
+| <div id="nodelabelplacement">nodeLabelPlacement?</div> | <pre>"consider" &#124; "generic" &#124; "ignore"</pre> |
 
 
 ## TreeLayoutDataProvider&lt;TNodeData, TEdgeData, TLabelData&gt;
@@ -77,14 +68,14 @@ A provider for individual options per nodes or edges in a [TreeLayout](https://d
 
 For more information, see [TreeLayoutData](https://docs.yworks.com/yfileshtml/#/api/TreeLayoutData).
 
-
 | Name | Description | Type |
 |---|---|---|
-| <div id="assistantnodes">assistantNodes?</div> |  Provides which nodes should be placed separately from their siblings. | `(node: TNodeData) => boolean` |
-| <div id="edgelabelpreferredplacement">edgeLabelPreferredPlacement?</div> |  Provides descriptors for the placement of edge labels. | `(label:` <TypeLink type="LabelData"/>`) =>` <TypeLink type="PreferredPlacementDescriptor"/> |
-| <div id="nodehalos">nodeHalos?</div> |  Provides halos for nodes, i.e., a rectangular area around a specific node considered during the layout. | `(node: TNodeData) => `<TypeLink type="NodeHalo"/> |
-| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | `(node: TNodeData) => any` |
-| <div id="outedgecomparers">outEdgeComparers?</div> |  Provides an order for outgoing edges at the given node in which the edges are arranged. | `(node: TNodeData) => (edge1: TEdgeData, edge2: TEdgeData) => number` |
+| <div id="assistantnodes">assistantNodes?</div> |  Provides which nodes should be placed separately from their siblings. | <pre>(node: TNodeData) =&gt; boolean</pre> |
+| <div id="childorder">childOrder?</div> |  Provides an order for outgoing edges at the given node in which the edges are arranged. | <pre>[ChildOrderDataProvider](childorderdataprovider)&lt;TNodeData,TEdgeData&gt;</pre> |
+| <div id="edgelabelpreferredplacements">edgeLabelPreferredPlacements?</div> |  Provides descriptors for the placement of edge labels. | <pre>(label: [LabelData](labeldata)) =&gt; [EdgeLabelPreferredPlacement](edgelabelpreferredplacement)</pre> |
+| <div id="groupnodepadding">groupNodePadding?</div> |  Provides the paddings for the group nodes, i.e., a rectangular area like padding in the interior of the node. | <pre>(node: TNodeData) =&gt; [Insets](insets)</pre> |
+| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; [NodeMargins](nodemargins)</pre> |
+| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | <pre>(node: TNodeData) =&gt; any</pre> |
 
 
 ## Playground
@@ -104,13 +95,13 @@ const nodeTypes = {
   const initialEdges = data.edges
 
   const layoutOptions: TreeLayoutOptions = {
-    integratedEdgeLabeling: true,
-    defaultNodePlacer: new yfiles.CompactNodePlacer()
+    edgeLabelPlacement: 'integrated',
+    defaultSubtreePlacer: new yfiles.AssistantSubtreePlacer({ childSubtreePlacer: new yfiles.CompactSubtreePlacer() })
   }
 
   const layoutData: TreeLayoutDataProvider<NodeProps, EdgeProps> = {
     assistantNodes: (node) => node.data.assistant as boolean,
-    nodeHalos: () => 10
+    nodeMargins: () => 10
   }
 
   function LayoutFlow() {

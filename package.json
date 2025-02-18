@@ -1,6 +1,6 @@
 {
   "name": "@yworks/yfiles-layout-reactflow-root",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "license": "SEE LICENSE IN ./LICENSE",
@@ -11,7 +11,7 @@
     "build-docs": "npm run build && npm run --prefix doc dist"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^9.1.2"
   },
   "workspaces": [
     "examples",

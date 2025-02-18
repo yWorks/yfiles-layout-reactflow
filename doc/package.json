@@ -12,20 +12,20 @@
     "dist": "npm run build-docs && npm run build"
   },
   "dependencies": {
-    "@astrojs/check": "^0.4.1",
-    "@astrojs/mdx": "^2.1.1",
-    "@astrojs/preact": "^3.1.0",
-    "@astrojs/rss": "^4.0.2",
-    "preact": "^10.19.3",
-    "sass": "^1.50.0",
-    "typescript": "^5.3.3",
-    "@prettier/sync": "^0.5.1"
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^4.0.8",
+    "@astrojs/preact": "^4.0.4",
+    "@astrojs/rss": "^4.0.11",
+    "preact": "^10.25.4",
+    "sass": "^1.84.0",
+    "typescript": "^5.7.3",
+    "@prettier/sync": "^0.5.2"
   },
   "devDependencies": {
-    "@astrojs/tailwind": "^5.1.0",
-    "@microsoft/api-extractor": "^7.39.1",
-    "@types/node": "^20.11.30",
-    "astro": "^4.1.2",
-    "fs-extra": "^11.2.0"
+    "@astrojs/tailwind": "^6.0.0",
+    "@microsoft/api-extractor": "^7.49.2",
+    "@types/node": "^22.13.1",
+    "astro": "^5.2.5",
+    "fs-extra": "^11.3.0"
   }
 }

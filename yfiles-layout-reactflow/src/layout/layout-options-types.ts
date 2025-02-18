@@ -1,20 +1,19 @@
 import {
-  CircularLayoutEdgeLayoutDescriptor,
-  ExteriorEdgeLayoutDescriptor,
-  Grid,
-  HierarchicLayoutEdgeLayoutDescriptor,
-  HierarchicLayoutNodeLayoutDescriptor,
-  ITreeLayoutNodePlacer,
-  OrthogonalLayoutEdgeLayoutDescriptor
-} from 'yfiles'
+  CircularLayoutEdgeDescriptor,
+  CircularLayoutExteriorEdgeDescriptor, EdgeRouterEdgeDescriptor,
+  HierarchicalLayoutEdgeDescriptor,
+  HierarchicalLayoutNodeDescriptor,
+  ISubtreePlacer, LabelingCosts,
+  OrthogonalLayoutEdgeDescriptor, PartitionDescriptor
+} from '@yfiles/yfiles'
 
 /**
  * All layout configurations supported by {@link useLayout}.
  */
 export type LayoutAlgorithmOptions =
   | GenericLabelingOptions
-  | BalloonLayoutOptions
-  | HierarchicLayoutOptions
+  | RadialTreeLayoutOptions
+  | HierarchicalLayoutOptions
   | CircularLayoutOptions
   | OrganicLayoutOptions
   | OrthogonalLayoutOptions
@@ -30,92 +29,54 @@ export type LayoutAlgorithmOptions =
  * </p>
  */
 export interface GenericLabelingOptions {
+  defaultEdgeLabelingCosts?: LabelingCosts
+  defaultNodeLabelingCosts?: LabelingCosts
   deterministic?: boolean
-  maximumDuration?: number
-  customProfitModelRatio?: number
-  optimizationStrategy?:
-    | 'balanced'
-    | 'node-overlap'
-    | 'label-overlap'
-    | 'edge-overlap'
-    | 'preferred-placement'
-    | 'partition-grid-overlap'
-    | 'none'
-  removeNodeOverlaps?: boolean
-  removeEdgeOverlaps?: boolean
-  reduceAmbiguity?: boolean
   moveInternalNodeLabels?: boolean
   reduceLabelOverlaps?: boolean
-  placeNodeLabels?: boolean
-  placeEdgeLabels?: boolean
-  autoFlipping?: boolean
-  edgeGroupOverlapAllowed?: boolean
+  scope?: 'all' | 'edge-labels' | 'node-labels'
+  stopDuration?: number
 }
 
 /**
- * The configuration options for the balloon layout algorithm
- * that arranges the subtrees of the tree graph in a balloon-like fashion.
+ * The configuration options for the radial tree layout algorithm
+ * that arranges the subtrees of the tree graph in a radial fashion.
  * <p>
  * For more information on the layout algorithm and its available settings,
- * see [BalloonLayout]{@link https://docs.yworks.com/yfileshtml/#/api/BalloonLayout}.
+ * see [RadialTreeLayout]{@link https://docs.yworks.com/yfileshtml/#/api/RadialTreeLayout}.
  * </p>
  */
-export interface BalloonLayoutOptions {
-  childOrderingPolicy?: 'compact' | 'symmetric'
-  minimumNodeDistance?: number
-  fromSketchMode?: boolean
-  rootNodePolicy?: 'directed-root' | 'center-root' | 'weighted-center-root' | 'selected-root'
-  preferredChildWedge?: number
-  preferredRootWedge?: number
+export interface RadialTreeLayoutOptions {
   allowOverlaps?: boolean
-  compactnessFactor?: number
-  minimumEdgeLength?: number
-  considerNodeLabels?: boolean
-  interleavedMode?: 'off' | 'all-nodes' | 'marked-nodes'
-  childAlignmentPolicy?: 'plain' | 'same-center' | 'compact' | 'smart'
-  integratedNodeLabeling?: boolean
-  integratedEdgeLabeling?: boolean
-  nodeLabelingPolicy?: 'ray-like' | 'ray-like-leaves' | 'horizontal'
-  nodeLabelSpacing?: number
-  edgeLabelSpacing?: number
   chainStraighteningMode?: boolean
-  orientationLayoutEnabled?: boolean
-  layoutOrientation?: 'top-to-bottom' | 'left-to-right' | 'right-to-left' | 'bottom-to-top'
-  selfLoopRouterEnabled?: boolean
-  labelingEnabled?: boolean
-  hideGroupsStageEnabled?: boolean
-  componentLayoutEnabled?: boolean
-  parallelEdgeRouterEnabled?: boolean
-  subgraphLayoutEnabled?: boolean
+  childAlignmentPolicy?: 'plain' | 'same-center' | 'compact' | 'smart'
+  childOrderingPolicy?: 'compact' | 'symmetric' | 'from-sketch'
+  compactnessFactor?: number
+  edgeLabelPlacement?: 'generic' | 'ignore' | 'integrated'
+  edgeLabelSpacing?: number
+  minimumEdgeLength?: number
+  minimumNodeDistance?: number
+  nodeLabelPlacement?: 'consider' | 'generic' | 'horizontal' | 'ignore' | 'ray-like' | 'ray-like-leaves'
+  nodeLabelSpacing?: number
+  preferredChildSectorAngle?: number
+  preferredRootSectorAngle?: number
+  rootSelectionPolicy?: 'directed-root' | 'center-root' | 'weighted-center-root'
 }
 
 /**
  * The configuration options for the hierarchic layout algorithm that arranges graphs in a hierarchic fashion.
  * <p>
  * For more information on the layout algorithm and its available settings,
- * see [HierarchicLayout]{@link https://docs.yworks.com/yfileshtml/#/api/HierarchicLayout}.
+ * see [HierarchicalLayout]{@link https://docs.yworks.com/yfileshtml/#/api/HierarchicalLayout}.
  * </p>
  */
-export interface HierarchicLayoutOptions {
-  groupAlignmentPolicy?: 'top' | 'center' | 'bottom'
-  compactGroups?: boolean
-  componentArrangementPolicy?: 'compact' | 'topmost'
-  maximumDuration?: number
-  recursiveGroupLayering?: boolean
-  gridSpacing?: number
-  backLoopRouting?: boolean
-  backLoopRoutingForSelfLoops?: boolean
+export interface HierarchicalLayoutOptions {
   automaticEdgeGrouping?: boolean
-  orthogonalRouting?: boolean
-  integratedEdgeLabeling?: boolean
-  considerNodeLabels?: boolean
-  minimumLayerDistance?: number
-  stopAfterLayering?: boolean
-  stopAfterSequencing?: boolean
-  nodeToNodeDistance?: number
-  nodeToEdgeDistance?: number
-  edgeToEdgeDistance?: number
-  separateLayers?: boolean
+  componentArrangementPolicy?: 'compact' | 'topmost'
+  defaultEdgeDescriptor?: HierarchicalLayoutEdgeDescriptor
+  defaultNodeDescriptor?: HierarchicalLayoutNodeDescriptor
+  edgeDistance?: number
+  edgeLabelPlacement?: 'generic' | 'ignore' | 'integrated'
   fromScratchLayeringStrategy?:
     | 'hierarchical-topmost'
     | 'hierarchical-optimal'
@@ -125,17 +86,16 @@ export interface HierarchicLayoutOptions {
     | 'from-sketch'
     | 'user-defined'
     | 'unknown'
-  layoutMode?: 'incremental' | 'from-scratch'
-  edgeLayoutDescriptor?: HierarchicLayoutEdgeLayoutDescriptor
-  nodeLayoutDescriptor?: HierarchicLayoutNodeLayoutDescriptor
-  orientationLayoutEnabled?: boolean
+  fromSketchMode?: boolean
+  gridSpacing?: number
+  groupAlignmentPolicy?: 'top' | 'center' | 'bottom'
+  groupLayeringPolicy?: 'ignore-groups' | 'recursive' | 'recursive-compact'
   layoutOrientation?: 'top-to-bottom' | 'left-to-right' | 'right-to-left' | 'bottom-to-top'
-  selfLoopRouterEnabled?: boolean
-  labelingEnabled?: boolean
-  hideGroupsStageEnabled?: boolean
-  componentLayoutEnabled?: boolean
-  parallelEdgeRouterEnabled?: boolean
-  subgraphLayoutEnabled?: boolean
+  minimumLayerDistance?: number
+  nodeDistance?: number
+  nodeLabelPlacement?: 'consider' | 'generic' | 'ignore'
+  nodeToEdgeDistance?: number
+  stopDuration?: number
 }
 
 /**
@@ -146,29 +106,19 @@ export interface HierarchicLayoutOptions {
  * </p>
  */
 export interface CircularLayoutOptions {
-  considerNodeLabels?: boolean
-  integratedNodeLabeling?: boolean
-  nodeLabelSpacing?: number
-  nodeLabelingPolicy?: 'ray-like' | 'ray-like-leaves' | 'horizontal'
-  placeChildrenOnCommonRadius?: boolean
+  edgeDescriptor?: CircularLayoutEdgeDescriptor
+  edgeRoutingPolicy?: 'interior' | 'automatic' | 'exterior'
+  exteriorEdgeDescriptor?: CircularLayoutExteriorEdgeDescriptor
   fromSketchMode?: boolean
-  starSubstructureStyle?: 'none' | 'radial' | 'separated-radial'
-  starSubstructureSize?: number
-  starSubstructureTypeSeparation?: boolean
   maximumDeviationAngle?: number
-  layoutStyle?: 'bcc-compact' | 'bcc-isolated' | 'custom-groups' | 'single-cycle'
-  partitionStyle?: 'cycle' | 'disk' | 'organic' | 'compact-disk'
-  exteriorEdgeLayoutDescriptor?: ExteriorEdgeLayoutDescriptor
-  defaultEdgeLayoutDescriptor?: CircularLayoutEdgeLayoutDescriptor
-  edgeRoutingPolicy?: 'interior' | 'automatic' | 'exterior' | 'marked-exterior'
-  orientationLayoutEnabled?: boolean
-  layoutOrientation?: 'top-to-bottom' | 'left-to-right' | 'right-to-left' | 'bottom-to-top'
-  selfLoopRouterEnabled?: boolean
-  labelingEnabled?: boolean
-  hideGroupsStageEnabled?: boolean
-  componentLayoutEnabled?: boolean
-  parallelEdgeRouterEnabled?: boolean
-  subgraphLayoutEnabled?: boolean
+  nodeLabelPlacement?: 'consider' | 'generic' | 'ignore' | 'ray-like' | 'ray-like-leaves' | 'horizontal'
+  nodeLabelSpacing?: number
+  partitionDescriptor?: PartitionDescriptor
+  partitioningPolicy?: 'bcc-compact' | 'bcc-isolated' | 'single-cycle'
+  placeChildrenOnCommonRadius?: boolean
+  starSubstructureSize?: number
+  starSubstructureStyle?: 'none' | 'radial' | 'separated-radial'
+  starSubstructureTypeSeparation?: boolean
 }
 
 /**
@@ -179,27 +129,12 @@ export interface CircularLayoutOptions {
  * </p>
  */
 export interface OrganicLayoutOptions {
-  circleRecognition?: boolean
-  chainRecognition?: boolean
-  create3DLayout?: boolean
-  groupNodeCompactness?: number
+  allowClusterAsGroupSubstructure?: boolean
+  allowNodeOverlaps?: boolean
   automaticGroupNodeCompaction?: boolean
-  clusterNodes?: boolean
-  clusteringQuality?: number
-  clusteringPolicy?:
-    | 'none'
-    | 'louvain-modularity'
-    | 'edge-betweenness'
-    | 'label-propagation'
-    | 'user-defined'
-  clusterAsGroupSubstructureAllowed?: boolean
-  considerNodeLabels?: boolean
-  integratedEdgeLabeling?: boolean
-  smartComponentLayout?: boolean
-  nodeEdgeOverlapAvoided?: boolean
-  qualityTimeRatio?: number
-  maximumDuration?: number
-  scope?: 'all' | 'mainly-subset' | 'mainly-subset-geometric' | 'subset'
+  avoidNodeEdgeOverlap?: boolean
+  chainRecognition?: boolean
+  chainSubstructureSize?: number
   chainSubstructureStyle?:
     | 'none'
     | 'rectangular'
@@ -208,10 +143,36 @@ export interface OrganicLayoutOptions {
     | 'straight-line-nested'
     | 'disk'
     | 'disk-nested'
+  circleRecognition?: boolean
+  clusteringPolicy?:
+    | 'none'
+    | 'louvain-modularity'
+    | 'edge-betweenness'
+    | 'label-propagation'
+    | 'user-defined'
+  compactnessFactor?: number
+  cycleSubstructureSize?: number
   cycleSubstructureStyle?: 'none' | 'circular' | 'circular-nested'
+  defaultMinimumNodeDistance?: number
+  defaultPreferredEdgeLength?: number
+  deterministic?: boolean
+  edgeLabelPlacement?: 'generic' | 'ignore' | 'integrated'
+  groupNodeCompactness?: number
+  groupSubstructureScope?:
+    | 'no-groups'
+    | 'groups-without-edges'
+    | 'groups-without-inter-edges'
+    | 'all-groups'
+  groupSubstructureSize?: number
+  groupSubstructureStyle?: 'circle' | 'compact-disk' | 'disk' | 'organic-disk'
+  layoutOrientation?: 'top-to-bottom' | 'left-to-right' | 'right-to-left' | 'bottom-to-top'
+  nodeLabelPlacement?: 'consider' | 'generic' | 'ignore'
+  parallelSubstructureSize?: number
   parallelSubstructureStyle?: 'none' | 'rectangular' | 'radial' | 'straight-line'
   parallelSubstructureTypeSeparation?: boolean
-  starSubstructureTypeSeparation?: boolean
+  preferredMinimumNodeToEdgeDistance?: number
+  qualityTimeRatio?: number
+  starSubstructureSize?: number
   starSubstructureStyle?:
     | 'none'
     | 'radial'
@@ -219,33 +180,10 @@ export interface OrganicLayoutOptions {
     | 'separated-radial'
     | 'circular'
     | 'circular-nested'
-  treeSubstructureStyle?: 'none' | 'balloon' | 'oriented' | 'radial'
-  groupSubstructureScope?:
-    | 'no-groups'
-    | 'groups-without-edges'
-    | 'groups-without-inter-edges'
-    | 'all-groups'
-  cycleSubstructureSize?: number
-  chainSubstructureSize?: number
-  parallelSubstructureSize?: number
-  starSubstructureSize?: number
+  starSubstructureTypeSeparation?: boolean
+  stopDuration?: number
   treeSubstructureSize?: number
-  groupSubstructureSize?: number
-  compactnessFactor?: number
-  preferredEdgeLength?: number
-  preferredMinimumNodeToEdgeDistance?: number
-  considerNodeSizes?: boolean
-  deterministic?: boolean
-  minimumNodeDistance?: number
-  nodeOverlapsAllowed?: boolean
-  orientationLayoutEnabled?: boolean
-  layoutOrientation?: 'top-to-bottom' | 'left-to-right' | 'right-to-left' | 'bottom-to-top'
-  selfLoopRouterEnabled?: boolean
-  labelingEnabled?: boolean
-  hideGroupsStageEnabled?: boolean
-  componentLayoutEnabled?: boolean
-  parallelEdgeRouterEnabled?: boolean
-  subgraphLayoutEnabled?: boolean
+  treeSubstructureStyle?: 'none' | 'oriented' | 'radial' | 'radial-tree'
 }
 
 /**
@@ -256,41 +194,28 @@ export interface OrganicLayoutOptions {
  * </p>
  */
 export interface OrthogonalLayoutOptions {
-  maximumDuration?: number
-  uniformPortAssignment?: boolean
-  treeStyle?: 'none' | 'default' | 'integrated' | 'compact' | 'aspect-ratio'
-  treeSize?: number
-  treeOrientation?:
+  alignDegreeOneNodes?: boolean
+  chainSubstructureSize?: number
+  chainSubstructureStyle?: 'none' | 'straight' | 'wrapped-with-nodes-at-turns' | 'wrapped-with-bends-at-turns'
+  cycleSubstructureSize?: number
+  cycleSubstructureStyle?: 'none' | 'circular' | 'circular-with-nodes-at-corners' | 'circular-with-bends-at-corners'
+  defaultEdgeDescriptor?: OrthogonalLayoutEdgeDescriptor
+  edgeLabelPlacement?: 'generic' | 'ignore' | 'integrated'
+  fromSketchMode?: boolean
+  gridSpacing?: number
+  layoutOrientation?: 'top-to-bottom' | 'left-to-right' | 'right-to-left' | 'bottom-to-top'
+  nodeLabelPlacement?: 'consider' | 'generic' | 'ignore'
+  preferParallelRoutes?: boolean
+  stopDuration?: number
+  treeSubstructureOrientation?:
     | 'top-to-bottom'
     | 'bottom-to-top'
     | 'left-to-right'
     | 'right-to-left'
     | 'auto-detect'
-  chainStyle?: 'none' | 'straight' | 'wrapped-with-nodes-at-turns' | 'wrapped-with-bends-at-turns'
-  chainSize?: number
-  cycleStyle?: 'none' | 'circular-with-nodes-at-corners' | 'circular-with-bends-at-corners'
-  cycleSize?: number
-  preferParallelRoutes?: boolean
-  edgeLayoutDescriptor?: OrthogonalLayoutEdgeLayoutDescriptor
-  considerNodeLabels?: boolean
-  integratedEdgeLabeling?: boolean
-  randomization?: boolean
-  alignDegreeOneNodes?: boolean
-  faceMaximization?: boolean
-  crossingReduction?: boolean
-  optimizePerceivedBends?: boolean
-  gridSpacing?: number
-  layoutStyle?: 'normal' | 'uniform' | 'box' | 'mixed' | 'fixed-mixed' | 'fixed-box'
-  edgeLengthReduction?: boolean
-  fromSketchMode?: boolean
-  orientationLayoutEnabled?: boolean
-  layoutOrientation?: 'top-to-bottom' | 'left-to-right' | 'right-to-left' | 'bottom-to-top'
-  selfLoopRouterEnabled?: boolean
-  labelingEnabled?: boolean
-  hideGroupsStageEnabled?: boolean
-  componentLayoutEnabled?: boolean
-  parallelEdgeRouterEnabled?: boolean
-  subgraphLayoutEnabled?: boolean
+  treeSubstructureSize?: number
+  treeSubstructureStyle?: 'none' | 'default' | 'integrated' | 'compact' | 'aspect-ratio'
+  uniformPortAssignment?: boolean
 }
 
 /**
@@ -301,18 +226,13 @@ export interface OrthogonalLayoutOptions {
  * </p>
  */
 export interface EdgeRouterOptions {
-  maximumDuration?: number
-  integratedEdgeLabeling?: boolean
-  polylineRouting?: boolean // Deprecated
-  preferredPolylineSegmentLength?: number // Deprecated
-  maximumPolylineSegmentRatio?: number // Deprecated
-  rerouting?: boolean
-  scope?: 'route-all-edges' | 'route-affected-edges' | 'route-edges-at-affected-nodes'
-  considerNodeLabels?: boolean
-  ignoreInnerNodeLabels?: boolean
-  considerEdgeLabels?: boolean
-  grid?: Grid | null
+  defaultEdgeDescriptor?: EdgeRouterEdgeDescriptor
+  edgeLabelPlacement?: 'consider-unaffected-edge-labels' | 'generic' | 'ignore' | 'integrated'
+  gridSpacing?: number
   minimumNodeToEdgeDistance?: number
+  nodeLabelPlacement?: 'consider' | 'generic' | 'ignore' | 'ignore-group-labels'
+  rerouting?: boolean
+  stopDuration?: number
 }
 
 /**
@@ -323,29 +243,19 @@ export interface EdgeRouterOptions {
  * </p>
  */
 export interface RadialLayoutOptions {
-  minimumNodeToNodeDistance?: number
+  centerNodesPolicy?: 'directed' | 'centrality' | 'weighted-centrality'
+  createControlPoints?: boolean
+  edgeRoutingStyle?: 'polyline' | 'arc' | 'radial-polyline' | 'curved'
   layerSpacing?: number
-  minimumLayerDistance?: number
+  layeringStrategy?: 'bfs' | 'hierarchical' | 'dendrogram'
   maximumChildSectorAngle?: number
   minimumBendAngle?: number
-  centerNodesPolicy?: 'directed' | 'centrality' | 'weighted-centrality' | 'custom'
-  layeringStrategy?: 'bfs' | 'hierarchical' | 'dendrogram' | 'user-defined'
-  edgeRoutingStrategy?: 'polyline' | 'arc' | 'radial-polyline' | 'curved'
-  considerNodeLabels?: boolean
+  minimumEdgeDistance?: number
+  minimumLayerDistance?: number
+  minimumNodeDistance?: number
   minimumSectorDistance?: number
-  createControlPoints?: boolean
-  nodeLabelingPolicy?: 'ray-like' | 'ray-like-leaves' | 'horizontal'
-  integratedNodeLabeling?: boolean
+  nodeLabelPlacement?: 'consider' | 'generic' | 'horizontal' | 'ignore' | 'ray-like' | 'ray-like-leaves'
   nodeLabelSpacing?: number
-  minimumEdgeToEdgeDistance?: number
-  orientationLayoutEnabled?: boolean
-  layoutOrientation?: 'top-to-bottom' | 'left-to-right' | 'right-to-left' | 'bottom-to-top'
-  selfLoopRouterEnabled?: boolean
-  labelingEnabled?: boolean
-  hideGroupsStageEnabled?: boolean
-  componentLayoutEnabled?: boolean
-  parallelEdgeRouterEnabled?: boolean
-  subgraphLayoutEnabled?: boolean
 }
 
 /**
@@ -356,18 +266,9 @@ export interface RadialLayoutOptions {
  * </p>
  */
 export interface TreeLayoutOptions {
-  groupingSupported?: boolean
-  defaultNodePlacer?: ITreeLayoutNodePlacer
-  defaultLeafPlacer?: ITreeLayoutNodePlacer
-  considerNodeLabels?: boolean
-  integratedEdgeLabeling?: boolean
-  multiParentAllowed?: boolean
-  orientationLayoutEnabled?: boolean
+  allowMultiParent?: boolean
+  defaultSubtreePlacer?: ISubtreePlacer
+  edgeLabelPlacement?: 'generic' | 'ignore' | 'integrated'
   layoutOrientation?: 'top-to-bottom' | 'left-to-right' | 'right-to-left' | 'bottom-to-top'
-  selfLoopRouterEnabled?: boolean
-  labelingEnabled?: boolean
-  hideGroupsStageEnabled?: boolean
-  componentLayoutEnabled?: boolean
-  parallelEdgeRouterEnabled?: boolean
-  subgraphLayoutEnabled?: boolean
+  nodeLabelPlacement?: 'consider' | 'generic' | 'ignore'
 }

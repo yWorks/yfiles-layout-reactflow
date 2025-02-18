@@ -1,46 +1,45 @@
 ---
-title: Balloon Layout
+title: Radial Tree Layout
 section: 8
 tags: []
 ---
 import Playground from '../../components/Playground.astro'
 import TypeLink from '../../components/TypeLink.astro'
 
-# Balloon Layout
+# Radial Tree Layout
 
-The *balloon layout algorithm* is designed to arrange directed and undirected tree graphs.
+The *radial tree layout algorithm* is designed to arrange directed and undirected tree graphs.
 Subtrees rooted at a node are placed in a radial fashion around their root node. All direct children of
 one node can be placed on a common circle around their parent node (depending on the alignment policy).
-Therefore, subtrees look like balloons or stars, especially if subtrees have similar sizes.
+Therefore, subtrees look like stars, especially if subtrees have similar sizes.
 The edges of the tree are drawn as straight lines.
 
 <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', margin: '40px 0'}}>
-  <img src={`${import.meta.env.BASE_URL}/balloon-layout.png`} style={{maxWidth: "80%", objectFit: "cover"}} alt="Balloon layout"></img>
+  <img src={`${import.meta.env.BASE_URL}/radial-tree-layout.png`} style={{maxWidth: "80%", objectFit: "cover"}} alt="Radial tree layout"></img>
 </div>
 
-The balloon layout algorithm provides extensive customization options through a wide array of properties accessible
-via the `BalloonLayoutOptions`. Fundamental options include minimum node distances, children ordering, compactness, and others.
+The radial tree layout algorithm provides extensive customization options through a wide array of properties accessible
+via the `RadialTreeLayoutOptions`. Fundamental options include minimum node distances, children ordering, compactness, and others.
 It also automatically places node and edge labels when the corresponding properties are activated. Node labels can also be
 placed in a ray-like manner.
 
-Additional customization for individual graph elements, such as `edgeLabelPreferredPlacement`, `nodeHalos`, and more, can be achieved via
-the `BalloonLayoutDataProvider`.
+Additional customization for individual graph elements, such as `edgeLabelPreferredPlacements`, `nodeMargins`, and more, can be achieved via
+the `RadialTreeLayoutDataProvider`.
 
 Feel free to play around with the hierarchic layout configuration in our [online playground](#my-playground).
 
-Extensive documentation detailing all available properties of the balloon layout supported by *yFiles layouts for React Flow* can be
-found [here](https://docs.yworks.com/yfileshtml/#/api/BalloonLayout).
+Extensive documentation detailing all available properties of the radial tree layout supported by *yFiles layouts for React Flow* can be
+found [here](https://docs.yworks.com/yfileshtml/#/api/RadialTreeLayout).
 
 ```tsx
 runLayout({
-  name: 'BalloonLayout',
+  name: 'RadialTreeLayout',
   layoutOptions: {
-    integratedEdgeLabeling: true,
-    integratedNodeLabeling: true,
-    nodeLabelingPolicy: 'ray-like-leaves'
+    edgeLabelPlacement: 'integrated',
+    nodeLabelPlacement: 'ray-like-leaves'
   },
   layoutData: {
-    edgeLabelPreferredPlacement: () => ({
+    edgeLabelPreferredPlacements: () => ({
       sideOfEdge: 'left-of-edge',
       distanceToEdge: 20,
     })
@@ -48,54 +47,42 @@ runLayout({
 })
 ```
 
-## BalloonLayoutOptions
+## RadialTreeLayoutOptions
 
-The configuration options for the balloon layout algorithm that arranges the subtrees of the tree graph in a balloon-like fashion. <p> For more information on the layout algorithm and its available settings, see [BalloonLayout](https://docs.yworks.com/yfileshtml/#/api/BalloonLayout).</p>
+The configuration options for the radial tree layout algorithm that arranges the subtrees of the tree graph in a radial fashion. <p> For more information on the layout algorithm and its available settings, see [RadialTreeLayout](https://docs.yworks.com/yfileshtml/#/api/RadialTreeLayout).</p>
 
 | Name | Type |
 |---|---|
-| <div id="allowoverlaps">allowOverlaps?</div> | `boolean` |
-| <div id="chainstraighteningmode">chainStraighteningMode?</div> | `boolean` |
-| <div id="childalignmentpolicy">childAlignmentPolicy?</div> | `"plain"` &#124;`"same-center"` &#124; `"compact"` &#124; `"smart"` |
-| <div id="childorderingpolicy">childOrderingPolicy?</div> | `"compact"` &#124; `"symmetric"` |
-| <div id="compactnessfactor">compactnessFactor?</div> | `number` |
-| <div id="componentlayoutenabled">componentLayoutEnabled?</div> | `boolean` |
-| <div id="considernodelabels">considerNodeLabels?</div> | `boolean` |
-| <div id="edgelabelspacing">edgeLabelSpacing?</div> | `number` |
-| <div id="fromsketchmode">fromSketchMode?</div> | `boolean` |
-| <div id="hidegroupsstageenabled">hideGroupsStageEnabled?</div> | `boolean` |
-| <div id="integratededgelabeling">integratedEdgeLabeling?</div> | `boolean` |
-| <div id="integratednodelabeling">integratedNodeLabeling?</div> | `boolean` |
-| <div id="interleavedmode">interleavedMode?</div> | `"off"` &#124; `"all-nodes"` &#124; `"marked-nodes"` |
-| <div id="labelingenabled">labelingEnabled?</div> | `boolean` |
-| <div id="layoutorientation">layoutOrientation?</div> | `"top-to-bottom"` &#124; `"left-to-right"` &#124; `"right-to-left"` &#124; `"bottom-to-top"` |
-| <div id="minimumedgelength">minimumEdgeLength?</div> | `number` |
-| <div id="minimumnodedistance">minimumNodeDistance?</div> | `number` |
-| <div id="nodelabelingpolicy">nodeLabelingPolicy?</div> | `"ray-like"` &#124; `"ray-like-leaves"` &#124; `"horizontal"` |
-| <div id="nodelabelspacing">nodeLabelSpacing?</div> | `number` |
-| <div id="orientationlayoutenabled">orientationLayoutEnabled?</div> | `boolean` |
-| <div id="paralleledgerouterenabled">parallelEdgeRouterEnabled?</div> | `boolean` |
-| <div id="preferredchildwedge">preferredChildWedge?</div> | `number` |
-| <div id="preferredrootwedge">preferredRootWedge?</div> | `number` |
-| <div id="rootnodepolicy">rootNodePolicy?</div> | `"directed-root"` &#124; `"center-root"` &#124; `"weighted-center-root"` &#124; `"selected-root"` |
-| <div id="selflooprouterenabled">selfLoopRouterEnabled?</div> | `boolean` |
-| <div id="subgraphlayoutenabled">subgraphLayoutEnabled?</div> | `boolean` |
+| <div id="allowoverlaps">allowOverlaps?</div> | <pre>boolean</pre> |
+| <div id="chainstraighteningmode">chainStraighteningMode?</div> | <pre>boolean</pre> |
+| <div id="childalignmentpolicy">childAlignmentPolicy?</div> | <pre>"plain" &#124; "same-center" &#124; "compact" &#124; "smart"</pre> |
+| <div id="childorderingpolicy">childOrderingPolicy?</div> | <pre>"compact" &#124; "symmetric" &#124; "from-sketch"</pre> |
+| <div id="compactnessfactor">compactnessFactor?</div> | <pre>number</pre> |
+| <div id="edgelabelplacement">edgeLabelPlacement?</div> | <pre>"generic" &#124; "ignore" &#124; "integrated"</pre> |
+| <div id="edgelabelspacing">edgeLabelSpacing?</div> | <pre>number</pre> |
+| <div id="minimumedgelength">minimumEdgeLength?</div> | <pre>number</pre> |
+| <div id="minimumnodedistance">minimumNodeDistance?</div> | <pre>number</pre> |
+| <div id="nodelabelplacement">nodeLabelPlacement?</div> | <pre>"consider" &#124; "generic" &#124; "horizontal" &#124; "ignore" &#124; "ray-like" &#124; "ray-like-leaves"</pre> |
+| <div id="nodelabelspacing">nodeLabelSpacing?</div> | <pre>number</pre> |
+| <div id="preferredchildsectorangle">preferredChildSectorAngle?</div> | <pre>number</pre> |
+| <div id="preferredrootsectorangle">preferredRootSectorAngle?</div> | <pre>number</pre> |
+| <div id="rootselectionpolicy">rootSelectionPolicy?</div> | <pre>"directed-root" &#124; "center-root" &#124; "weighted-center-root"</pre> |
 
 
 
-## BalloonLayoutDataProvider&lt;TNodeData, TEdgeData&gt;
+## RadialTreeLayoutDataProvider&lt;TNodeData, TEdgeData&gt;
 
-A provider for individual options per nodes or edges in a [BalloonLayout](https://docs.yworks.com/yfileshtml/#/api/BalloonLayout). It allows for defining a function that provide values for each element.
+A provider for individual options per nodes or edges in a [RadialTreeLayout](https://docs.yworks.com/yfileshtml/#/api/RadialTreeLayout). It allows for defining a function that provide values for each element.
 
-For more information, see [BalloonLayoutData](https://docs.yworks.com/yfileshtml/#/api/BalloonLayoutData).
+For more information, see [RadialTreeLayoutData](https://docs.yworks.com/yfileshtml/#/api/RadialTreeLayoutData).
 
 | Name | Description | Type |
 |---|---|---|
-| <div id="edgelabelpreferredplacement">edgeLabelPreferredPlacement?</div> |  Provides descriptors for the placement of edge labels. | `(label:` <TypeLink type="LabelData"/>`) =>` <TypeLink type="PreferredPlacementDescriptor"/> |
-| <div id="nodehalos">nodeHalos?</div> |  Provides halos for nodes, i.e., a rectangular area around a specific node considered during the layout. | `(node: TNodeData) => `<TypeLink type="NodeHalo"/> |
-| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | `(node: TNodeData) => any` |
-| <div id="outedgecomparer">outEdgeComparer?</div> |  Provides an order for the given edges in which the edges are arranged at a node. | `(edge1: TEdgeData,  edge2: TEdgeData) => number` |
-
+| <div id="childorder">childOrder?</div> |  Provides an order for the given edges in which the edges are arranged at a node. | <pre>[ChildOrderDataProvider](childorderdataprovider)&lt;TNodeData,TEdgeData&gt;</pre> |
+| <div id="edgelabelpreferredplacements">edgeLabelPreferredPlacements?</div> |  Provides descriptors for the placement of edge labels. | <pre>(label: [LabelData](labeldata)) =&gt; [EdgeLabelPreferredPlacement](edgelabelpreferredplacement)</pre> |
+| <div id="groupnodepadding">groupNodePadding?</div> |  Provides the paddings for the group nodes, i.e., a rectangular area like padding in the interior of the node. | <pre>(node: TNodeData) =&gt; [Insets](insets)</pre> |
+| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; [NodeMargins](nodemargins)</pre> |
+| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | <pre>(node: TNodeData) =&gt; any</pre> |
 
 ## Playground
 
@@ -113,13 +100,15 @@ const nodeTypes = {
   const initialNodes = data.nodes
   const initialEdges = data.edges
 
-  const layoutOptions: BalloonLayoutOptions = {
-    integratedEdgeLabeling: true,
-    integratedNodeLabeling: true
+  const layoutOptions: RadialTreeLayoutOptions = {
+    edgeLabelPlacement: 'integrated',
+    nodeLabelPlacement: 'ray-like'
   }
 
-  const layoutData: BalloonLayoutDataProvider<NodeProps, EdgeProps> = {
-    outEdgeComparer: (edge1, edge2) => parseInt(edge1?.target) - parseInt(edge2?.target)
+  const layoutData: RadialTreeLayoutDataProvider<NodeProps, EdgeProps> = {
+    childOrder: {
+      outEdgeComparators: () => (edge1, edge2) => parseInt(edge1?.target) - parseInt(edge2?.target)
+    }
   }
 
   function LayoutFlow() {
@@ -130,7 +119,7 @@ const nodeTypes = {
 
     useNodesMeasuredEffect(() =>
       runLayout({
-        name: "BalloonLayout",
+        name: "RadialTreeLayout",
         layoutOptions,
         layoutData
       })

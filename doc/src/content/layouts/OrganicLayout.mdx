@@ -33,7 +33,7 @@ runLayout({
   layoutOptions: {
     edgeLabelPlacement: 'integrated',
     deterministic: true,
-    minimumNodeDistance: 100
+    defaultMinimumNodeDistance: 100
   },
   layoutData: {
     edgeLabelPreferredPlacements: () => ({
@@ -93,14 +93,14 @@ For more information, see [OrganicLayoutData](https://docs.yworks.com/yfileshtml
 
 | Name | Description | Type |
 |---|---|---|
-| <div id="edgelabelpreferredplacements">edgeLabelPreferredPlacements?</div> |  Provides descriptors for the placement of edge labels. | <pre>(label: [LabelData](labeldata)) =&gt; [EdgeLabelPreferredPlacement](edgelabelpreferredplacement)</pre> |
-| <div id="groupnodepadding">groupNodePadding?</div> |  Provides the paddings for the group nodes, i.e., a rectangular area like padding in the interior of the node. | <pre>(node: TNodeData) =&gt; [Insets](insets)</pre> |
+| <div id="edgelabelpreferredplacements">edgeLabelPreferredPlacements?</div> |  Provides descriptors for the placement of edge labels. | <pre>(label: <TypeLink type="LabelData"/>) =&gt; <TypeLink type="EdgeLabelPreferredPlacement"/></pre> |
+| <div id="groupnodepadding">groupNodePadding?</div> |  Provides the paddings for the group nodes, i.e., a rectangular area like padding in the interior of the node. | <pre>(node: TNodeData) =&gt; <TypeLink type="Insets"/></pre> |
 | <div id="minimumedgelengths">minimumEdgeLengths?</div> |  Provides the minimal length that an edge should have. | <pre>(edge: TEdgeData) =&gt; number</pre> |
 | <div id="minimumnodedistances">minimumNodeDistances?</div> |  Provides the minimal distance from a node to all other nodes. | <pre>(node: TNodeData) =&gt; number</pre> |
-| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; [NodeMargins](nodemargins)</pre> |
+| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; <TypeLink type="NodeMargins"/></pre> |
 | <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | <pre>(node: TNodeData) =&gt; any</pre> |
 | <div id="preferrededgelengths">preferredEdgeLengths?</div> |  Provides the preferred length for an edge. It is not mandatory but works as a guidance length. | <pre>(edge: TEdgeData) =&gt; number</pre> |
-| <div id="scope">scope?</div> |  Provides which nodes should be placed. | <pre>[OrganicScopeDataProvider](organicscopedataprovider)&lt;TNodeData&gt;</pre> |
+| <div id="scope">scope?</div> |  Provides which nodes should be placed. | <pre><TypeLink type="OrganicScopeDataProvider"/>&lt;TNodeData&gt;</pre> |
 
 
 ## Playground

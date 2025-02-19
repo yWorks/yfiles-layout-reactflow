@@ -277,7 +277,19 @@ export interface LayoutSupport {
  *     // configure a layout
  *     const hierarchicalLayout = new HierarchicalLayout()
  *     const hierarchicalLayoutData = new HierarchicalLayoutData({
- *       sourcePortCandidates: (edge: IEdge) => ICollection.from([PortCandidate.createCandidate(PortDirections.EAST)])
+ *       ports: {
+ *         sourcePortCandidates: (edge: IEdge) => {
+ *           const candidates = new EdgePortCandidates()
+ *           if (edge.tag.id === 'e0') {
+ *             candidates.addFreeCandidate(PortSides.LEFT)
+ *           } else if (edge.tag.id === 'e1') {
+ *             candidates.addFreeCandidate(PortSides.RIGHT)
+ *           } else {
+ *             candidates.addFreeCandidate(PortSides.START_IN_FLOW)
+ *           }
+ *           return candidates
+ *         }
+ *       }
  *     })
  *
  *     // apply the layout

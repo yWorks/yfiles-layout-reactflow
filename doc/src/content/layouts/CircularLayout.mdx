@@ -33,7 +33,6 @@ found [here](https://docs.yworks.com/yfileshtml/#/api/CircularLayout).
 runLayout({
   name: 'CircularLayout',
   layoutOptions: {
-    edgeLabelPlacement: 'integrated',
     nodeLabelPlacement: 'ray-like-leaves',
   },
   layoutData: {
@@ -73,8 +72,8 @@ For more information, see [CircularLayoutData](https://docs.yworks.com/yfileshtm
 | Name | Description | Type |
 |---|---|---|
 | <div id="edgedirectedness">edgeDirectedness?</div> |  Provides 0, 1, or -1 for each edge to indicate if it is undirected, in layout direction, or against layout direction. | <pre>(edge: TEdgeData) =&gt; number</pre> |
-| <div id="groupnodepadding">groupNodePadding?</div> |  Provides the paddings for the group nodes, i.e., a rectangular area like padding in the interior of the node. | <pre>(node: TNodeData) =&gt; [Insets](insets)</pre> |
-| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; [NodeMargins](nodemargins)</pre> |
+| <div id="groupnodepadding">groupNodePadding?</div> |  Provides the paddings for the group nodes, i.e., a rectangular area like padding in the interior of the node. | <pre>(node: TNodeData) =&gt; <TypeLink type="Insets"/></pre> |
+| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; <TypeLink type="NodeMargins"/></pre> |
 | <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | <pre>(node: TNodeData) =&gt; any</pre> |
 ## Playground
 

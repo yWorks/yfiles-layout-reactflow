@@ -1,10 +1,13 @@
 import {
   CircularLayoutEdgeDescriptor,
-  CircularLayoutExteriorEdgeDescriptor, EdgeRouterEdgeDescriptor,
+  CircularLayoutExteriorEdgeDescriptor,
+  EdgeRouterEdgeDescriptor,
   HierarchicalLayoutEdgeDescriptor,
   HierarchicalLayoutNodeDescriptor,
-  ISubtreePlacer, LabelingCosts,
-  OrthogonalLayoutEdgeDescriptor, PartitionDescriptor
+  ISubtreePlacer,
+  LabelingCosts,
+  OrthogonalLayoutEdgeDescriptor,
+  PartitionDescriptor
 } from '@yfiles/yfiles'
 
 /**

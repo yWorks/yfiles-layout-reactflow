@@ -6,7 +6,6 @@ import GroupedLayout from './grouped-layout'
 import LabeledLayout from './labeled-layout'
 import WebWorkerLayout from './web-worker-layout'
 import OptionPanel from './option-panel'
-import Test from './test'
 
 export interface IRoute {
   title: string
@@ -57,12 +56,6 @@ const routes: IRoute[] = [
     description: 'Change layout settings interactively',
     path: 'option-panel',
     component: OptionPanel
-  },
-  {
-    title: 'Test',
-    description: 'test the layout configurations',
-    path: 'test',
-    component: Test
   }
 ]
 

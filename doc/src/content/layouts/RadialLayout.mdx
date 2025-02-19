@@ -34,8 +34,7 @@ runLayout({
   name: 'RadialLayout',
   layoutOptions: {
     centerNodesPolicy: 'directed',
-    nodeLabelPlacement: 'integrated',
-    nodeLabelingPolicy: 'ray-like-leaves',
+    nodeLabelPlacement: 'ray-like-leaves',
     minimumLayerDistance: 50
   },
   layoutData: {
@@ -75,9 +74,9 @@ For more information, see [RadialLayoutData](https://docs.yworks.com/yfileshtml/
 | Name | Description | Type |
 |---|---|---|
 | <div id="centernodes">centerNodes?</div> |  Provides which nodes should be placed on the innermost circle. | <pre>(node: TNodeData) =&gt; boolean</pre> |
-| <div id="childorder">childOrder?</div> |  Provides an order for outgoing edges at the given node in which the edges are arranged. | <pre>[ChildOrderDataProvider](childorderdataprovider)&lt;TNodeData,TEdgeData&gt;</pre> |
-| <div id="groupnodepadding">groupNodePadding?</div> |  Provides the paddings for the group nodes, i.e., a rectangular area like padding in the interior of the node. | <pre>(node: TNodeData) =&gt; [Insets](insets)</pre> |
-| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; [NodeMargins](nodemargins)</pre> |
+| <div id="childorder">childOrder?</div> |  Provides an order for outgoing edges at the given node in which the edges are arranged. | <pre><TypeLink type="ChildOrderDataProvider"/>lt;TNodeData,TEdgeData&gt;</pre> |
+| <div id="groupnodepadding">groupNodePadding?</div> |  Provides the paddings for the group nodes, i.e., a rectangular area like padding in the interior of the node. | <pre>(node: TNodeData) =&gt; <TypeLink type="Insets"/></pre> |
+| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; <TypeLink type="NodeMargins"/></pre> |
 | <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | <pre>(node: TNodeData) =&gt; any</pre> |
 
 ## Playground

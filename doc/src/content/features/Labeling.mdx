@@ -22,8 +22,8 @@ useEffect(() => {
   runLayout({
     name: 'HierarchicalLayout',
     layoutOptions: {
-      integratedEdgeLabeling: true,
-      considerNodeLabels: true
+      edgeLabelPlacement: 'integrated',
+      nodeLabelPlacement: 'consider'
     }
   })
 }, runLayout)
@@ -31,10 +31,7 @@ useEffect(() => {
 useEffect(() => {
   runLayout({
     name: 'GenericLabeling',
-    layoutOptions: {
-      placeEdgeLabels: true,
-      placeNodeLabels: true
-    }
+    layoutOptions: { scope: 'edge-labels' },
   })
 }, runLayout)
 ```

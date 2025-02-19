@@ -33,12 +33,14 @@ found [here](https://docs.yworks.com/yfileshtml/#/api/EdgeRouter).
 runLayout({
   name: 'EdgeRouter',
   layoutOptions: {
-    polylineRouting: true,
+    defaultEdgeDescriptor: { routingStyle: 'octilinear'},
     edgeLabelPlacement: 'integrated'
   },
   layoutData: {
-    sourcePortCandidates: (edge: EdgeProps) =>
-      parseInt(edge.target) % 2 === 0 ? ['east'] : ['west'],
+    ports: {
+      sourcePortCandidates: (edge: EdgeProps) =>
+        parseInt(edge.target) % 2 === 0 ? ['right'] : ['left'],
+    },
     nodeMargins: () => 20
   }
 })
@@ -66,10 +68,10 @@ For more information, see [EdgeRouterData](https://docs.yworks.com/yfileshtml/#/
 
 | Name | Description | Type |
 |---|---|---|
-| <div id="edgelabelpreferredplacements">edgeLabelPreferredPlacements?</div> |  Provides descriptors for the placement of edge labels. | <pre>(label: [LabelData](labeldata)) =&gt; [EdgeLabelPreferredPlacement](edgelabelpreferredplacement)</pre> |
-| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; [NodeMargins](nodemargins)</pre> |
-| <div id="ports">ports?</div> |  Provides information about how an edge connects to its nodes. | <pre>[PortDataProvider](portdataprovider)&lt;TEdgeData&gt;</pre> |
-| <div id="scope">scope?</div> |  Provides which edges should be routed. | <pre>[EdgeRouterScopeDataProvider](edgerouterscopedataprovider)&lt;TNodeData,TEdgeData&gt;</pre> |
+| <div id="edgelabelpreferredplacements">edgeLabelPreferredPlacements?</div> |  Provides descriptors for the placement of edge labels. | <pre>(label: <TypeLink type="LabelData"/>) =&gt; <TypeLink type="EdgeLabelPreferredPlacement"/></pre> |
+| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; <TypeLink type="NodeMargins"/></pre> |
+| <div id="ports">ports?</div> |  Provides information about how an edge connects to its nodes. | <pre><TypeLink type="PortDataProvider"/>&lt;TEdgeData&gt;</pre> |
+| <div id="scope">scope?</div> |  Provides which edges should be routed. | <pre><TypeLink type="EdgeRouterScopeDataProvider"/>&lt;TNodeData,TEdgeData&gt;</pre> |
 | <div id="sourcegroupids">sourceGroupIds?</div> |  Provides which edges should be grouped at source, i.e., share the beginning of their routes. | <pre>(edge: TEdgeData) =&gt; any</pre> |
 | <div id="targetgroupids">targetGroupIds?</div> |  Provides which edges should be grouped at target, i.e., share the end of their routes. | <pre>(edge: TEdgeData) =&gt; any</pre> |
 ## Playground

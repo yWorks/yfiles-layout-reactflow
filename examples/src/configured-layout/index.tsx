@@ -69,7 +69,7 @@ const LayoutFlow = () => {
           onClick={() =>
             runLayout({
               name: 'OrganicLayout',
-              layoutOptions: { deterministic: true, minimumNodeDistance: 100 }
+              layoutOptions: { deterministic: true, defaultMinimumNodeDistance: 100 }
             })
           }
           disabled={layoutRunning}

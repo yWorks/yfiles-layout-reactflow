@@ -96,7 +96,7 @@ const nodeTypes = {
 
   const layoutOptions: TreeLayoutOptions = {
     edgeLabelPlacement: 'integrated',
-    defaultSubtreePlacer: new yfiles.AssistantSubtreePlacer({ childSubtreePlacer: new yfiles.CompactSubtreePlacer() })
+    defaultSubtreePlacer: new yfiles.AssistantSubtreePlacer({ childSubtreePlacer: new yfiles.LeftRightSubtreePlacer() })
   }
 
   const layoutData: TreeLayoutDataProvider<NodeProps, EdgeProps> = {

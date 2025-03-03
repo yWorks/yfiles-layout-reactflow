@@ -32,7 +32,7 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
    from scratch, we recommend using vite:
 
    ```bash
-   npm create vite@latest my-yfiles-layout-app -- --template react-ts
+   npm create vite@6.1.1 my-yfiles-layout-app -- --template react-ts
    ```
 
    Install the ReactFlow:

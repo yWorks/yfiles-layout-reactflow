@@ -131,7 +131,7 @@ const LayoutFlow = () => {
           }
           disabled={layoutRunning}
         >
-          Hierarchic Layout
+          Hierarchical Layout
         </button>
         <button
           onClick={() =>

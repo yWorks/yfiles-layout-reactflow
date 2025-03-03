@@ -42,7 +42,7 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
 
    Add the yFiles dependency:
    ```bash
-   npm install <yFiles package path>/lib-dev/yfiles-26.0.0+dev.tgz
+   npm install <yFiles package path>/lib/yfiles-26.0.0+dev.tgz
    ```
 
    <details>
@@ -55,7 +55,7 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "reactflow": "^11.11.0",
-        "@yfiles/yfiles": "./lib-dev/yfiles-30.0.0.tgz"
+        "@yfiles/yfiles": "./lib/yfiles-30.0.0.tgz"
      }
    ```
    </details>

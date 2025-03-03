@@ -1,6 +1,6 @@
 {
   "name": "@yworks/yfiles-layout-reactflow",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "author": {
     "name": "yFiles for HTML team @ yWorks GmbH",
     "email": "yfileshtml@yworks.com"
@@ -37,7 +37,7 @@
     "react": ">=18",
     "react-dom": ">=18",
     "reactflow": ">=11",
-    "yfiles": ">=26"
+    "@yfiles/yfiles": ">=30"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.42.3",

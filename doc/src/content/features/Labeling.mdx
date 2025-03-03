@@ -11,7 +11,7 @@ import Playground from '../../components/Playground.astro'
 
 *yFiles Layout Algorithms for React Flow* includes support for labeling algorithms, enabling users to place labels
 on nodes and edges. Labels can be placed either by selecting a layout algorithm that automatically reserves
-space for the node/edge labels and places them there (e.g., [HierarchicLayout](../layouts/hierarchiclayout),
+space for the node/edge labels and places them there (e.g., [HierarchicalLayout](../layouts/hierarchicallayout),
 [OrganicLayout](../layouts/organiclayout)), or by applying the [GenericLabeling](../layouts/genericlabeling)
 algorithm directly.
 
@@ -20,10 +20,10 @@ const { runLayout } = useLayout()
 
 useEffect(() => {
   runLayout({
-    name: 'HierarchicLayout',
+    name: 'HierarchicalLayout',
     layoutOptions: {
-      integratedEdgeLabeling: true,
-      considerNodeLabels: true
+      edgeLabelPlacement: 'integrated',
+      nodeLabelPlacement: 'consider'
     }
   })
 }, runLayout)
@@ -31,10 +31,7 @@ useEffect(() => {
 useEffect(() => {
   runLayout({
     name: 'GenericLabeling',
-    layoutOptions: {
-      placeEdgeLabels: true,
-      placeNodeLabels: true
-    }
+    layoutOptions: { scope: 'edge-labels' },
   })
 }, runLayout)
 ```
@@ -42,38 +39,38 @@ useEffect(() => {
 Node labels can be placed either in the interior or the exterior of the nodes with the option for rotation depending on the
 configuration of the applied layout algorithm.
 Edges can have multiple labels and edge label placement information can be conveyed to the layout/labeling algorithm through a
-`PreferredPlacementDescriptor`, which is passed via the layout data provider.
+`EdgeLabelPreferredPlacement`, which is passed via the layout data provider.
 
 ```tsx
 const { runLayout } = useLayout()
 
 useEffect(() => {
   runLayout({
-    name: 'HierarchicLayout',
+    name: 'HierarchicalLayout',
     layoutOptions: {
-      integratedEdgeLabeling: true,
-      considerNodeLabels: true
+      edgeLabelPlacement: 'integrated',
+      nodeLabelPlacement: 'consider'
     },
     layoutData: {
-      edgeLabelPreferredPlacement: labelPreferredPlacement
+      edgeLabelPreferredPlacements: labelPreferredPlacement
     }
   })
 }, runLayout)
 
 const labelPreferredPlacement = useMemo(
   () =>
-    (label: LabelData): PreferredPlacementDescriptor => {
+    (label: LabelData): EdgeLabelPreferredPlacement => {
       if (label.labelIndex === 1) {
         return {
           sideOfEdge: 'left-of-edge',
           distanceToEdge: 20,
-          placeAlongEdge: 'at-source',
+          placementAlongEdge: 'at-source',
           angleReference: 'relative-to-edge-flow'
         }
       }
       return {
         sideOfEdge: 'on-edge',
-        placeAlongEdge: 'at-center'
+        placementAlongEdge: 'at-center'
       }
     },
   []
@@ -106,17 +103,16 @@ const layoutConfiguration: LayoutConfiguration = {
   name: "OrganicLayout",
   layoutOptions: {
     // enable edge labeling
-    integratedEdgeLabeling: true,
+    edgeLabelPlacement: 'integrated',
     // enable node labeling
-    considerNodeLabels: true,
+    nodeLabelPlacement: 'consider',
     deterministic: true,
-    preferredEdgeLength: 40,
-    considerNodeSizes: true
+    defaultPreferredEdgeLength: 40
   },
   layoutData: {
-    edgeLabelPreferredPlacement: () => ({
-      sideOfEdge: 'on-edge',
-      placeAlongEdge: 'at-source',
+    edgeLabelPreferredPlacements: () => ({
+      edgeSide: 'on-edge',
+      placementAlongEdge: 'at-source',
       angleReference: 'relative-to-edge-flow'
     })
   },
@@ -274,25 +270,25 @@ function App() {
                "id": "0",
                "source": "0",
                "target": "1",
-               "label": { "label": "Where?", className: "edge-label location-label" }
+               "label": { "label": "Where?", "className": "edge-label location-label" }
              },
              {
                "id": "1",
                "source": "0",
                "target": "4",
-               "label": { "label": "What to see?", className: "edge-label attractions-label" }
+               "label": { "label": "What to see?", "className": "edge-label attractions-label" }
              },
              {
                "id": "2",
                "source": "0",
                "target": "10",
-               "label": { "label": "What to do?", className: "edge-label events-label" }
+               "label": { "label": "What to do?", "className": "edge-label events-label" }
              },
              {
                "id": "3",
                "source": "0",
                "target": "14",
-               "label": { "label": "Where to work?", className: "edge-label yworks-label" }
+               "label": { "label": "Where to work?", "className": "edge-label yworks-label" }
              },
              { "id": "4", "source": "1", "target": "2" },
              { "id": "5", "source": "1", "target": "3" },

@@ -42,7 +42,7 @@ const LayoutFlow = () => {
 
   // run initial layout
   useNodesMeasuredEffect(() => {
-    runLayout({ name: 'HierarchicLayout', layoutData: { groupNodeInsets: () => 40 } })
+    runLayout({ name: 'HierarchicalLayout', layoutData: { groupNodePadding: () => 40 } })
   })
 
   return (
@@ -56,7 +56,7 @@ const LayoutFlow = () => {
       edgeTypes={edgeTypes}
     >
       <Panel position="top-right">
-        <button onClick={() => runLayout('HierarchicLayout')}>Layout</button>
+        <button onClick={() => runLayout('HierarchicalLayout')}>Layout</button>
       </Panel>
     </ReactFlow>
   )

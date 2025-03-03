@@ -21,7 +21,7 @@ via the `RadialLayoutOptions`. Fundamental options include layer spacing, center
 It also automatically places node labels when the corresponding properties are activated. Node labels can also be
 placed in a ray-like manner.
 
-Additional customization for individual graph elements, such as `nodeTypes`, `nodeHalos`, and more, can be achieved via
+Additional customization for individual graph elements, such as `nodeTypes`, `nodeMargins`, and more, can be achieved via
 the `RadialLayoutDataProvider`.
 
 Feel free to play around with the radial layout configuration in our [online playground](#my-playground).
@@ -34,12 +34,11 @@ runLayout({
   name: 'RadialLayout',
   layoutOptions: {
     centerNodesPolicy: 'directed',
-    integratedNodeLabeling: true,
-    nodeLabelingPolicy: 'ray-like-leaves',
+    nodeLabelPlacement: 'ray-like-leaves',
     minimumLayerDistance: 50
   },
   layoutData: {
-    nodeHalos: () => 10
+    nodeMargins: () => 10
   }
 })
 ```
@@ -49,31 +48,21 @@ runLayout({
 
 The configuration options for the radial layout algorithm that arranges graphs in a radial fashion. <p> For more information on the layout algorithm and its available settings, see [RadialLayout](https://docs.yworks.com/yfileshtml/#/api/RadialLayout). </p>
 
-| Name  | Type |
+| Name | Type |
 |---|---|
-| <div id="centernodespolicy">centerNodesPolicy?</div> | `"directed"`  &#124; `"centrality"`  &#124; `"weighted-centrality"`  &#124; `"custom"` |
-| <div id="componentlayoutenabled">componentLayoutEnabled?</div> | `boolean` |
-| <div id="considernodelabels">considerNodeLabels?</div> | `boolean` |
-| <div id="createcontrolpoints">createControlPoints?</div> | `boolean` |
-| <div id="edgeroutingstrategy">edgeRoutingStrategy?</div> | `"polyline"`  &#124; `"arc"`  &#124; `"radial-polyline"`  &#124; `"curved"` |
-| <div id="hidegroupsstageenabled">hideGroupsStageEnabled?</div> | `boolean` |
-| <div id="integratednodelabeling">integratedNodeLabeling?</div> | `boolean` |
-| <div id="labelingenabled">labelingEnabled?</div> | `boolean` |
-| <div id="layeringstrategy">layeringStrategy?</div> | `"bfs"`  &#124; `"hierarchical"`  &#124; `"dendrogram"`  &#124; `"user-defined"` |
-| <div id="layerspacing">layerSpacing?</div> | `number` |
-| <div id="layoutorientation">layoutOrientation?</div> | `"top-to-bottom"`  &#124; `"left-to-right"`  &#124; `"right-to-left"`  &#124; `"bottom-to-top"` |
-| <div id="maximumchildsectorangle">maximumChildSectorAngle?</div> | `number` |
-| <div id="minimumbendangle">minimumBendAngle?</div> | `number` |
-| <div id="minimumedgetoedgedistance">minimumEdgeToEdgeDistance?</div> | `number` |
-| <div id="minimumlayerdistance">minimumLayerDistance?</div> | `number` |
-| <div id="minimumnodetonodedistance">minimumNodeToNodeDistance?</div> | `number` |
-| <div id="minimumsectordistance">minimumSectorDistance?</div> | `number` |
-| <div id="nodelabelingpolicy">nodeLabelingPolicy?</div> | `"ray-like"`  &#124; `"ray-like-leaves"`  &#124; `"horizontal"` |
-| <div id="nodelabelspacing">nodeLabelSpacing?</div> | `number` |
-| <div id="orientationlayoutenabled">orientationLayoutEnabled?</div> | `boolean` |
-| <div id="paralleledgerouterenabled">parallelEdgeRouterEnabled?</div> | `boolean` |
-| <div id="selflooprouterenabled">selfLoopRouterEnabled?</div> | `boolean` |
-| <div id="subgraphlayoutenabled">subgraphLayoutEnabled?</div> | `boolean` |
+| <div id="centernodespolicy">centerNodesPolicy?</div> | <pre>"directed" &#124; "centrality" &#124; "weighted-centrality"</pre> |
+| <div id="createcontrolpoints">createControlPoints?</div> | <pre>boolean</pre> |
+| <div id="edgeroutingstyle">edgeRoutingStyle?</div> | <pre>"polyline" &#124; "arc" &#124; "radial-polyline" &#124; "curved"</pre> |
+| <div id="layeringstrategy">layeringStrategy?</div> | <pre>"bfs" &#124; "hierarchical" &#124; "dendrogram"</pre> |
+| <div id="layerspacing">layerSpacing?</div> | <pre>number</pre> |
+| <div id="maximumchildsectorangle">maximumChildSectorAngle?</div> | <pre>number</pre> |
+| <div id="minimumbendangle">minimumBendAngle?</div> | <pre>number</pre> |
+| <div id="minimumedgedistance">minimumEdgeDistance?</div> | <pre>number</pre> |
+| <div id="minimumlayerdistance">minimumLayerDistance?</div> | <pre>number</pre> |
+| <div id="minimumnodedistance">minimumNodeDistance?</div> | <pre>number</pre> |
+| <div id="minimumsectordistance">minimumSectorDistance?</div> | <pre>number</pre> |
+| <div id="nodelabelplacement">nodeLabelPlacement?</div> | <pre>"consider" &#124; "generic" &#124; "horizontal" &#124; "ignore" &#124; "ray-like" &#124; "ray-like-leaves"</pre> |
+| <div id="nodelabelspacing">nodeLabelSpacing?</div> | <pre>number</pre> |
 
 
 ## RadialLayoutDataProvider&lt;TNodeData, TEdgeData&gt;
@@ -84,11 +73,11 @@ For more information, see [RadialLayoutData](https://docs.yworks.com/yfileshtml/
 
 | Name | Description | Type |
 |---|---|---|
-| <div id="centernodes">centerNodes?</div> |  Provides which nodes should be placed on the innermost circle. | `(node: TNodeData) => boolean` |
-| <div id="nodehalos">nodeHalos?</div> |  Provides halos for nodes, i.e., a rectangular area around a specific node considered during the layout. | `(node: TNodeData) => `<TypeLink type="NodeHalo"/> |
-| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | `(node: TNodeData) => any` |
-| <div id="outedgecomparers">outEdgeComparers?</div> |  Provides an order for outgoing edges at the given node in which the edges are arranged. | `(node: TNodeData) => (edge1: TEdgeData, edge2: TEdgeData) => number` |
-
+| <div id="centernodes">centerNodes?</div> |  Provides which nodes should be placed on the innermost circle. | <pre>(node: TNodeData) =&gt; boolean</pre> |
+| <div id="childorder">childOrder?</div> |  Provides an order for outgoing edges at the given node in which the edges are arranged. | <pre><TypeLink type="ChildOrderDataProvider"/>lt;TNodeData,TEdgeData&gt;</pre> |
+| <div id="groupnodepadding">groupNodePadding?</div> |  Provides the paddings for the group nodes, i.e., a rectangular area like padding in the interior of the node. | <pre>(node: TNodeData) =&gt; <TypeLink type="Insets"/></pre> |
+| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; <TypeLink type="NodeMargins"/></pre> |
+| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | <pre>(node: TNodeData) =&gt; any</pre> |
 
 ## Playground
 
@@ -107,7 +96,7 @@ const nodeTypes = {
   const initialEdges = data.edges;
 
   const layoutOptions: RadialLayoutOptions = {
-    centerNodesPolicy: "custom",
+    edgeRoutingStyle: 'arc'
   };
 
   const layoutData: RadialLayoutDataProvider<NodeProps, EdgeProps> = {
@@ -154,7 +143,7 @@ const nodeTypes = {
   }
 `}
   data={`
-        {
+  {
    "nodes": [
      {
        "id": "1",

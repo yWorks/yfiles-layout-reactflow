@@ -1,8 +1,8 @@
 import { RefObject, useCallback, useEffect, useMemo, useState } from 'react'
 import {
-  DefaultGraph,
   FreeEdgeLabelModel,
   FreeNodeLabelModel,
+  Graph,
   GraphBuilder,
   GroupingSupport,
   IEdge,
@@ -10,45 +10,36 @@ import {
   Matrix,
   OrientedRectangle,
   Point,
-  Point as YPoint,
   Rect,
   Size
-} from 'yfiles'
+} from '@yfiles/yfiles'
+import { Edge, EdgeProps, Node, NodeProps, Position, useNodesInitialized, useReactFlow } from 'reactflow'
 import {
-  Edge,
-  EdgeProps,
-  Node,
-  NodeProps,
-  Position,
-  useNodesInitialized,
-  useReactFlow
-} from 'reactflow'
-import {
-  BalloonLayoutDataProvider,
   CircularLayoutDataProvider,
   EdgeRouterDataProvider,
   GenericLabelingDataProvider,
-  HierarchicLayoutDataProvider,
+  HierarchicalLayoutDataProvider,
   LayoutAlgorithmConfiguration,
   LayoutDataProvider,
   LayoutName,
   OrganicLayoutDataProvider,
   OrthogonalLayoutDataProvider,
   RadialLayoutDataProvider,
+  RadialTreeLayoutDataProvider,
   TreeLayoutDataProvider
 } from './layout-types.ts'
 import { checkLicense } from '../license/registerLicense.ts'
 import { LayoutSupport as LayoutExecutor } from './LayoutSupport.ts'
 import {
-  BalloonLayoutOptions,
   CircularLayoutOptions,
   EdgeRouterOptions,
   GenericLabelingOptions,
-  HierarchicLayoutOptions,
+  HierarchicalLayoutOptions,
   LayoutAlgorithmOptions,
   OrganicLayoutOptions,
   OrthogonalLayoutOptions,
   RadialLayoutOptions,
+  RadialTreeLayoutOptions,
   TreeLayoutOptions
 } from './layout-options-types.ts'
 import { getRootNode } from './layout-algorithms.ts'
@@ -79,65 +70,65 @@ export type LayoutConfiguration<
   LayoutType = LayoutName,
   TNodeData = NodeProps,
   TEdgeData = EdgeProps
-> = LayoutType extends 'HierarchicLayout'
+> = LayoutType extends 'HierarchicalLayout'
   ? {
-      name: LayoutType
-      layoutOptions?: HierarchicLayoutOptions
-      layoutData?: HierarchicLayoutDataProvider<TNodeData, TEdgeData>
-    }
+    name: LayoutType
+    layoutOptions?: HierarchicalLayoutOptions
+    layoutData?: HierarchicalLayoutDataProvider<TNodeData, TEdgeData>
+  }
   : LayoutType extends 'OrthogonalLayout'
     ? {
-        name: LayoutType
-        layoutOptions?: OrthogonalLayoutOptions
-        layoutData?: OrthogonalLayoutDataProvider<TNodeData, TEdgeData>
-      }
+      name: LayoutType
+      layoutOptions?: OrthogonalLayoutOptions
+      layoutData?: OrthogonalLayoutDataProvider<TNodeData, TEdgeData>
+    }
     : LayoutType extends 'RadialLayout'
       ? {
-          name: LayoutType
-          layoutOptions?: RadialLayoutOptions
-          layoutData?: RadialLayoutDataProvider<TNodeData, TEdgeData>
-        }
+        name: LayoutType
+        layoutOptions?: RadialLayoutOptions
+        layoutData?: RadialLayoutDataProvider<TNodeData, TEdgeData>
+      }
       : LayoutType extends 'CircularLayout'
         ? {
-            name: LayoutType
-            layoutOptions?: CircularLayoutOptions
-            layoutData?: CircularLayoutDataProvider<TNodeData, TEdgeData>
-          }
+          name: LayoutType
+          layoutOptions?: CircularLayoutOptions
+          layoutData?: CircularLayoutDataProvider<TNodeData, TEdgeData>
+        }
         : LayoutType extends 'OrganicLayout'
           ? {
-              name: LayoutType
-              layoutOptions?: OrganicLayoutOptions
-              layoutData?: OrganicLayoutDataProvider<TNodeData, TEdgeData>
-            }
+            name: LayoutType
+            layoutOptions?: OrganicLayoutOptions
+            layoutData?: OrganicLayoutDataProvider<TNodeData, TEdgeData>
+          }
           : LayoutType extends 'TreeLayout'
             ? {
-                name: LayoutType
-                layoutOptions?: TreeLayoutOptions
-                layoutData?: TreeLayoutDataProvider<TNodeData, TEdgeData>
-              }
-            : LayoutType extends 'BalloonLayout'
+              name: LayoutType
+              layoutOptions?: TreeLayoutOptions
+              layoutData?: TreeLayoutDataProvider<TNodeData, TEdgeData>
+            }
+            : LayoutType extends 'RadialTreeLayout'
               ? {
-                  name: LayoutType
-                  layoutOptions?: BalloonLayoutOptions
-                  layoutData?: BalloonLayoutDataProvider<TNodeData, TEdgeData>
-                }
+                name: LayoutType
+                layoutOptions?: RadialTreeLayoutOptions
+                layoutData?: RadialTreeLayoutDataProvider<TNodeData, TEdgeData>
+              }
               : LayoutType extends 'EdgeRouter'
                 ? {
-                    name: LayoutType
-                    layoutOptions?: EdgeRouterOptions
-                    layoutData?: EdgeRouterDataProvider<TNodeData, TEdgeData>
-                  }
+                  name: LayoutType
+                  layoutOptions?: EdgeRouterOptions
+                  layoutData?: EdgeRouterDataProvider<TNodeData, TEdgeData>
+                }
                 : LayoutType extends 'GenericLabeling'
                   ? {
-                      name: LayoutType
-                      layoutOptions?: GenericLabelingOptions
-                      layoutData?: GenericLabelingDataProvider
-                    }
+                    name: LayoutType
+                    layoutOptions?: GenericLabelingOptions
+                    layoutData?: GenericLabelingDataProvider
+                  }
                   : {
-                      name: LayoutType
-                      layoutOptions?: undefined
-                      layoutData?: undefined
-                    }
+                    name: LayoutType
+                    layoutOptions?: undefined
+                    layoutData?: undefined
+                  }
 
 /**
  * A React hook that provides a callback to invoke the configured layout algorithm on the given data.
@@ -284,13 +275,25 @@ export interface LayoutSupport {
  *     const graph = buildGraph(nodes, edges, getZoom())
  *
  *     // configure a layout
- *     const hierarchicLayout = new HierarchicLayout()
- *     const hierarchicLayoutData = new HierarchicLayoutData({
- *       sourcePortCandidates: (edge: IEdge) => ICollection.from([PortCandidate.createCandidate(PortDirections.EAST)])
+ *     const hierarchicalLayout = new HierarchicalLayout()
+ *     const hierarchicalLayoutData = new HierarchicalLayoutData({
+ *       ports: {
+ *         sourcePortCandidates: (edge: IEdge) => {
+ *           const candidates = new EdgePortCandidates()
+ *           if (edge.tag.id === 'e0') {
+ *             candidates.addFreeCandidate(PortSides.LEFT)
+ *           } else if (edge.tag.id === 'e1') {
+ *             candidates.addFreeCandidate(PortSides.RIGHT)
+ *           } else {
+ *             candidates.addFreeCandidate(PortSides.START_IN_FLOW)
+ *           }
+ *           return candidates
+ *         }
+ *       }
  *     })
  *
  *     // apply the layout
- *     graph.applyLayout(hierarchicLayout, hierarchicLayoutData)
+ *     graph.applyLayout(hierarchicalLayout, hierarchicalLayoutData)
  *
  *     // transfer the new coordinates to the data
  *     const { arrangedEdges, arrangedNodes } = transferLayout(graph)
@@ -403,7 +406,7 @@ function buildGraph(
   reactFlowRef?: RefObject<HTMLDivElement>
 ): IGraph {
   if (!checkLicense()) {
-    return new DefaultGraph()
+    return new Graph()
   }
 
   const builder = new GraphBuilder()
@@ -417,7 +420,7 @@ function buildGraph(
     data: node => [node.data.label]
   })
   nodesSource.nodeCreator.defaults.labels.layoutParameter =
-    FreeNodeLabelModel.INSTANCE.createDefaultParameter()
+    FreeNodeLabelModel.CENTER
 
   const edgesSource = builder.createEdgesSource({
     data: edges,
@@ -426,7 +429,7 @@ function buildGraph(
   })
   const edgeCreator = edgesSource.edgeCreator
   edgeCreator.bendsProvider = edge =>
-    edge.data?.yData?.bends?.map((bend: { x: number; y: number }) => YPoint.from(bend))
+    edge.data?.yData?.bends?.map((bend: { x: number; y: number }) => Point.from(bend))
   const labelsSource = edgeCreator.createLabelsSource({
     data: edge => {
       let labels = []
@@ -441,7 +444,7 @@ function buildGraph(
   })
   labelsSource.labelCreator.tagProvider = dataItem => dataItem
 
-  edgeCreator.defaults.labels.layoutParameter = FreeEdgeLabelModel.INSTANCE.createDefaultParameter()
+  edgeCreator.defaults.labels.layoutParameter = FreeEdgeLabelModel.INSTANCE.createParameter()
 
   const graph = builder.buildGraph()
 
@@ -468,17 +471,12 @@ function buildGraph(
               labelBox.width,
               labelBox.height
             )
-            const center = labelRectangle.orientedRectangleCenter
+            const center = labelRectangle.center
             labelRectangle.angle = labelBox.angle
-            labelRectangle.setCenter(center)
+            labelRectangle.center = center
 
             graph.setLabelLayoutParameter(
-              label,
-              FreeNodeLabelModel.INSTANCE.findBestParameter(
-                label,
-                FreeNodeLabelModel.INSTANCE,
-                labelRectangle
-              )
+              label, FreeNodeLabelModel.INSTANCE.findBestParameter(label, labelRectangle)
             )
           }
         }
@@ -500,6 +498,27 @@ function buildGraph(
         ownerId: edge.tag.id,
         labelIndex: index,
         data: label.tag
+      }
+
+      if (edge.tag.data?.yData) {
+        const yData = edge.tag.data?.yData
+        const labelBoxes = yData?.labelBoxes
+        if (labelBoxes && labelBoxes.length > 0) {
+          const labelBox = yData.labelBoxes[index]
+          if (labelBox) {
+            const labelRectangle = new OrientedRectangle(
+              labelBox.x,
+              labelBox.y,
+              preferredSize.width,
+              preferredSize.height
+            )
+            labelRectangle.angle = labelBox.angle
+
+            graph.setLabelLayoutParameter(
+              label, FreeEdgeLabelModel.INSTANCE.findBestParameter(label, labelRectangle)
+            )
+          }
+        }
       }
     })
     if (edge.tag.data?.yData?.sourcePoint && edge.tag.data?.yData?.targetPoint) {
@@ -524,7 +543,7 @@ function buildGraph(
 
 function transferLayout(graph: IGraph): { arrangedNodes: Node[]; arrangedEdges: Edge[] } {
   if (!checkLicense()) {
-    return { arrangedNodes: [], arrangedEdges: []}
+    return { arrangedNodes: [], arrangedEdges: [] }
   }
 
   const nodeOffsets = new Map()
@@ -581,12 +600,12 @@ function transferLayout(graph: IGraph): { arrangedNodes: Node[]; arrangedEdges: 
                 const angle = rect.angle
                 return {
                   id: labelId,
-                  x: rect.orientedRectangleCenter.x - node.layout.center.x,
-                  y: rect.orientedRectangleCenter.y - node.layout.center.y,
+                  x: rect.center.x - node.layout.center.x,
+                  y: rect.center.y - node.layout.center.y,
                   width: rect.width - padding.right - padding.left,
                   height: rect.height - padding.top - padding.bottom,
-                  angle: rect.angle,
-                  transform: `rotate(${-angle}rad)`
+                  angle: angle,
+                  transform: `rotate(${angle}rad)`
                 }
               })
               .toArray()

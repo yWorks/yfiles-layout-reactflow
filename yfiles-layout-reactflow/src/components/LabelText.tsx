@@ -55,25 +55,31 @@ export default function LabelText({
     }
   }, [x, y, width, height])
 
-  const defaultStyle = { position: 'absolute', whiteSpace:  'nowrap' , boxSizing: 'content-box'} as CSSProperties
-  let style: CSSProperties = { ...defaultStyle, ...isNodeLabel && {top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
+  const defaultStyle = { position: 'absolute', whiteSpace: 'nowrap', boxSizing: 'content-box' } as CSSProperties
+  let style: CSSProperties = {
+    ...defaultStyle, ...isNodeLabel && {
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)'
+    }
+  }
 
   if (hasLayout) {
     let hOffset = 0
     let vOffset = 0
     if (isNodeLabel) {
-        // handle the case where the label with paddings is larger than the node's bounds
-        const {offset, wDiff, hDiff} = calculateOffsets(textBox.width, textBox.height, containerRef.current!)
-        hOffset += wDiff * 0.5 + (textBox.x >= 0 ? offset.left : offset.right)
-        vOffset += hDiff * 0.5 + (textBox.y >= 0 ? offset.top : offset.bottom)
+      // handle the case where the label with paddings is larger than the node's bounds
+      const { offset, wDiff, hDiff } = calculateOffsets(textBox.width, textBox.height, containerRef.current!)
+      hOffset += wDiff * 0.5 + (textBox.x >= 0 ? offset.left : offset.right)
+      vOffset += hDiff * 0.5 + (textBox.y >= 0 ? offset.top : offset.bottom)
     }
 
     style = {
-        ...defaultStyle,
-        width: textBox.width,
-        height: textBox.height,
-        transform: (isNodeLabel ? `translate(${textBox.x - hOffset}px,${textBox.y - vOffset}px) ` : '') + (transform ? ` ${transform}` : ''),
-        ...!isNodeLabel && {transformOrigin: `0px 0px`}
+      ...defaultStyle,
+      width: textBox.width,
+      height: textBox.height,
+      transform: (isNodeLabel ? `translate(${textBox.x - hOffset}px,${textBox.y - vOffset}px) ` : '') + (transform ? ` ${transform}` : ''),
+      ...!isNodeLabel && { transformOrigin: `0px 0px` }
     }
   }
 
@@ -82,7 +88,7 @@ export default function LabelText({
       <div
         style={{
           ...labelStyle,
-          ...(isNodeLabel && shouldFlipText(angle) && { transform: `rotate(${Math.PI}rad)` })
+          ...(shouldFlipText(angle, isNodeLabel ?? false) && { transform: `rotate(${Math.PI}rad)` })
         }}
         ref={labelRef}
       >
@@ -120,7 +126,7 @@ function calculateOffsets(
           left: parentPadding.left + labelPadding.left
         },
         wDiff: width - parentWidth,
-        hDiff: height - parentHeight,
+        hDiff: height - parentHeight
       }
     }
   }
@@ -129,7 +135,7 @@ function calculateOffsets(
 
 function calculatePadding(element: HTMLDivElement) {
   if (!element) {
-    return {  top: 0, right: 0, bottom: 0, left: 0 }
+    return { top: 0, right: 0, bottom: 0, left: 0 }
   }
   const elementStyle = window.getComputedStyle(element)
   return {
@@ -143,6 +149,8 @@ function calculatePadding(element: HTMLDivElement) {
 /**
  * Checks whether the text has to be flipped.
  */
-function shouldFlipText(angle: number | undefined) {
-    return angle && ((angle >= -Math.PI && angle <= -Math.PI / 2) || (angle >= Math.PI / 2 && angle <= Math.PI));
+function shouldFlipText(angle: number | undefined, isNodeLabel: boolean) {
+  return angle && (isNodeLabel
+    ? ((angle >= -Math.PI && angle <= -Math.PI / 2) || (angle >= Math.PI / 2 && angle <= Math.PI))
+    : ((angle < -Math.PI && angle > -Math.PI / 2) || (angle < Math.PI / 2 && angle > Math.PI)))
 }

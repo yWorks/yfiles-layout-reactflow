@@ -48,9 +48,9 @@ const LayoutFlow = () => {
   // run initial layout
   useNodesMeasuredEffect(async () => {
     runLayout({
-      name: 'HierarchicLayout',
-      layoutOptions: { orthogonalRouting: true, minimumLayerDistance: 60 },
-      layoutData: { sourcePortCandidates: () => ['east'] }
+      name: 'HierarchicalLayout',
+      layoutOptions: { minimumLayerDistance: 60 },
+      layoutData: { ports: { sourcePortCandidates: () => ['right'] } }
     })
   })
 
@@ -68,9 +68,9 @@ const LayoutFlow = () => {
         <button
           onClick={() =>
             runLayout({
-              name: 'HierarchicLayout',
-              layoutOptions: { orthogonalRouting: true, minimumLayerDistance: 60 },
-              layoutData: { sourcePortCandidates: () => ['east'] }
+              name: 'HierarchicalLayout',
+              layoutOptions: { minimumLayerDistance: 60 },
+              layoutData: { ports: { sourcePortCandidates: () => ['right'] } }
             })
           }
           disabled={running}

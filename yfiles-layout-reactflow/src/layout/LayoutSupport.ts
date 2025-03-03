@@ -1,4 +1,4 @@
-import { GraphComponent, IGraph, LayoutExecutor, LayoutExecutorAsync } from 'yfiles'
+import { GraphComponent, IGraph, LayoutExecutor, LayoutExecutorAsync } from '@yfiles/yfiles'
 import { getLayoutAlgorithm, getLayoutData } from './layout-algorithms.ts'
 import { LayoutAlgorithmConfiguration, LayoutDataProvider } from './layout-types.ts'
 import { registerWebWorker } from './WebWorkerSupport.ts'

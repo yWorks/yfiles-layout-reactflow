@@ -1,7 +1,7 @@
-@import "content.scss";
-@import "sidebar.scss";
-@import "hamburger.scss";
-@import "fonts.css";
+@use "content.scss";
+@use "sidebar.scss";
+@use "hamburger.scss";
+@use "fonts.css";
 
 body {
   font-family: 'Montserrat', Roboto, sans-serif;

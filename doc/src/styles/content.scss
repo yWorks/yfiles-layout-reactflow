@@ -64,6 +64,11 @@
     color: theme("colors.slate.600");
   }
 
+  table pre {
+    white-space: pre-line;
+    word-wrap: break-word;
+  }
+
   pre.astro-code {
     margin: 1.5rem 0;
   }

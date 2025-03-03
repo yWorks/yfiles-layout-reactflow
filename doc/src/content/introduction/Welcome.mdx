@@ -65,8 +65,8 @@ const nodeTypes = {
      */
     useNodesMeasuredEffect(() => {
       runLayout({
-        name: "HierarchicLayout",
-        layoutOptions: layoutOptionsByAlgorithm["HierarchicLayout"]
+        name: "HierarchicalLayout",
+        layoutOptions: layoutOptionsByAlgorithm["HierarchicalLayout"] as HierarchicalLayoutOptions
       })
     })
 
@@ -84,13 +84,13 @@ const nodeTypes = {
         <Panel position="top-left">
           <label htmlFor="algorithm">Select an Algorithm: </label>
           <select id="algorithm" onChange={handleAlgorithmChange}>
-            <option value="HierarchicLayout">Hierarchic</option>
+            <option value="HierarchicalLayout">Hierarchical</option>
             <option value="OrthogonalLayout">Orthogonal</option>
             <option value="RadialLayout">Radial</option>
             <option value="CircularLayout">Circular</option>
             <option value="OrganicLayout">Organic</option>
             <option value="TreeLayout">Tree</option>
-            <option value="BalloonLayout">Balloon</option>
+            <option value="RadialTreeLayout">Radial Tree</option>
           </select>
         </Panel>
       </ReactFlow>
@@ -109,8 +109,7 @@ const nodeTypes = {
     Partial<LayoutName>,
     LayoutAlgorithmOptions
   > = {
-    HierarchicLayout: {
-      orthogonalRouting: true,
+    HierarchicalLayout: {
       minimumLayerDistance: 40
     },
     OrthogonalLayout: {
@@ -121,16 +120,16 @@ const nodeTypes = {
     },
     OrganicLayout: {
       deterministic: true,
-      minimumNodeDistance: 50
+      defaultMinimumNodeDistance: 50
     },
     CircularLayout: {
-      partitionStyle: "organic"
+      partitionDescriptor: { style: 'organic' }
     },
     TreeLayout: {
-      defaultNodePlacer: new yfiles.CompactNodePlacer()
+      defaultSubtreePlacer: new yfiles.CompactSubtreePlacer()
     },
-    BalloonLayout: {
-      rootNodePolicy: "center-root"
+    RadialTreeLayout: {
+      rootSelectionPolicy: "center-root"
     },
     EdgeRouter: {},
     GenericLabeling: {}

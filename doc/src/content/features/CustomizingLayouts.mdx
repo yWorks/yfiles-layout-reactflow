@@ -45,13 +45,12 @@ const initialNodes = data.nodes
 const initialEdges = data.edges
 
 const layoutConfiguration: LayoutConfiguration  = {
-  name: "HierarchicLayout",
+  name: "HierarchicalLayout",
   layoutOptions: {
-    orthogonalRouting: true,
     minimumLayerDistance: 50,
-    integratedEdgeLabeling: true
+    edgeLabelPlacement: 'integrated'
   },
-  layoutData: { sourceGroupIds: (edge) => edge.source, groupNodeInsets: () => 50 },
+  layoutData: { sourceGroupIds: (edge) => edge.source, groupNodePadding: () => 50 },
 }
 
 function LayoutFlow() {
@@ -114,7 +113,7 @@ function App() {
     "className": "large-node",
     "data": {
       "label": "Analyze Sample",
-      "className": "node-label",
+      "className": "node-label"
     },
     "parentNode": "0"
   },
@@ -242,19 +241,19 @@ function App() {
       "id": "7",
       "source": "5",
       "target": "10",
-      "label": {label:  "Repair not successful",  "className": "edge-label" }
+      "label": {"label":  "Repair not successful",  "className": "edge-label" }
     },
     {
       "id": "8",
       "source": "7",
       "target": "8",
-      "label": {label:  "Result plausible",  "className": "edge-label" }
+      "label": {"label":  "Result plausible",  "className": "edge-label" }
     },
     {
       "id": "9",
       "source": "2",
       "target": "5",
-      "label": {label:  "Repair successful",  "className": "edge-label" }
+      "label": {"label":  "Repair successful",  "className": "edge-label" }
     },
     { "id": "10", "source": "11", "target": "12" },
     { "id": "11", "source": "13", "target": "16" },

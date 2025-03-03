@@ -18,12 +18,12 @@ the ordering of the nodes within each layer is chosen in such a way that the num
 </div>
 
 The hierarchical layout algorithm offers extensive customization options through a wide array of properties accessible
-via `HierarchicLayoutOptions`. Fundamental options include layout orientation, orthogonal edge routing, layer distance, and others.
+via `HierarchicalLayoutOptions`. Fundamental options include layout orientation, orthogonal edge routing, layer distance, and others.
 Moreover, the hierarchic layout supports grouped graphs. It also automatically places node and edge labels when the
 corresponding properties are activated.
 
-Additional customization for individual graph elements, such as `sourcePortCandidates`, `nodeHalos`, and more, can be achieved via
-the `HierarchicLayoutDataProvider`.
+Additional customization for individual graph elements, such as `sourcePortCandidates`, `nodeMargins`, and more, can be achieved via
+the `HierarchicalLayoutDataProvider`.
 
 Feel free to play around with the hierarchic layout configuration in our [online playground](#my-playground).
 
@@ -32,79 +32,64 @@ found [here](https://docs.yworks.com/yfileshtml/#/dguide/hierarchical_layout#hie
 
 ```tsx
 runLayout({
-  name: 'HierarchicLayout',
+  name: 'HierarchicalLayout',
   layoutOptions: {
-    orthogonalRouting: true,
     minimumLayerDistance: 60,
-    integratedEdgeLabeling: true,
-    considerNodeLabels: true
+    edgeLabelPlacement: 'integrated',
+    nodeLabelPlacement: 'consider'
   },
   layoutData: {
-    sourcePortCandidates: (edge: EdgeProps) =>
-      parseInt(edge.target) % 2 === 0 ? ['east'] : ['west']
-  }
+    ports: {
+      sourcePortCandidates: (edge: EdgeProps) =>
+        parseInt(edge.target) % 2 === 0 ? ['right'] : ['left']
+      }
+    }
 })
 ```
 
-## HierarchicLayoutOptions
+## HierarchicalLayoutOptions
 
-The configuration options for the hierarchic layout algorithm that arranges graphs in a hierarchic fashion. <p> For more information on the layout algorithm and its available settings, see [HierarchicLayout](https://docs.yworks.com/yfileshtml/#/api/HierarchicLayout).</p>
+The configuration options for the hierarchic layout algorithm that arranges graphs in a hierarchic fashion. <p> For more information on the layout algorithm and its available settings, see [HierarchicalLayout](https://docs.yworks.com/yfileshtml/#/api/HierarchicalLayout).</p>
 
-| Name  | Type |
+| Name | Type |
 |---|---|
-| <div id="automaticedgegrouping">automaticEdgeGrouping?</div> | `boolean` |
-| <div id="backlooprouting">backLoopRouting?</div> | `boolean` |
-| <div id="backlooproutingforselfloops">backLoopRoutingForSelfLoops?</div> | `boolean` |
-| <div id="compactgroups">compactGroups?</div> | `boolean` |
-| <div id="componentarrangementpolicy">componentArrangementPolicy?</div> | `"compact"` &#124; `"topmost"` |
-| <div id="componentlayoutenabled">componentLayoutEnabled?</div> | `boolean` |
-| <div id="considernodelabels">considerNodeLabels?</div> | `boolean` |
-| <div id="edgelayoutdescriptor">edgeLayoutDescriptor?</div> | [`HierarchicLayoutEdgeLayoutDescriptor`](https://docs.yworks.com/yfileshtml/#/api/HierarchicLayoutEdgeLayoutDescriptor) |
-| <div id="edgetoedgedistance">edgeToEdgeDistance?</div> | `number` |
-| <div id="fromscratchlayeringstrategy">fromScratchLayeringStrategy?</div> | `"hierarchical-topmost"` &#124; `"hierarchical-optimal"` &#124; `"hierarchical-tight-tree"` &#124; `"hierarchical-downshift"` &#124; `"bfs"` &#124; `"from-sketch"` &#124; `"user-defined"` &#124; `"unknown"` |
-| <div id="gridspacing">gridSpacing?</div> | `number` |
-| <div id="groupalignmentpolicy">groupAlignmentPolicy?</div> | `"top"` &#124; `"center"` &#124; `"bottom"` |
-| <div id="hidegroupsstageenabled">hideGroupsStageEnabled?</div> | `boolean` |
-| <div id="integratededgelabeling">integratedEdgeLabeling?</div> | `boolean` |
-| <div id="labelingenabled">labelingEnabled?</div> | `boolean` |
-| <div id="layoutmode">layoutMode?</div> | `"incremental"` &#124; `"from-scratch"` |
-| <div id="layoutorientation">layoutOrientation?</div> | `"top-to-bottom"` &#124; `"left-to-right"` &#124; `"right-to-left"` &#124; `"bottom-to-top"` |
-| <div id="maximumduration">maximumDuration?</div> | `number` |
-| <div id="minimumlayerdistance">minimumLayerDistance?</div> | `number` |
-| <div id="nodelayoutdescriptor">nodeLayoutDescriptor?</div> | [`HierarchicLayoutNodeLayoutDescriptor`](https://docs.yworks.com/yfileshtml/#/api/HierarchicLayoutNodeLayoutDescriptor) |
-| <div id="nodetoedgedistance">nodeToEdgeDistance?</div> | `number` |
-| <div id="nodetonodedistance">nodeToNodeDistance?</div> | `number` |
-| <div id="orientationlayoutenabled">orientationLayoutEnabled?</div> | `boolean` |
-| <div id="orthogonalrouting">orthogonalRouting?</div> | `boolean` |
-| <div id="paralleledgerouterenabled">parallelEdgeRouterEnabled?</div> | `boolean` |
-| <div id="recursivegrouplayering">recursiveGroupLayering?</div> | `boolean` |
-| <div id="selflooprouterenabled">selfLoopRouterEnabled?</div> | `boolean` |
-| <div id="separatelayers">separateLayers?</div> | `boolean` |
-| <div id="stopafterlayering">stopAfterLayering?</div> | `boolean` |
-| <div id="stopaftersequencing">stopAfterSequencing?</div> | `boolean` |
-| <div id="subgraphlayoutenabled">subgraphLayoutEnabled?</div> | `boolean` |
+| <div id="automaticedgegrouping">automaticEdgeGrouping?</div> | <pre>boolean</pre> |
+| <div id="componentarrangementpolicy">componentArrangementPolicy?</div> | <pre>"compact" &#124; "topmost"</pre> |
+| <div id="defaultedgedescriptor">defaultEdgeDescriptor?</div> | <pre>HierarchicalLayoutEdgeDescriptor</pre> |
+| <div id="defaultnodedescriptor">defaultNodeDescriptor?</div> | <pre>HierarchicalLayoutNodeDescriptor</pre> |
+| <div id="edgedistance">edgeDistance?</div> | <pre>number</pre> |
+| <div id="edgelabelplacement">edgeLabelPlacement?</div> | <pre>"generic" &#124; "ignore" &#124; "integrated"</pre> |
+| <div id="fromscratchlayeringstrategy">fromScratchLayeringStrategy?</div> | <pre>"hierarchical-topmost" &#124; "hierarchical-optimal" &#124; "hierarchical-tight-tree" &#124; "hierarchical-downshift" &#124; "bfs" &#124; "from-sketch" &#124; "user-defined" &#124; "unknown"</pre> |
+| <div id="fromsketchmode">fromSketchMode?</div> | <pre>boolean</pre> |
+| <div id="gridspacing">gridSpacing?</div> | <pre>number</pre> |
+| <div id="groupalignmentpolicy">groupAlignmentPolicy?</div> | <pre>"top" &#124; "center" &#124; "bottom"</pre> |
+| <div id="grouplayeringpolicy">groupLayeringPolicy?</div> | <pre>"ignore-groups" &#124; "recursive" &#124; "recursive-compact"</pre> |
+| <div id="layoutorientation">layoutOrientation?</div> | <pre>"top-to-bottom" &#124; "left-to-right" &#124; "right-to-left" &#124; "bottom-to-top"</pre> |
+| <div id="minimumlayerdistance">minimumLayerDistance?</div> | <pre>number</pre> |
+| <div id="nodedistance">nodeDistance?</div> | <pre>number</pre> |
+| <div id="nodelabelplacement">nodeLabelPlacement?</div> | <pre>"consider" &#124; "generic" &#124; "ignore"</pre> |
+| <div id="nodetoedgedistance">nodeToEdgeDistance?</div> | <pre>number</pre> |
+| <div id="stopduration">stopDuration?</div> | <pre>number</pre> |
 
 
-## HierarchicLayoutDataProvider&lt;TNodeData, TEdgeData&gt;
+## HierarchicalLayoutDataProvider&lt;TNodeData, TEdgeData&gt;
 
-A provider for individual options per nodes or edges in a [HierarchicLayout](https://docs.yworks.com/yfileshtml/#/api/HierarchicLayout).
+A provider for individual options per nodes or edges in a [HierarchicalLayout](https://docs.yworks.com/yfileshtml/#/api/HierarchicalLayout).
 It allows for defining a function that provides values for each element.
 
-For more information, see [HierarchicLayoutData](https://docs.yworks.com/yfileshtml/#/api/HierarchicLayoutData).
+For more information, see [HierarchicalLayoutData](https://docs.yworks.com/yfileshtml/#/api/HierarchicalLayoutData).
 
 | Name | Description | Type |
 |---|---|---|
-| <div id="edgedirectedness">edgeDirectedness?</div> | Provides 0, 1, or -1 for each edge to indicate if it is undirected, in layout direction, or against layout direction. | `(edge: TEdgeData) => number` |
-| <div id="edgelabelpreferredplacement">edgeLabelPreferredPlacement?</div> | Provides descriptors for the placement of edge labels. | `(label:` <TypeLink type="LabelData"/>`) =>` <TypeLink type="PreferredPlacementDescriptor"/> |
-| <div id="edgethickness">edgeThickness?</div> | Provides a numerical value that represents the thickness of an edge. | `(edge: TEdgeData) => number` |
-| <div id="nodehalos">nodeHalos?</div> | Provides halos for nodes, i.e., a rectangular area around a specific node considered during the layout. | `(node: TNodeData) => `<TypeLink type="NodeHalo"/> |
-| <div id="nodetypes">nodeTypes?</div> | Provides types which can influence the ordering of nodes during layout. | `(node: TNodeData) => any` |
-| <div id="sourcegroupids">sourceGroupIds?</div> | Provides which edges should be grouped at source, i.e., share the beginning of their routes. | `(edge: TEdgeData) => any` |
-| <div id="sourceportcandidates">sourcePortCandidates?</div> | Provides the directions in which an edge can leave its source node. | `(edge: TEdgeData) => (keyof typeof` <TypeLink type="PortDirections"/>`)[]` |
-| <div id="targetgroupids">targetGroupIds?</div> | Provides which edges should be grouped at target, i.e., share the end of their routes. | `(edge: TEdgeData) => any` |
-| <div id="targetportcandidates">targetPortCandidates?</div> | Provides the directions in which an edge can enter its target node. | `(edge: TEdgeData) => (keyof typeof` <TypeLink type="PortDirections"/>`)[]` |
-
-
+| <div id="edgedirectedness">edgeDirectedness?</div> |  Provides 0, 1, or -1 for each edge to indicate if it is undirected, in layout direction, or against layout direction. | <pre>(edge: TEdgeData) =&gt; number</pre> |
+| <div id="edgelabelpreferredplacements">edgeLabelPreferredPlacements?</div> |  Provides descriptors for the placement of edge labels. | <pre>(label: <TypeLink type="LabelData"/>) =&gt; <TypeLink type="EdgeLabelPreferredPlacement"/></pre> |
+| <div id="edgethickness">edgeThickness?</div> |  Provides a numerical value that represents the thickness of an edge. | <pre>(edge: TEdgeData) =&gt; number</pre> |
+| <div id="groupnodepadding">groupNodePadding?</div> |  Provides the paddings for the group nodes, i.e., a rectangular area like padding in the interior of the node. | <pre>(node: TNodeData) =&gt; <TypeLink type="Insets"/></pre> |
+| <div id="nodemargins">nodeMargins?</div> |  Provides margin for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; <TypeLink type="NodeMargins"/></pre> |
+| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | <pre>(node: TNodeData) =&gt; any</pre> |
+| <div id="ports">ports?</div> |  Provides information about how an edge connects to its nodes. | <pre><TypeLink type="PortDataProvider"/> =&lt;TEdgeData&gt;</pre> |
+| <div id="sourcegroupids">sourceGroupIds?</div> |  Provides which edges should be grouped at source, i.e., share the beginning of their routes. | <pre>(edge: TEdgeData) =&gt; any</pre> |
+| <div id="targetgroupids">targetGroupIds?</div> |  Provides which edges should be grouped at target, i.e., share the end of their routes. | <pre>(edge: TEdgeData) =&gt; any</pre> |
 ## Playground
 
 <Playground
@@ -122,14 +107,14 @@ const nodeTypes = {
   const initialNodes = data.nodes
   const initialEdges = data.edges
 
-  const layoutOptions: HierarchicLayoutOptions = {
+  const layoutOptions: HierarchicalLayoutOptions = {
     minimumLayerDistance: 50,
-    integratedEdgeLabeling: true,
+    edgeLabelPlacement: 'integrated',
     nodeToEdgeDistance: 50
   }
 
-  const layoutData: HierarchicLayoutDataProvider<NodeProps, EdgeProps> = {
-    groupNodeInsets: () => 30
+  const layoutData: HierarchicalLayoutDataProvider<NodeProps, EdgeProps> = {
+    groupNodePadding: () => 30
   }
 
   function LayoutFlow() {
@@ -140,7 +125,7 @@ const nodeTypes = {
 
     useNodesMeasuredEffect(() =>
       runLayout({
-        name: "HierarchicLayout",
+        name: "HierarchicalLayout",
         layoutOptions
       })
     )

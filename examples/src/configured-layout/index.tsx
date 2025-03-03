@@ -69,7 +69,7 @@ const LayoutFlow = () => {
           onClick={() =>
             runLayout({
               name: 'OrganicLayout',
-              layoutOptions: { deterministic: true, minimumNodeDistance: 100 }
+              layoutOptions: { deterministic: true, defaultMinimumNodeDistance: 100 }
             })
           }
           disabled={layoutRunning}
@@ -82,11 +82,13 @@ const LayoutFlow = () => {
         <button
           onClick={() =>
             runLayout({
-              name: 'HierarchicLayout',
-              layoutOptions: { orthogonalRouting: true, minimumLayerDistance: 60 },
+              name: 'HierarchicalLayout',
+              layoutOptions: { minimumLayerDistance: 60 },
               layoutData: {
-                sourcePortCandidates: (edge: EdgeProps) =>
-                  parseInt(edge.target) % 2 === 0 ? ['east'] : ['west']
+                ports: {
+                  sourcePortCandidates: (edge: EdgeProps) =>
+                    parseInt(edge.target) % 2 === 0 ? ['right'] : ['left']
+                }
               }
             })
           }
@@ -99,7 +101,10 @@ const LayoutFlow = () => {
             runLayout({
               name: 'TreeLayout',
               layoutOptions: { layoutOrientation: 'left-to-right' },
-              layoutData: { outEdgeComparers: () => (edge1: EdgeProps, edge2: EdgeProps) => parseInt(edge1.target) - parseInt(edge2.target)
+              layoutData: {
+                childOrder: {
+                  outEdgeComparators: () => (edge1: EdgeProps, edge2: EdgeProps) => parseInt(edge1.target) - parseInt(edge2.target)
+                }
               }
             })
           }

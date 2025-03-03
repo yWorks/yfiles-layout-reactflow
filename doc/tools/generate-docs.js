@@ -433,13 +433,11 @@ export function generateDocs(componentName, config) {
             ? `<p>Defined in <a href="${getMemberUrl(member.definedIn, componentName ?? type)}">${member.definedIn}</a></p>`
             : ''
 
-          return `| <div id="${member.name.toLowerCase()}">${member.name}${
-            member.isOptional ? '?' : ''
-          }</div> | ${processDocComment(
-            member.docComment,
-            componentName ?? type.name,
-            true
-          )}${definedIn} | ${getTypeString(member, componentName ?? type.name)} |`
+          if ((componentName ?? type.name).endsWith('Options')) {
+            return `| <div id="${member.name.toLowerCase()}">${member.name}${member.isOptional ? '?' : ''}</div> | ${getTypeString(member, componentName ?? type.name)} |`
+          } else {
+            return `| <div id="${member.name.toLowerCase()}">${member.name}${member.isOptional ? '?' : ''}</div> | ${processDocComment(member.docComment, componentName ?? type.name, true)}${definedIn} | ${getTypeString(member, componentName ?? type.name)} |`
+          }
         })
         .join('\n')
     }
@@ -458,6 +456,8 @@ export function generateDocs(componentName, config) {
 
     const propsHeader = `| Name | Description | Type |
 |---|---|---|`
+    const propsHeaderWithoutDescription = `| Name | Type |
+|---|---|`
 
     const constructorsHeader = `| Description | Type |
 |---|---|`
@@ -533,7 +533,7 @@ ${processDocComment(interfaceType.docComment, interfaceType.name)}
 
 ### Props
     
-${propsHeader}
+${interfaceType.name.endsWith('Options') ? propsHeaderWithoutDescription: propsHeader}
 ${membersTable}
     `
 

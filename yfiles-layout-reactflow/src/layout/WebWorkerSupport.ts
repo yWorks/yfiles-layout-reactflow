@@ -4,7 +4,7 @@ import {
   LayoutGraph,
   License,
   MinimumNodeSizeStage
-} from 'yfiles'
+} from '@yfiles/yfiles'
 import { getLayoutAlgorithm } from './layout-algorithms.ts'
 import { LayoutAlgorithmConfiguration } from './layout-types.ts'
 
@@ -82,7 +82,7 @@ export function registerWebWorker(worker: Worker): Promise<Worker> {
  *   return (
  *     <ReactFlow>
  *       <Panel position="top-left">
- *         <button onClick={() => runLayout('HierarchicLayout')}>Layout</button>
+ *         <button onClick={() => runLayout('HierarchicalLayout')}>Layout</button>
  *       </Panel>
  *     </ReactFlow>
  *   )

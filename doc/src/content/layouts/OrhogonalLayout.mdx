@@ -20,7 +20,7 @@ The orthogonal layout algorithm provides extensive customization options through
 via the `OrthogonalLayoutOptions`. Fundamental options include different layout style and orientations, substructure detection, and more.
 It also automatically places node and edge labels when the corresponding properties are activated.
 
-Additional customization for individual graph elements, such as `edgeLabelPreferredPlacement`, `nodeHalos`, and more, can be achieved via
+Additional customization for individual graph elements, such as `edgeLabelPreferredPlacements`, `nodeMargins`, and more, can be achieved via
 the `OrthogonalLayoutDataProvider`.
 
 Feel free to play around with the orthogonal layout configuration in our [online playground](#my-playground).
@@ -32,16 +32,16 @@ found [here](https://docs.yworks.com/yfileshtml/#/api/OrthogonalLayout).
 runLayout({
   name: 'OrthogonalLayout',
   layoutOptions: {
-    integratedEdgeLabeling: true,
-    considerNodeLabels: true,
-    chainStyle: 'straight'
+    edgeLabelPlacement: 'integrated',
+    nodeLabelPlacement: 'consider',
+    chainSubstructureStyle: 'straight'
   },
   layoutData: {
-    edgeLabelPreferredPlacement: () => ({
+    edgeLabelPreferredPlacements: () => ({
       sideOfEdge: 'left-of-edge',
       distanceToEdge: 20,
     }),
-    nodeHalos: () => 20
+    nodeMargins: () => 20
   }
 })
 ```
@@ -50,39 +50,25 @@ runLayout({
 
 The configuration options for the Orthogonal layout algorithm that arranges graphs in an orthogonal fashion. <p> For more information on the layout algorithm and its available settings, see [OrthogonalLayout](https://docs.yworks.com/yfileshtml/#/api/OrthogonalLayout). </p>
 
-| Name  | Type |
+| Name | Type |
 |---|---|
-| <div id="aligndegreeonenodes">alignDegreeOneNodes?</div> | `boolean` |
-| <div id="chainsize">chainSize?</div> | `number` |
-| <div id="chainstyle">chainStyle?</div> | `"none"`  &#124; `"straight"`  &#124; `"wrapped-with-nodes-at-turns"`  &#124; `"wrapped-with-bends-at-turns"` |
-| <div id="componentlayoutenabled">componentLayoutEnabled?</div> | `boolean` |
-| <div id="considernodelabels">considerNodeLabels?</div> | `boolean` |
-| <div id="crossingreduction">crossingReduction?</div> | `boolean` |
-| <div id="cyclesize">cycleSize?</div> | `number` |
-| <div id="cyclestyle">cycleStyle?</div> | `"none"`  &#124; `"circular-with-nodes-at-corners"`  &#124; `"circular-with-bends-at-corners"` |
-| <div id="edgelayoutdescriptor">edgeLayoutDescriptor?</div> | [`OrthogonalLayoutEdgeLayoutDescriptor`](https://docs.yworks.com/yfileshtml/#/api/OrthogonalLayoutEdgeLayoutDescriptor) |
-| <div id="edgelengthreduction">edgeLengthReduction?</div> | `boolean` |
-| <div id="facemaximization">faceMaximization?</div> | `boolean` |
-| <div id="fromsketchmode">fromSketchMode?</div> | `boolean` |
-| <div id="gridspacing">gridSpacing?</div> | `number` |
-| <div id="hidegroupsstageenabled">hideGroupsStageEnabled?</div> | `boolean` |
-| <div id="integratededgelabeling">integratedEdgeLabeling?</div> | `boolean` |
-| <div id="labelingenabled">labelingEnabled?</div> | `boolean` |
-| <div id="layoutorientation">layoutOrientation?</div> | `"top-to-bottom"`  &#124; `"left-to-right"`  &#124; `"right-to-left"`  &#124; `"bottom-to-top"` |
-| <div id="layoutstyle">layoutStyle?</div> | `"normal"`  &#124; `"uniform"`  &#124; `"box"`  &#124; `"mixed"`  &#124; `"fixed-mixed"`  &#124; `"fixed-box"` |
-| <div id="maximumduration">maximumDuration?</div> | `number` |
-| <div id="optimizeperceivedbends">optimizePerceivedBends?</div> | `boolean` |
-| <div id="orientationlayoutenabled">orientationLayoutEnabled?</div> | `boolean` |
-| <div id="paralleledgerouterenabled">parallelEdgeRouterEnabled?</div> | `boolean` |
-| <div id="preferparallelroutes">preferParallelRoutes?</div> | `boolean` |
-| <div id="randomization">randomization?</div> | `boolean` |
-| <div id="selflooprouterenabled">selfLoopRouterEnabled?</div> | `boolean` |
-| <div id="subgraphlayoutenabled">subgraphLayoutEnabled?</div> | `boolean` |
-| <div id="treeorientation">treeOrientation?</div> | `"top-to-bottom"`  &#124; `"bottom-to-top"`  &#124; `"left-to-right"`  &#124; `"right-to-left"`  &#124; `"auto-detect"` |
-| <div id="treesize">treeSize?</div> | `number` |
-| <div id="treestyle">treeStyle?</div> | `"none"`  &#124; `"default"`  &#124; `"integrated"`  &#124; `"compact"`  &#124; `"aspect-ratio"` |
-| <div id="uniformportassignment">uniformPortAssignment?</div> | `boolean` |
-
+| <div id="aligndegreeonenodes">alignDegreeOneNodes?</div> | <pre>boolean</pre> |
+| <div id="chainsubstructuresize">chainSubstructureSize?</div> | <pre>number</pre> |
+| <div id="chainsubstructurestyle">chainSubstructureStyle?</div> | <pre>"none" &#124; "straight" &#124; "wrapped-with-nodes-at-turns" &#124; "wrapped-with-bends-at-turns"</pre> |
+| <div id="cyclesubstructuresize">cycleSubstructureSize?</div> | <pre>number</pre> |
+| <div id="cyclesubstructurestyle">cycleSubstructureStyle?</div> | <pre>"none" &#124; "circular" &#124; "circular-with-nodes-at-corners" &#124; "circular-with-bends-at-corners"</pre> |
+| <div id="defaultedgedescriptor">defaultEdgeDescriptor?</div> | <pre>OrthogonalLayoutEdgeDescriptor</pre> |
+| <div id="edgelabelplacement">edgeLabelPlacement?</div> | <pre>"generic" &#124; "ignore" &#124; "integrated"</pre> |
+| <div id="fromsketchmode">fromSketchMode?</div> | <pre>boolean</pre> |
+| <div id="gridspacing">gridSpacing?</div> | <pre>number</pre> |
+| <div id="layoutorientation">layoutOrientation?</div> | <pre>"top-to-bottom" &#124; "left-to-right" &#124; "right-to-left" &#124; "bottom-to-top"</pre> |
+| <div id="nodelabelplacement">nodeLabelPlacement?</div> | <pre>"consider" &#124; "generic" &#124; "ignore"</pre> |
+| <div id="preferparallelroutes">preferParallelRoutes?</div> | <pre>boolean</pre> |
+| <div id="stopduration">stopDuration?</div> | <pre>number</pre> |
+| <div id="treesubstructureorientation">treeSubstructureOrientation?</div> | <pre>"top-to-bottom" &#124; "bottom-to-top" &#124; "left-to-right" &#124; "right-to-left" &#124; "auto-detect"</pre> |
+| <div id="treesubstructuresize">treeSubstructureSize?</div> | <pre>number</pre> |
+| <div id="treesubstructurestyle">treeSubstructureStyle?</div> | <pre>"none" &#124; "default" &#124; "integrated" &#124; "compact" &#124; "aspect-ratio"</pre> |
+| <div id="uniformportassignment">uniformPortAssignment?</div> | <pre>boolean</pre> |
 
 
 ## OrthogonalLayoutDataProvider&lt;TNodeData, TEdgeData&gt;
@@ -91,15 +77,15 @@ A provider for individual options per nodes or edges in a [OrthogonalLayout](htt
 
 For more information, see [OrthogonalLayoutData](https://docs.yworks.com/yfileshtml/#/api/OrthogonalLayoutData).
 
-
 | Name | Description | Type |
 |---|---|---|
-| <div id="edgedirectedness">edgeDirectedness?</div> |  Provides 0, 1, or -1 for each edge to indicate if it is undirected, in layout direction, or against layout direction. | `(edge: TEdgeData) => number` |
-| <div id="edgelabelpreferredplacement">edgeLabelPreferredPlacement?</div> |  Provides descriptors for the placement of edge labels. | `(label:` <TypeLink type="LabelData"/>`) =>` <TypeLink type="PreferredPlacementDescriptor"/> |
-| <div id="nodehalos">nodeHalos?</div> |  Provides halos for nodes, i.e., a rectangular area around a specific node considered during the layout. | `(node: TNodeData) => `<TypeLink type="NodeHalo"/> |
-| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | `(node: TNodeData) => any` |
-| <div id="sourcegroupids">sourceGroupIds?</div> |  Provides which edges should be grouped at source, i.e., share the beginning of their routes. | `(edge: TEdgeData) => any` |
-| <div id="targetgroupids">targetGroupIds?</div> |  Provides which edges should be grouped at target, i.e., share the end of their routes. | `(edge: TEdgeData) => any` |
+| <div id="edgedirectedness">edgeDirectedness?</div> |  Provides 0, 1, or -1 for each edge to indicate if it is undirected, in layout direction, or against layout direction. | <pre>(edge: TEdgeData) =&gt; number</pre> |
+| <div id="edgelabelpreferredplacements">edgeLabelPreferredPlacements?</div> |  Provides descriptors for the placement of edge labels. | <pre>(label: <TypeLink type="LabelData"/>) =&gt; <TypeLink type="EdgeLabelPreferredPlacement"/></pre> |
+| <div id="groupnodepadding">groupNodePadding?</div> |  Provides the paddings for the group nodes, i.e., a rectangular area like padding in the interior of the node. | <pre>(node: TNodeData) =&gt; <TypeLink type="Insets"/></pre> |
+| <div id="nodemargins">nodeMargins?</div> |  Provides margins for nodes, i.e., a rectangular area around a specific node considered during the layout. | <pre>(node: TNodeData) =&gt; <TypeLink type="NodeMargins"/></pre> |
+| <div id="nodetypes">nodeTypes?</div> |  Provides types which can influence the ordering of nodes during layout. | <pre>(node: TNodeData) =&gt; any</pre> |
+| <div id="sourcegroupids">sourceGroupIds?</div> |  Provides which edges should be grouped at source, i.e., share the beginning of their routes. | <pre>(edge: TEdgeData) =&gt; any</pre> |
+| <div id="targetgroupids">targetGroupIds?</div> |  Provides which edges should be grouped at target, i.e., share the end of their routes. | <pre>(edge: TEdgeData) =&gt; any</pre> |
 
 
 ## Playground
@@ -120,11 +106,11 @@ const initialNodes = data.nodes
 const initialEdges = data.edges
 
 const layoutOptions: OrthogonalLayoutOptions = {
-  integratedEdgeLabeling: true
+  edgeLabelPlacement: 'integrated'
 }
 
 const layoutData: OrthogonalLayoutDataProvider<NodeProps, EdgeProps> = {
-  edgeLabelPreferredPlacement: () => ({ angle: 0, angleReference: 'relative-to-edge-flow' }),
+  edgeLabelPreferredPlacements: () => ({ angle: 0, angleReference: 'relative-to-edge-flow' }),
 }
 
 function LayoutFlow() {

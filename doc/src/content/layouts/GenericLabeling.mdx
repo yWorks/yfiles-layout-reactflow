@@ -15,7 +15,7 @@ positions and the edge routes. It can also support rotated labels.
 
 Node labels can be placed either in the interior or the exterior of the nodes with the option for rotation.
 The information about edge label placement can be conveyed to the labeling algorithm through a
-`PreferredPlacementDescriptor`.
+`EdgeLabelPreferredPlacement`.
 
 <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', margin: '40px 0'}}>
   <img src={`${import.meta.env.BASE_URL}/generic-labeling.png`} style={{maxWidth: "80%", objectFit: "cover"}} alt="Generic labeling"></img>
@@ -24,20 +24,20 @@ The information about edge label placement can be conveyed to the labeling algor
 The generic labeling algorithm provides extensive customization options through a wide array of properties accessible
 via the `GenericLabelingOptions`. It can be applied on the whole graph or only on a predefined set of nodes and edges.
 
-Additional customization for individual graph elements, such as `edgeLabelPreferredPlacement`, `affectedLabels`, and more, can be achieved via
+Additional customization for individual graph elements, such as `edgeLabelPreferredPlacements`, `affectedLabels`, and more, can be achieved via
 the `GenericLabelingDataProvider`.
 
 Feel free to play around with the orthogonal layout configuration in our [online playground](genericlabeling#playground).
 
-Extensive documentation detailing all available properties of the balloon layout supported by *yFiles layouts for React Flow* can be
+Extensive documentation detailing all available properties of the radial tree layout supported by *yFiles layouts for React Flow* can be
 found [here](https://docs.yworks.com/yfileshtml/#/api/LabelingLayout).
 
 ```tsx
 runLayout({
   name: 'GenericLabeling',
-  layoutOptions: { placeEdgeLabels: true, placeNodeLabels: true },
+  layoutOptions: { scope: 'all' },
   layoutData: {
-    edgeLabelPreferredPlacement: () => ({
+    edgeLabelPreferredPlacements: () => ({
       sideOfEdge: 'left-of-edge',
       distanceToEdge: 20,
     })
@@ -53,19 +53,14 @@ The configuration options for the labeling algorithm that places the labels of a
 
 | Name | Type |
 |---|---|
-| <div id="autoflipping">autoFlipping?</div> |`boolean` |
-| <div id="customprofitmodelratio">customProfitModelRatio?</div> |`number` |
-| <div id="deterministic">deterministic?</div> |`boolean` |
-| <div id="edgegroupoverlapallowed">edgeGroupOverlapAllowed?</div> |`boolean` |
-| <div id="maximumduration">maximumDuration?</div> |`number` |
-| <div id="moveinternalnodelabels">moveInternalNodeLabels?</div> |`boolean` |
-| <div id="optimizationstrategy">optimizationStrategy?</div> |`"balanced"`  &#124; `"node-overlap"`  &#124; `"label-overlap"`  &#124; `"edge-overlap"`  &#124; `"preferred-placement"` &#124; `"partition-grid-overlap"`  &#124; `"none"` |
-| <div id="placeedgelabels">placeEdgeLabels?</div> |`boolean` |
-| <div id="placenodelabels">placeNodeLabels?</div> |`boolean` |
-| <div id="reduceambiguity">reduceAmbiguity?</div> |`boolean` |
-| <div id="reducelabeloverlaps">reduceLabelOverlaps?</div> |`boolean` |
-| <div id="removeedgeoverlaps">removeEdgeOverlaps?</div> |`boolean` |
-| <div id="removenodeoverlaps">removeNodeOverlaps?</div> |`boolean` |
+| <div id="defaultedgelabelingcosts">defaultEdgeLabelingCosts?</div> | <pre>LabelingCosts</pre> |
+| <div id="defaultnodelabelingcosts">defaultNodeLabelingCosts?</div> | <pre>LabelingCosts</pre> |
+| <div id="deterministic">deterministic?</div> | <pre>boolean</pre> |
+| <div id="moveinternalnodelabels">moveInternalNodeLabels?</div> | <pre>boolean</pre> |
+| <div id="reducelabeloverlaps">reduceLabelOverlaps?</div> | <pre>boolean</pre> |
+| <div id="scope">scope?</div> | <pre>"all" &#124; "edge-labels" &#124; "node-labels"</pre> |
+| <div id="stopduration">stopDuration?</div> | <pre>number</pre> |
+
 
 ## GenericLabelingDataProvider
 
@@ -75,8 +70,8 @@ For more information, see [LabelingData](https://docs.yworks.com/yfileshtml/#/ap
 
 | Name | Description | Type |
 |---|---|---|
-| <div id="affectedlabels">affectedLabels?</div> |  Provides which labels should be placed. | `(label:` <TypeLink type="LabelData"/>`) => boolean` |
-| <div id="edgelabelpreferredplacement">edgeLabelPreferredPlacement?</div> |  Provides descriptors for the placement of edge labels. | `(label:` <TypeLink type="LabelData"/>`) =>` <TypeLink type="PreferredPlacementDescriptor"/> |
+| <div id="affectedlabels">affectedLabels?</div> |  Provides which labels should be placed. | <pre>(label: <TypeLink type="LabelData"/>) =&gt; boolean</pre> |
+| <div id="edgelabelpreferredplacements">edgeLabelPreferredPlacements?</div> |  Provides descriptors for the placement of edge labels. | <pre>(label: <TypeLink type="LabelData"/>) =&gt; <TypeLink type="EdgeLabelPreferredPlacement"/></pre> |
 
 ## Playground
 
@@ -96,14 +91,13 @@ For more information, see [LabelingData](https://docs.yworks.com/yfileshtml/#/ap
     const initialEdges = data.edges;
 
     const layoutOptions: GenericLabelingOptions = {
-      placeEdgeLabels: true,
-      placeNodeLabels: true
+      scope: 'all'
     };
 
     const layoutData: GenericLabelingDataProvider = {
-     edgeLabelPreferredPlacement: () => ({
-       sideOfEdge: "on-edge",
-       placeAlongEdge: "at-center"
+     edgeLabelPreferredPlacements: () => ({
+       edgeSide: "on-edge",
+       placementAlongEdge: "at-center"
      })
     }
 

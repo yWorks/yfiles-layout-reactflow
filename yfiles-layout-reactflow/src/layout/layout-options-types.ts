@@ -67,7 +67,7 @@ export interface RadialTreeLayoutOptions {
 }
 
 /**
- * The configuration options for the hierarchic layout algorithm that arranges graphs in a hierarchic fashion.
+ * The configuration options for the hierarchical layout algorithm that arranges graphs in a hierarchical fashion.
  * <p>
  * For more information on the layout algorithm and its available settings,
  * see [HierarchicalLayout]{@link https://docs.yworks.com/yfileshtml/#/api/HierarchicalLayout}.

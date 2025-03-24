@@ -1,14 +1,14 @@
 ---
-title: Hierarchic Layout
+title: Hierarchical Layout
 section: 1
 tags: []
 ---
 import Playground from '../../components/Playground.astro'
 import TypeLink from '../../components/TypeLink.astro'
 
-# Hierarchic Layout
+# Hierarchical Layout
 
-The *hierarchic layout algorithm* arranges graphs in a hierarchic fashion. It aims to highlight the main direction 
+The *hierarchical layout algorithm* arranges graphs in a hierarchical fashion. It aims to highlight the main direction
 or flow within a directed graph. The nodes of a graph are placed in hierarchically arranged layers such that 
 the (majority of) edges of the graph show the same overall orientation, for example, top-to-bottom. Additionally, 
 the ordering of the nodes within each layer is chosen in such a way that the number of edge crossings is small.
@@ -19,15 +19,15 @@ the ordering of the nodes within each layer is chosen in such a way that the num
 
 The hierarchical layout algorithm offers extensive customization options through a wide array of properties accessible
 via `HierarchicalLayoutOptions`. Fundamental options include layout orientation, orthogonal edge routing, layer distance, and others.
-Moreover, the hierarchic layout supports grouped graphs. It also automatically places node and edge labels when the
+Moreover, the hierarchical layout supports grouped graphs. It also automatically places node and edge labels when the
 corresponding properties are activated.
 
 Additional customization for individual graph elements, such as `sourcePortCandidates`, `nodeMargins`, and more, can be achieved via
 the `HierarchicalLayoutDataProvider`.
 
-Feel free to play around with the hierarchic layout configuration in our [online playground](#my-playground).
+Feel free to play around with the hierarchical layout configuration in our [online playground](#my-playground).
 
-Extensive documentation detailing all available properties of the hierarchic layout supported by *yFiles layouts for React Flow* can be
+Extensive documentation detailing all available properties of the hierarchical layout supported by *yFiles layouts for React Flow* can be
 found [here](https://docs.yworks.com/yfileshtml/#/dguide/hierarchical_layout#hierarchical_layout).
 
 ```tsx
@@ -49,7 +49,7 @@ runLayout({
 
 ## HierarchicalLayoutOptions
 
-The configuration options for the hierarchic layout algorithm that arranges graphs in a hierarchic fashion. <p> For more information on the layout algorithm and its available settings, see [HierarchicalLayout](https://docs.yworks.com/yfileshtml/#/api/HierarchicalLayout).</p>
+The configuration options for the hierarchical layout algorithm that arranges graphs in a hierarchical fashion. <p> For more information on the layout algorithm and its available settings, see [HierarchicalLayout](https://docs.yworks.com/yfileshtml/#/api/HierarchicalLayout).</p>
 
 | Name | Type |
 |---|---|

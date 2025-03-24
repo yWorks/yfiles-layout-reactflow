@@ -41,6 +41,7 @@ import {
   PortDataProvider,
   PortSides
 } from './layout-types.ts'
+import { RefObject } from 'react'
 
 export async function getLayoutAlgorithm(
   layoutDescriptor: LayoutDescriptor
@@ -88,14 +89,14 @@ export async function getLayoutAlgorithm(
 export function getLayoutData<TNodeData, TEdgeData>(
   layoutName: LayoutName,
   layoutDataDescriptor?: LayoutDataProvider<TNodeData, TEdgeData>,
-  reactFlowElement?: HTMLDivElement
+  reactFlowRef?: RefObject<HTMLElement>
 ): LayoutData | null {
   const layoutData = new GenericLayoutData()
-  layoutData.addItemMapping(LayoutKeys.GROUP_NODE_PADDING_DATA_KEY,
-    (node: INode) =>
-      // @ts-expect-error property-groupNodePadding-does-not-exist-on-type-LayoutDataProvider
-      translatePadding(node, layoutDataDescriptor?.groupNodePadding?.(node.tag), reactFlowElement))
-
+  const rootElement = getRootNode(reactFlowRef)
+  layoutData.addItemMapping(LayoutKeys.GROUP_NODE_PADDING_DATA_KEY, (node: INode) =>
+    // @ts-expect-error property-groupNodePadding-does-not-exist-on-type-LayoutDataProvider
+    translatePadding(rootElement, node, layoutDataDescriptor?.groupNodePadding?.(node.tag))
+  )
 
   switch (layoutName) {
     case 'GenericLabeling':
@@ -105,7 +106,9 @@ export function getLayoutData<TNodeData, TEdgeData>(
       layoutData.add(new RadialTreeLayoutData(translateLayoutDataDescriptor(layoutDataDescriptor)))
       break
     case 'HierarchicalLayout':
-      layoutData.add(new HierarchicalLayoutData(translateLayoutDataDescriptor(layoutDataDescriptor)))
+      layoutData.add(
+        new HierarchicalLayoutData(translateLayoutDataDescriptor(layoutDataDescriptor))
+      )
       break
     case 'CircularLayout':
       layoutData.add(new CircularLayoutData(translateLayoutDataDescriptor(layoutDataDescriptor)))
@@ -140,9 +143,12 @@ function translateLayoutDataDescriptor<TNodeData, TEdgeData>(
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const translatedLayoutDataDescriptor: {
-    [key: string]: ((item: IModelItem) => unknown) | { [key: string]: (item: IModelItem) => unknown } | {
-      [key: string]: (item: IModelItem) => (item1: IModelItem, item2: IModelItem) => unknown
-    }
+    [key: string]:
+      | ((item: IModelItem) => unknown)
+      | { [key: string]: (item: IModelItem) => unknown }
+      | {
+          [key: string]: (item: IModelItem) => (item1: IModelItem, item2: IModelItem) => unknown
+        }
   } = {}
   Object.keys(layoutDataDescriptor).forEach((key: string) => {
     const originalFunction: (item: IModelItem) => unknown =
@@ -150,8 +156,8 @@ function translateLayoutDataDescriptor<TNodeData, TEdgeData>(
     if (originalFunction) {
       // @ts-expect-error property-groupNodePadding-does-not-exist-on-type-LayoutDataProvider
       if (layoutDataDescriptor.groupNodePadding) {
-        return translatedLayoutDataDescriptor.groupNodePadding = (item: IModelItem) =>
-          translateNodeMargins(originalFunction(item.tag) as Insets)
+        return (translatedLayoutDataDescriptor.groupNodePadding = (item: IModelItem) =>
+          translateNodeMargins(originalFunction(item.tag) as Insets))
       } else if (key === 'edgeLabelPreferredPlacements') {
         translatedLayoutDataDescriptor[key] = (item: IModelItem) =>
           translateEdgeLabelPreferredPlacement(
@@ -161,14 +167,22 @@ function translateLayoutDataDescriptor<TNodeData, TEdgeData>(
         translatedLayoutDataDescriptor[key] = (item: IModelItem) =>
           translateNodeMargins(originalFunction(item.tag) as Insets)
       } else if (key === 'ports') {
-        // @ts-expect-error property-ports-does-not-exist-on-type-LayoutDataProvider
-        translatedLayoutDataDescriptor[key] = translatePortDataProvider(layoutDataDescriptor[key] as PortDataProvider<TEdgeData>)
+        translatedLayoutDataDescriptor[key] = translatePortDataProvider(
+          // @ts-expect-error property-ports-does-not-exist-on-type-LayoutDataProvider
+          layoutDataDescriptor[key] as PortDataProvider<TEdgeData>
+        )
       } else if (key === 'childOrder') {
-        // @ts-expect-error property-childOrder-does-not-exist-on-type-LayoutDataProvider
-        translatedLayoutDataDescriptor[key] = translateChildOrderDataProvider(layoutDataDescriptor[key] as ChildOrderDataProvider<TNodeData, TEdgeData>)
+        translatedLayoutDataDescriptor[key] = translateChildOrderDataProvider(
+          // @ts-expect-error property-childOrder-does-not-exist-on-type-LayoutDataProvider
+          layoutDataDescriptor[key] as ChildOrderDataProvider<TNodeData, TEdgeData>
+        )
       } else if (key === 'scope') {
-        // @ts-expect-error property-scope-does-not-exist-on-type-LayoutDataProvider
-        translatedLayoutDataDescriptor[key] = translateScopeDataProvider(layoutDataDescriptor[key] as (OrganicScopeDataProvider<TNodeData> | EdgeRouterScopeDataProvider<TNodeData, TEdgeData>))
+        translatedLayoutDataDescriptor[key] = translateScopeDataProvider(
+          // @ts-expect-error property-scope-does-not-exist-on-type-LayoutDataProvider
+          layoutDataDescriptor[key] as
+            | OrganicScopeDataProvider<TNodeData>
+            | EdgeRouterScopeDataProvider<TNodeData, TEdgeData>
+        )
       } else {
         translatedLayoutDataDescriptor[key] = (item: IModelItem) => originalFunction(item.tag)
       }
@@ -178,7 +192,9 @@ function translateLayoutDataDescriptor<TNodeData, TEdgeData>(
   return translatedLayoutDataDescriptor
 }
 
-function translateChildOrderDataProvider<TNodeData, TEdgeData>(childOrder: PortDataProvider<TEdgeData>): {
+function translateChildOrderDataProvider<TNodeData, TEdgeData>(
+  childOrder: PortDataProvider<TEdgeData>
+): {
   [key: string]: (item: IModelItem) => (item1: IModelItem, item2: IModelItem) => unknown
 } {
   const translatedChildOrderData: {
@@ -187,25 +203,34 @@ function translateChildOrderDataProvider<TNodeData, TEdgeData>(childOrder: PortD
   Object.keys(childOrder).forEach((key: string) => {
     const originalFunction: (item: IModelItem) => unknown =
       childOrder[key as keyof LayoutDataProvider<TNodeData, TEdgeData>]
-    translatedChildOrderData[key] = (node: IModelItem) => translateOutEdgeComparers<TEdgeData>(originalFunction(node.tag) as (edge1: TEdgeData, edge2: TEdgeData) => number)
+    translatedChildOrderData[key] = (node: IModelItem) =>
+      translateOutEdgeComparers<TEdgeData>(
+        originalFunction(node.tag) as (edge1: TEdgeData, edge2: TEdgeData) => number
+      )
   })
   return translatedChildOrderData
 }
 
-function translateOutEdgeComparers<TEdgeData>(outEdgeComparer: (edge1: TEdgeData, edge2: TEdgeData) => number): (item1: IModelItem, item2: IModelItem) => number {
+function translateOutEdgeComparers<TEdgeData>(
+  outEdgeComparer: (edge1: TEdgeData, edge2: TEdgeData) => number
+): (item1: IModelItem, item2: IModelItem) => number {
   return (e1: IModelItem, e2: IModelItem) => outEdgeComparer(e1.tag, e2.tag)
 }
 
-function translatePortDataProvider<TNodeData, TEdgeData>(ports: PortDataProvider<TEdgeData>): {
+function translatePortDataProvider<TNodeData, TEdgeData>(
+  ports: PortDataProvider<TEdgeData>
+): {
   [key: string]: (item: IModelItem) => unknown
 } {
   const translatedPortData: { [key: string]: (item: IModelItem) => unknown } = {}
   Object.keys(ports).forEach((key: string) => {
     const originalFunction: (item: IModelItem) => unknown =
       ports[key as keyof LayoutDataProvider<TNodeData, TEdgeData>]
-    translatedPortData[key] = key === 'sourcePortCandidates' || key === 'targetPortCandidates'
-      ? (item: IModelItem) => translatePortCandidates(originalFunction(item.tag) as unknown as PortSides[])
-      : (item: IModelItem) => originalFunction(item.tag)
+    translatedPortData[key] =
+      key === 'sourcePortCandidates' || key === 'targetPortCandidates'
+        ? (item: IModelItem) =>
+            translatePortCandidates(originalFunction(item.tag) as unknown as PortSides[])
+        : (item: IModelItem) => originalFunction(item.tag)
   })
   return translatedPortData
 }
@@ -218,7 +243,9 @@ function translatePortCandidates(sides: PortSides[]): EdgePortCandidates {
   return portCandidates
 }
 
-function translateScopeDataProvider<TNodeData, TEdgeData>(scope: OrganicScopeDataProvider<TNodeData> | EdgeRouterScopeDataProvider<TNodeData, TEdgeData>): {
+function translateScopeDataProvider<TNodeData, TEdgeData>(
+  scope: OrganicScopeDataProvider<TNodeData> | EdgeRouterScopeDataProvider<TNodeData, TEdgeData>
+): {
   [key: string]: (item: IModelItem) => unknown
 } {
   const translatedScopeData: { [key: string]: (item: IModelItem) => unknown } = {}
@@ -238,9 +265,9 @@ function translateNodeMargins(insets: Insets | number): YFilesInsets {
 }
 
 function translatePadding(
+  rootElement: HTMLElement,
   node: INode,
-  insets?: Insets,
-  reactFlowElement?: HTMLDivElement
+  insets?: Insets
 ): YFilesInsets | null {
   if (insets) {
     if (typeof insets === 'number') {
@@ -248,7 +275,7 @@ function translatePadding(
     }
     return new YFilesInsets(insets.top, insets.right, insets.bottom, insets.left)
   }
-  return getGroupNodePadding(node, reactFlowElement)
+  return getGroupNodePadding(node, rootElement)
 }
 
 function translateEdgeLabelPreferredPlacement(
@@ -257,9 +284,8 @@ function translateEdgeLabelPreferredPlacement(
   return new YFilesEdgeLabelPreferredPlacement(descriptor)
 }
 
-function getGroupNodePadding(node: INode, reactFlowElement?: HTMLDivElement): YFilesInsets {
-  const root = getRootNode(reactFlowElement)
-  const nodeElement = root.querySelector(`[data-id="${node.tag.id}"]`)
+function getGroupNodePadding(node: INode, rootElement: HTMLElement): YFilesInsets {
+  const nodeElement = rootElement.querySelector(`[data-id="${node.tag.id}"]`)
   if (nodeElement) {
     const computedStyle = window.getComputedStyle(nodeElement)
     const paddingTop = parseInt(computedStyle.getPropertyValue('padding-top')) ?? 0
@@ -272,16 +298,21 @@ function getGroupNodePadding(node: INode, reactFlowElement?: HTMLDivElement): YF
 }
 
 export function getRootNode(
-  reactFlowElement?: HTMLDivElement
+  reactFlowRef?: RefObject<HTMLElement>
 ): Element | Document | DocumentFragment {
-  if (reactFlowElement) {
-    return reactFlowElement.getRootNode() as HTMLElement
+  if (reactFlowRef?.current) {
+    return reactFlowRef.current.getRootNode() as HTMLElement
   }
 
   const shadowRoots = Array.from(document.querySelectorAll('*'))
     .filter(e => !!e.shadowRoot)
     .map(e => e.shadowRoot)
   if (shadowRoots.length > 0) {
+    if (shadowRoots.length > 1) {
+      console.warn(
+        'There are more than one shadow roots. For correct results, please call useLayout or useLayoutSupport with a reference to the corresponding reactflow component.'
+      )
+    }
     return shadowRoots.at(0) as DocumentFragment
   }
 

@@ -13,7 +13,15 @@ import {
   Rect,
   Size
 } from '@yfiles/yfiles'
-import { Edge, EdgeProps, Node, NodeProps, Position, useNodesInitialized, useReactFlow } from 'reactflow'
+import {
+  Edge,
+  EdgeProps,
+  Node,
+  NodeProps,
+  Position,
+  useNodesInitialized,
+  useReactFlow
+} from 'reactflow'
 import {
   CircularLayoutDataProvider,
   EdgeRouterDataProvider,
@@ -72,63 +80,63 @@ export type LayoutConfiguration<
   TEdgeData = EdgeProps
 > = LayoutType extends 'HierarchicalLayout'
   ? {
-    name: LayoutType
-    layoutOptions?: HierarchicalLayoutOptions
-    layoutData?: HierarchicalLayoutDataProvider<TNodeData, TEdgeData>
-  }
+      name: LayoutType
+      layoutOptions?: HierarchicalLayoutOptions
+      layoutData?: HierarchicalLayoutDataProvider<TNodeData, TEdgeData>
+    }
   : LayoutType extends 'OrthogonalLayout'
     ? {
-      name: LayoutType
-      layoutOptions?: OrthogonalLayoutOptions
-      layoutData?: OrthogonalLayoutDataProvider<TNodeData, TEdgeData>
-    }
+        name: LayoutType
+        layoutOptions?: OrthogonalLayoutOptions
+        layoutData?: OrthogonalLayoutDataProvider<TNodeData, TEdgeData>
+      }
     : LayoutType extends 'RadialLayout'
       ? {
-        name: LayoutType
-        layoutOptions?: RadialLayoutOptions
-        layoutData?: RadialLayoutDataProvider<TNodeData, TEdgeData>
-      }
+          name: LayoutType
+          layoutOptions?: RadialLayoutOptions
+          layoutData?: RadialLayoutDataProvider<TNodeData, TEdgeData>
+        }
       : LayoutType extends 'CircularLayout'
         ? {
-          name: LayoutType
-          layoutOptions?: CircularLayoutOptions
-          layoutData?: CircularLayoutDataProvider<TNodeData, TEdgeData>
-        }
+            name: LayoutType
+            layoutOptions?: CircularLayoutOptions
+            layoutData?: CircularLayoutDataProvider<TNodeData, TEdgeData>
+          }
         : LayoutType extends 'OrganicLayout'
           ? {
-            name: LayoutType
-            layoutOptions?: OrganicLayoutOptions
-            layoutData?: OrganicLayoutDataProvider<TNodeData, TEdgeData>
-          }
+              name: LayoutType
+              layoutOptions?: OrganicLayoutOptions
+              layoutData?: OrganicLayoutDataProvider<TNodeData, TEdgeData>
+            }
           : LayoutType extends 'TreeLayout'
             ? {
-              name: LayoutType
-              layoutOptions?: TreeLayoutOptions
-              layoutData?: TreeLayoutDataProvider<TNodeData, TEdgeData>
-            }
+                name: LayoutType
+                layoutOptions?: TreeLayoutOptions
+                layoutData?: TreeLayoutDataProvider<TNodeData, TEdgeData>
+              }
             : LayoutType extends 'RadialTreeLayout'
               ? {
-                name: LayoutType
-                layoutOptions?: RadialTreeLayoutOptions
-                layoutData?: RadialTreeLayoutDataProvider<TNodeData, TEdgeData>
-              }
+                  name: LayoutType
+                  layoutOptions?: RadialTreeLayoutOptions
+                  layoutData?: RadialTreeLayoutDataProvider<TNodeData, TEdgeData>
+                }
               : LayoutType extends 'EdgeRouter'
                 ? {
-                  name: LayoutType
-                  layoutOptions?: EdgeRouterOptions
-                  layoutData?: EdgeRouterDataProvider<TNodeData, TEdgeData>
-                }
+                    name: LayoutType
+                    layoutOptions?: EdgeRouterOptions
+                    layoutData?: EdgeRouterDataProvider<TNodeData, TEdgeData>
+                  }
                 : LayoutType extends 'GenericLabeling'
                   ? {
-                    name: LayoutType
-                    layoutOptions?: GenericLabelingOptions
-                    layoutData?: GenericLabelingDataProvider
-                  }
+                      name: LayoutType
+                      layoutOptions?: GenericLabelingOptions
+                      layoutData?: GenericLabelingDataProvider
+                    }
                   : {
-                    name: LayoutType
-                    layoutOptions?: undefined
-                    layoutData?: undefined
-                  }
+                      name: LayoutType
+                      layoutOptions?: undefined
+                      layoutData?: undefined
+                    }
 
 /**
  * A React hook that provides a callback to invoke the configured layout algorithm on the given data.
@@ -206,10 +214,10 @@ export function useLayout<
             graph,
             { name, properties: layoutOptions } as LayoutAlgorithmConfiguration,
             layoutData,
-            context?.reactFlowRef?.current ?? undefined
+            context?.reactFlowRef
           )
           .then(() => {
-            const { arrangedNodes, arrangedEdges } = transferLayout(graph)
+            const { arrangedNodes, arrangedEdges } = transferLayout(graph, context?.reactFlowRef)
             setNodes(arrangedNodes)
             setEdges(arrangedEdges)
             setTimeout(() => fitView())
@@ -240,11 +248,6 @@ export interface LayoutSupport {
    * Transfers the calculated layout from the graph to lists of nodes and edges.
    */
   transferLayout: (graph: IGraph) => { arrangedNodes: Node[]; arrangedEdges: Edge[] }
-  /**
-   * An optional reference to the React Flow element. This reference is particularly useful in scenarios where there
-   * are multiple React Flow elements on the same page or when the flow is encapsulated within a closed shadow DOM.
-   */
-  reactFlowRef?: RefObject<HTMLElement>
 }
 
 /**
@@ -326,11 +329,19 @@ export interface LayoutSupport {
  *   )
  * }
  * ```
- *
+ * @param {RefObject<HTMLElement>}[reactFlowRef] An optional reference to the React Flow element. This reference is
+ * particularly useful in scenarios where there are multiple React Flow elements on the same page or when the flow is
+ * encapsulated within a closed shadow DOM.
  * @returns functions to transfer the data into a graph and get the layout information from the graph.
  */
-export function useLayoutSupport(): LayoutSupport {
-  return { buildGraph, transferLayout }
+export function useLayoutSupport(reactFlowRef?: RefObject<HTMLElement>): LayoutSupport {
+  return {
+    buildGraph: useCallback(
+      (nodes, edges, zoom) => buildGraph(nodes, edges, zoom, reactFlowRef),
+      [reactFlowRef]
+    ),
+    transferLayout: useCallback(graph => transferLayout(graph, reactFlowRef), [reactFlowRef])
+  }
 }
 
 /**
@@ -403,7 +414,7 @@ function buildGraph(
   nodes: Node[],
   edges: Edge[],
   zoom: number,
-  reactFlowRef?: RefObject<HTMLDivElement>
+  reactFlowRef?: RefObject<HTMLElement>
 ): IGraph {
   if (!checkLicense()) {
     return new Graph()
@@ -419,8 +430,7 @@ function buildGraph(
   nodesSource.nodeCreator.createLabelsSource({
     data: node => [node.data.label]
   })
-  nodesSource.nodeCreator.defaults.labels.layoutParameter =
-    FreeNodeLabelModel.CENTER
+  nodesSource.nodeCreator.defaults.labels.layoutParameter = FreeNodeLabelModel.CENTER
 
   const edgesSource = builder.createEdgesSource({
     data: edges,
@@ -448,13 +458,11 @@ function buildGraph(
 
   const graph = builder.buildGraph()
 
+  const rootElement = getRootNode(reactFlowRef)
+
   graph.nodes.forEach(node => {
     node.labels.forEach((label, index) => {
-      const preferredSize = measureLabel(
-        `node-label-${node.tag.id}-${index}`,
-        zoom,
-        reactFlowRef?.current ?? undefined
-      )
+      const preferredSize = measureLabel(`node-label-${node.tag.id}-${index}`, zoom, rootElement)
       if (preferredSize.width > 0 && preferredSize.height > 0) {
         graph.setLabelPreferredSize(label, preferredSize)
       }
@@ -476,7 +484,8 @@ function buildGraph(
             labelRectangle.center = center
 
             graph.setLabelLayoutParameter(
-              label, FreeNodeLabelModel.INSTANCE.findBestParameter(label, labelRectangle)
+              label,
+              FreeNodeLabelModel.INSTANCE.findBestParameter(label, labelRectangle)
             )
           }
         }
@@ -486,11 +495,7 @@ function buildGraph(
 
   graph.edges.forEach(edge => {
     edge.labels.forEach((label, index) => {
-      const preferredSize = measureLabel(
-        `edge-label-${edge.tag.id}-${index}`,
-        zoom,
-        reactFlowRef?.current ?? undefined
-      )
+      const preferredSize = measureLabel(`edge-label-${edge.tag.id}-${index}`, zoom, rootElement)
       if (preferredSize.width > 0 && preferredSize.height > 0) {
         graph.setLabelPreferredSize(label, preferredSize)
       }
@@ -515,7 +520,8 @@ function buildGraph(
             labelRectangle.angle = labelBox.angle
 
             graph.setLabelLayoutParameter(
-              label, FreeEdgeLabelModel.INSTANCE.findBestParameter(label, labelRectangle)
+              label,
+              FreeEdgeLabelModel.INSTANCE.findBestParameter(label, labelRectangle)
             )
           }
         }
@@ -541,7 +547,10 @@ function buildGraph(
   return graph
 }
 
-function transferLayout(graph: IGraph): { arrangedNodes: Node[]; arrangedEdges: Edge[] } {
+function transferLayout(
+  graph: IGraph,
+  reactFlowRef?: RefObject<HTMLElement>
+): { arrangedNodes: Node[]; arrangedEdges: Edge[] } {
   if (!checkLicense()) {
     return { arrangedNodes: [], arrangedEdges: [] }
   }
@@ -559,6 +568,8 @@ function transferLayout(graph: IGraph): { arrangedNodes: Node[]; arrangedEdges: 
       })
     }
   })
+
+  const rootElement = getRootNode(reactFlowRef)
 
   const arrangedNodes = graph.nodes
     .map(node => {
@@ -596,7 +607,7 @@ function transferLayout(graph: IGraph): { arrangedNodes: Node[]; arrangedEdges: 
               .map((label, index) => {
                 const rect = label.layout as OrientedRectangle
                 const labelId = `node-label-${node.tag.id}-${index}`
-                const padding = calculatePadding(labelId)
+                const padding = calculatePadding(labelId, rootElement)
                 const angle = rect.angle
                 return {
                   id: labelId,
@@ -637,7 +648,7 @@ function transferLayout(graph: IGraph): { arrangedNodes: Node[]; arrangedEdges: 
               .map((label, index) => {
                 const rect = label.layout as OrientedRectangle
                 const labelId = `edge-label-${edge.tag.id}-${index}`
-                const padding = calculatePadding(labelId)
+                const padding = calculatePadding(labelId, rootElement)
                 return {
                   id: labelId,
                   x: rect.anchorX,
@@ -736,9 +747,12 @@ function translateSide(side: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'o
   }
 }
 
-function measureLabel(labelId: string, zoom: number, reactFlowElement?: HTMLDivElement): Size {
-  const root = getRootNode(reactFlowElement)
-  const labelElement = root.querySelector(`[data-id="${labelId}"]`) as HTMLDivElement
+function measureLabel(
+  labelId: string,
+  zoom: number,
+  rootElement: Element | Document | DocumentFragment
+): Size {
+  const labelElement = rootElement.querySelector(`[data-id="${labelId}"]`) as HTMLDivElement
   if (labelElement) {
     const oldTransform = labelElement.style.transform
     labelElement.style.transform = ''
@@ -746,7 +760,7 @@ function measureLabel(labelId: string, zoom: number, reactFlowElement?: HTMLDivE
     labelElement.style.boxSizing = 'content-box'
     const computedStyle = window.getComputedStyle(labelElement)
     // label padding should also be included in the width/size during the layout
-    const labelPadding = calculatePadding(labelId)
+    const labelPadding = calculatePadding(labelId, rootElement)
     let width = parseFloat(computedStyle.width)
     let height = parseFloat(computedStyle.height)
     if (width <= 0 || height <= 0) {
@@ -764,9 +778,8 @@ function measureLabel(labelId: string, zoom: number, reactFlowElement?: HTMLDivE
   return Size.ZERO
 }
 
-function calculatePadding(labelId: string, reactFlowElement?: HTMLDivElement) {
-  const root = getRootNode(reactFlowElement)
-  const element = root.querySelector(`[data-id="${labelId}"]`) as HTMLDivElement
+function calculatePadding(labelId: string, rootElement: Element | Document | DocumentFragment) {
+  const element = rootElement.querySelector(`[data-id="${labelId}"]`) as HTMLDivElement
   if (element) {
     const elementStyle = window.getComputedStyle(element)
     return {

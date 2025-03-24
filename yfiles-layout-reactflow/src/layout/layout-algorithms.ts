@@ -41,6 +41,7 @@ import {
   PortDataProvider,
   PortSides
 } from './layout-types.ts'
+import { RefObject } from 'react'
 
 export async function getLayoutAlgorithm(
   layoutDescriptor: LayoutDescriptor
@@ -88,12 +89,13 @@ export async function getLayoutAlgorithm(
 export function getLayoutData<TNodeData, TEdgeData>(
   layoutName: LayoutName,
   layoutDataDescriptor?: LayoutDataProvider<TNodeData, TEdgeData>,
-  reactFlowElement?: HTMLDivElement
+  reactFlowRef?: RefObject<HTMLElement>
 ): LayoutData | null {
   const layoutData = new GenericLayoutData()
+  const rootElement = getRootNode(reactFlowRef)
   layoutData.addItemMapping(LayoutKeys.GROUP_NODE_PADDING_DATA_KEY, (node: INode) =>
     // @ts-expect-error property-groupNodePadding-does-not-exist-on-type-LayoutDataProvider
-    translatePadding(node, layoutDataDescriptor?.groupNodePadding?.(node.tag), reactFlowElement)
+    translatePadding(rootElement, node, layoutDataDescriptor?.groupNodePadding?.(node.tag))
   )
 
   switch (layoutName) {
@@ -263,9 +265,9 @@ function translateNodeMargins(insets: Insets | number): YFilesInsets {
 }
 
 function translatePadding(
+  rootElement: HTMLElement,
   node: INode,
-  insets?: Insets,
-  reactFlowElement?: HTMLDivElement
+  insets?: Insets
 ): YFilesInsets | null {
   if (insets) {
     if (typeof insets === 'number') {
@@ -273,7 +275,7 @@ function translatePadding(
     }
     return new YFilesInsets(insets.top, insets.right, insets.bottom, insets.left)
   }
-  return getGroupNodePadding(node, reactFlowElement)
+  return getGroupNodePadding(node, rootElement)
 }
 
 function translateEdgeLabelPreferredPlacement(
@@ -282,9 +284,8 @@ function translateEdgeLabelPreferredPlacement(
   return new YFilesEdgeLabelPreferredPlacement(descriptor)
 }
 
-function getGroupNodePadding(node: INode, reactFlowElement?: HTMLDivElement): YFilesInsets {
-  const root = getRootNode(reactFlowElement)
-  const nodeElement = root.querySelector(`[data-id="${node.tag.id}"]`)
+function getGroupNodePadding(node: INode, rootElement: HTMLElement): YFilesInsets {
+  const nodeElement = rootElement.querySelector(`[data-id="${node.tag.id}"]`)
   if (nodeElement) {
     const computedStyle = window.getComputedStyle(nodeElement)
     const paddingTop = parseInt(computedStyle.getPropertyValue('padding-top')) ?? 0
@@ -297,16 +298,21 @@ function getGroupNodePadding(node: INode, reactFlowElement?: HTMLDivElement): YF
 }
 
 export function getRootNode(
-  reactFlowElement?: HTMLDivElement
+  reactFlowRef?: RefObject<HTMLElement>
 ): Element | Document | DocumentFragment {
-  if (reactFlowElement) {
-    return reactFlowElement.getRootNode() as HTMLElement
+  if (reactFlowRef?.current) {
+    return reactFlowRef.current.getRootNode() as HTMLElement
   }
 
   const shadowRoots = Array.from(document.querySelectorAll('*'))
     .filter(e => !!e.shadowRoot)
     .map(e => e.shadowRoot)
   if (shadowRoots.length > 0) {
+    if (shadowRoots.length > 1) {
+      console.warn(
+        'There are more than one shadow roots. For correct results, please call useLayout or useLayoutSupport with a reference to the corresponding reactflow component.'
+      )
+    }
     return shadowRoots.at(0) as DocumentFragment
   }
 

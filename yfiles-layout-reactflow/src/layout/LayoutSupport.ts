@@ -2,6 +2,7 @@ import { GraphComponent, IGraph, LayoutExecutor, LayoutExecutorAsync } from '@yf
 import { getLayoutAlgorithm, getLayoutData } from './layout-algorithms.ts'
 import { LayoutAlgorithmConfiguration, LayoutDataProvider } from './layout-types.ts'
 import { registerWebWorker } from './WebWorkerSupport.ts'
+import { RefObject } from 'react'
 
 export class LayoutSupport {
   private readonly workerPromise: Promise<Worker> | null = null
@@ -17,7 +18,7 @@ export class LayoutSupport {
     graph: IGraph,
     layoutConfiguration: LayoutAlgorithmConfiguration,
     layoutDataProvider?: LayoutDataProvider<TNodeData, TEdgeData>,
-    reactFlowElement?: HTMLDivElement
+    reactFlowRef?: RefObject<HTMLDivElement>
   ): Promise<void> {
     const executor =
       this.workerPromise !== null
@@ -25,13 +26,13 @@ export class LayoutSupport {
             graph,
             layoutConfiguration,
             layoutDataProvider,
-            reactFlowElement
+            reactFlowRef
           )
         : await this.createLayoutExecutor(
             graph,
             layoutConfiguration,
             layoutDataProvider,
-            reactFlowElement
+            reactFlowRef
           )
 
     try {
@@ -50,14 +51,14 @@ export class LayoutSupport {
     graph: IGraph,
     layoutConfiguration: LayoutAlgorithmConfiguration,
     layoutDataProvider?: LayoutDataProvider<TNodeData, TEdgeData>,
-    reactFlowElement?: HTMLDivElement
+    reactFlowRef?: RefObject<HTMLDivElement>
   ): Promise<LayoutExecutor> {
     const layoutAlgorithm = await getLayoutAlgorithm(layoutConfiguration)
     return Promise.resolve(
       new LayoutExecutor({
         graphComponent: new GraphComponent({ graph }),
         layout: layoutAlgorithm,
-        layoutData: getLayoutData(layoutConfiguration.name, layoutDataProvider, reactFlowElement)
+        layoutData: getLayoutData(layoutConfiguration.name, layoutDataProvider, reactFlowRef)
       })
     )
   }
@@ -66,7 +67,7 @@ export class LayoutSupport {
     graph: IGraph,
     layoutConfiguration: LayoutAlgorithmConfiguration,
     layoutDataProvider?: LayoutDataProvider<TNodeData, TEdgeData>,
-    reactFlowElement?: HTMLDivElement
+    reactFlowRef?: RefObject<HTMLDivElement>
   ): Promise<LayoutExecutorAsync> {
     if (this.executor) {
       await this.executor.cancel()
@@ -97,7 +98,7 @@ export class LayoutSupport {
       messageHandler: webWorkerMessageHandler,
       graph,
       layoutDescriptor: layoutConfiguration,
-      layoutData: getLayoutData(layoutConfiguration.name, layoutDataProvider, reactFlowElement)
+      layoutData: getLayoutData(layoutConfiguration.name, layoutDataProvider, reactFlowRef)
     })
     return this.executor
   }

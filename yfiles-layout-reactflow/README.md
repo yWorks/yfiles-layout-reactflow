@@ -42,7 +42,7 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
 
    Add the yFiles dependency:
    ```bash
-   npm install <yFiles package path>/lib/yfiles-26.0.0+dev.tgz
+   npm install <yFiles package path>/lib/yfiles-30.0.0+dev.tgz
    ```
 
    <details>

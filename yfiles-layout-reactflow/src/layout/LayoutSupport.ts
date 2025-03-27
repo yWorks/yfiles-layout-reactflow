@@ -9,8 +9,12 @@ export class LayoutSupport {
   private executor: LayoutExecutorAsync | null = null
 
   constructor(layoutWorker?: Worker) {
-    if (layoutWorker) {
-      this.workerPromise = registerWebWorker(layoutWorker)
+    const promisedWorker = layoutWorker as Worker & { initPromise?: Promise<Worker> }
+    if (promisedWorker) {
+      if (!promisedWorker.initPromise) {
+        promisedWorker.initPromise = registerWebWorker(promisedWorker)
+      }
+      this.workerPromise = promisedWorker.initPromise
     }
   }
 

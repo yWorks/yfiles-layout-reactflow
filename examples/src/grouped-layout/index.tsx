@@ -38,7 +38,7 @@ const LayoutFlow = () => {
     [setEdges]
   )
 
-  const { runLayout } = useLayout<NodeProps<{ label: string }>>()
+  const { runLayout } = useLayout<NodeProps<Node<{ label: string }>>>()
 
   // run initial layout
   useNodesMeasuredEffect(() => {

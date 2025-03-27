@@ -1,7 +1,8 @@
-import { BaseEdge, EdgeLabelRenderer, EdgeProps } from 'reactflow'
+import { BaseEdge, EdgeLabelRenderer, EdgeProps } from '@xyflow/react'
 import { GeneralPath } from '@yfiles/yfiles'
 import { ReactNode } from 'react'
 import { EdgeLabels, Label } from './Labels.tsx'
+import { EdgeData, EdgeLayoutData } from '../layout/layout-types.ts'
 
 /**
  * An edge component that supports bends and the result of a yFiles layout
@@ -40,30 +41,44 @@ import { EdgeLabels, Label } from './Labels.tsx'
  * @param props - The properties of a React Flow edge
  */
 export function PolylineEdge(props: EdgeProps) {
+  const edgeData = props?.data as EdgeData
   const [edgePath] = getPolylinePath({
     sourceX: props.sourceX,
     sourceY: props.sourceY,
     targetX: props.targetX,
     targetY: props.targetY,
-    bends: props.data?.yData?.bends ?? []
+    bends: edgeData?.yData?.bends ?? []
   })
 
   let labels: (Label | string | ReactNode)[] = []
   if (props.label) {
     labels.push(props.label as string)
   }
-  if (props.data?.labels?.length > 0) {
-    labels = labels.concat(props.data?.labels)
+  if ((props.data?.labels as string[])?.length ?? 0 > 0) {
+    labels = labels.concat(edgeData?.labels)
   }
 
   return (
     <>
-      <BaseEdge path={edgePath} {...props} />
+      <BaseEdge
+        path={edgePath}
+        id={props.id}
+        style={props.style}
+        interactionWidth={props.interactionWidth}
+        markerStart={props.markerStart}
+        markerEnd={props.markerEnd}
+        label={props.label}
+        labelStyle={props.labelStyle}
+        labelShowBg={props.labelShowBg}
+        labelBgPadding={props.labelBgPadding}
+        labelBgStyle={props.labelBgStyle}
+        labelBgBorderRadius={props.labelBgBorderRadius}
+      />
       <EdgeLabelRenderer>
         <EdgeLabels
           labels={labels}
           ownerId={props.id}
-          labelBoxes={props.data?.yData?.labelBoxes ?? []}
+          labelBoxes={edgeData?.yData?.labelBoxes ?? []}
           labelStyle={props.labelStyle}
           key={`${props.id}-edgeLabels`}
         ></EdgeLabels>

@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { EdgePortCandidates, HierarchicalLayout, HierarchicalLayoutData, IEdge, PortSides } from '@yfiles/yfiles'
 import { useLayoutSupport } from '@yworks/yfiles-layout-reactflow'
-import { useReactFlow } from 'reactflow'
+import { useReactFlow } from '@xyflow/react'
 
 export function useCustomLayout() {
   const { getNodes, getEdges, setNodes, setEdges, fitView, getZoom } = useReactFlow()

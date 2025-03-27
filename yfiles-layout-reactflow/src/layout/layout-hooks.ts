@@ -21,9 +21,10 @@ import {
   Position,
   useNodesInitialized,
   useReactFlow
-} from 'reactflow'
+} from '@xyflow/react'
 import {
   CircularLayoutDataProvider,
+  EdgeLayoutData,
   EdgeRouterDataProvider,
   GenericLabelingDataProvider,
   HierarchicalLayoutDataProvider,
@@ -34,7 +35,9 @@ import {
   OrthogonalLayoutDataProvider,
   RadialLayoutDataProvider,
   RadialTreeLayoutDataProvider,
-  TreeLayoutDataProvider
+  TreeLayoutDataProvider,
+  yEdge,
+  yNode
 } from './layout-types.ts'
 import { checkLicense } from '../license/registerLicense.ts'
 import { LayoutSupport as LayoutExecutor } from './LayoutSupport.ts'
@@ -218,6 +221,8 @@ export function useLayout<
           )
           .then(() => {
             const { arrangedNodes, arrangedEdges } = transferLayout(graph, context?.reactFlowRef)
+            //todo currently this causes warnings due to ports not being rendered yet, it seems to be an xyflow issue,
+            // have a look in the future.
             setNodes(arrangedNodes)
             setEdges(arrangedEdges)
             setTimeout(() => fitView())
@@ -397,12 +402,15 @@ export function useNodesMeasuredEffect(callback: () => void): void {
 
   return useEffect(() => {
     const nodes = getNodes()
-
     // make sure that the callback is only executed once
     if (
       nodesInitialized &&
       shouldLayout &&
-      nodes.every(node => typeof node.width !== 'undefined' && typeof node.height !== 'undefined')
+      nodes.every(
+        node =>
+          (typeof node.width !== 'undefined' || typeof node.measured?.width !== 'undefined') &&
+          (typeof node.height !== 'undefined' || typeof node.measured?.height !== 'undefined')
+      )
     ) {
       setShouldLayout(false)
       callback()
@@ -411,21 +419,27 @@ export function useNodesMeasuredEffect(callback: () => void): void {
 }
 
 function buildGraph(
-  nodes: Node[],
-  edges: Edge[],
+  nodesArg: Node[],
+  edgesArg: Edge[],
   zoom: number,
   reactFlowRef?: RefObject<HTMLElement>
 ): IGraph {
   if (!checkLicense()) {
     return new Graph()
   }
-
+  const nodes = nodesArg as yNode[]
+  const edges = edgesArg as yEdge[]
   const builder = new GraphBuilder()
   const nodesSource = builder.createNodesSource({
     data: nodes,
     id: node => node.id,
-    parentId: node => node.parentNode,
-    layout: node => Rect.from([node.position.x, node.position.y, node.width ?? 1, node.height ?? 1])
+    parentId: node => node.parentId,
+    layout: node => {
+      const width = node.width ? node.width : node.measured?.width ? node.measured?.width : 1
+      const height = node.height ? node.height : node.measured?.height ? node.measured?.height : 1
+
+      return Rect.from([node.position.x, node.position.y, width, height])
+    }
   })
   nodesSource.nodeCreator.createLabelsSource({
     data: node => [node.data.label]
@@ -439,7 +453,9 @@ function buildGraph(
   })
   const edgeCreator = edgesSource.edgeCreator
   edgeCreator.bendsProvider = edge =>
-    edge.data?.yData?.bends?.map((bend: { x: number; y: number }) => Point.from(bend))
+    (edge.data?.yData as EdgeLayoutData)?.bends?.map((bend: { x: number; y: number }) =>
+      Point.from(bend)
+    )
   const labelsSource = edgeCreator.createLabelsSource({
     data: edge => {
       let labels = []

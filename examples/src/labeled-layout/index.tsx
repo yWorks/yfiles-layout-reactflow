@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
-import ReactFlow, {
+import { ReactFlow,
   addEdge,
   Connection,
   Edge,
@@ -10,8 +10,8 @@ import ReactFlow, {
   ReactFlowProvider,
   useEdgesState,
   useNodesState
-} from 'reactflow'
-import 'reactflow/dist/style.css'
+} from '@xyflow/react'
+import '@xyflow/react/dist/style.css'
 import {
   EdgeLabelPreferredPlacement,
   LabelData,

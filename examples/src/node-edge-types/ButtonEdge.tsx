@@ -1,4 +1,4 @@
-import { BaseEdge, EdgeLabelRenderer, EdgeProps /*, getBezierPath*/, useReactFlow } from 'reactflow'
+import { BaseEdge, EdgeLabelRenderer, EdgeProps /*, getBezierPath*/, useReactFlow } from '@xyflow/react'
 import './buttonedge.css'
 import { getPolylinePath } from '@yworks/yfiles-layout-reactflow'
 

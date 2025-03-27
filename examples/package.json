@@ -15,7 +15,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.1",
-    "reactflow": "^11.11.0",
+    "@xyflow/react": "^12.4.4",
     "@yfiles/yfiles": "^30.0.0"
   },
   "devDependencies": {

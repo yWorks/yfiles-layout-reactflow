@@ -1,6 +1,7 @@
-import { Handle, NodeProps, Position, useUpdateNodeInternals } from 'reactflow'
-import { ComponentType, MutableRefObject, useEffect, useRef } from 'react'
+import { Handle, NodeProps, Position, useUpdateNodeInternals } from '@xyflow/react'
+import { ComponentType, MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react'
 import { NodeLabel } from './Labels.tsx'
+import { NodeData } from '../layout/layout-types.ts'
 
 /**
  * A node component with multiple handles and a label that supports the results of a yFiles layout
@@ -86,13 +87,13 @@ export function withMultiHandles(Component: ComponentType<NodeProps>) {
 }
 
 function MultiHandles(props: NodeProps) {
-  const { data, id } = props
+  const { data, id } = props as { data: NodeData; id: string }
   const updateNodeInternals = useUpdateNodeInternals()
 
   const sourceHandlesRef = useRef(null)
   const targetHandlesRef = useRef(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     updateNodeInternals(id)
   }, [data, id, updateNodeInternals])
 
@@ -102,7 +103,6 @@ function MultiHandles(props: NodeProps) {
     setHandlesPosition(sourceHandlesRef, leftBorder, topBorder)
     setHandlesPosition(targetHandlesRef, leftBorder, topBorder)
   }, [data, id])
-
   return (
     <>
       <div ref={sourceHandlesRef} className="handles" style={{ position: 'absolute' }}>

@@ -2,7 +2,7 @@
 import { LayoutDescriptor } from '@yfiles/yfiles'
 import { ReactNode } from 'react'
 import { Label, LabelBox } from '../components/Labels.tsx'
-import { Position } from 'reactflow'
+import { Node, Position, Edge } from '@xyflow/react'
 
 /**
  * The result of the layout algorithm that provides all the necessary information
@@ -20,13 +20,13 @@ export interface NodeLayoutData {
    * This information will be used by the {@link MultiHandleNode} to arrange the node
    * handles.
    */
-  sourceHandles: { id: string; location: { x: number; y: number }; position: Position }
+  sourceHandles: { id: string; location: { x: number; y: number }; position: Position }[]
   /**
    * The id, the location and the side of the handle on the target node of the edge.
    * This information will be used by the {@link MultiHandleNode} to arrange the node
    * handles.
    */
-  targetHandles: { id: string; location: { x: number; y: number }; position: Position }
+  targetHandles: { id: string; location: { x: number; y: number }; position: Position }[]
 }
 
 /**
@@ -56,6 +56,19 @@ export interface EdgeLayoutData {
    */
   targetPoint: { x: number; y: number }
 }
+
+export type NodeData = {
+  labelStyle?: React.CSSProperties
+  className?: string
+  label?: string
+  yData?: NodeLayoutData
+}
+
+export type yNode = Node<NodeData, string>
+
+export type EdgeData = { yData?: EdgeLayoutData; labels?: string[] }
+
+export type yEdge = Edge<EdgeData, string>
 
 /**
  * The names of the layout algorithms {@link useLayout} supports.
@@ -252,7 +265,9 @@ export interface OrganicScopeDataProvider<TNodeData> {
   /** Provides which nodes should be placed. */
   nodes?: (node: TNodeData) => boolean
   /** Provides when to place a node. */
-  scopeModes?: (node: TNodeData) => 'affected' | 'fixed' | 'include-close-nodes' | 'include-extended-neighborhood'
+  scopeModes?: (
+    node: TNodeData
+  ) => 'affected' | 'fixed' | 'include-close-nodes' | 'include-extended-neighborhood'
 }
 
 /**

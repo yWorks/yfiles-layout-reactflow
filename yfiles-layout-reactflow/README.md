@@ -106,7 +106,7 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
    ```tsx
    // Flow.tsx
    import { useCallback } from 'react'
-   import ReactFlow, {
+   import { ReactFlow,
      addEdge,
      Connection,
      EdgeProps,
@@ -115,8 +115,8 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
      ReactFlowProvider,
      useEdgesState,
      useNodesState
-   } from 'reactflow'
-   import 'reactflow/dist/style.css'
+   } from '@xyflow/react'
+   import '@xyflow/react/dist/style.css'
    import { MultiHandleNode, PolylineEdge, useLayout } from '@yworks/yfiles-layout-reactflow'
    
    import initialNodes from './nodes.json'

@@ -1,5 +1,5 @@
 import { Handle, NodeProps, Position, useUpdateNodeInternals } from '@xyflow/react'
-import { ComponentType, MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react'
+import { ComponentType, RefObject, useEffect, useLayoutEffect, useRef } from 'react'
 import { NodeLabel } from './Labels.tsx'
 import { NodeData } from '../layout/layout-types.ts'
 
@@ -163,7 +163,7 @@ function MultiHandles(props: NodeProps) {
   )
 }
 
-function getParentBorders(handlesRef: MutableRefObject<null>) {
+function getParentBorders(handlesRef: RefObject<null>) {
   let leftBorderWidth = 1
   let topBorderWidth = 1
   if (handlesRef.current) {
@@ -178,7 +178,7 @@ function getParentBorders(handlesRef: MutableRefObject<null>) {
 }
 
 function setHandlesPosition(
-  handlesRef: MutableRefObject<null> | null,
+  handlesRef: RefObject<null> | null,
   leftBorder: number,
   topBorder: number
 ) {

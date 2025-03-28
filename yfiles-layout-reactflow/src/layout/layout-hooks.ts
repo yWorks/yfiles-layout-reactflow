@@ -225,7 +225,7 @@ export function useLayout<
             // have a look in the future.
             setNodes(arrangedNodes)
             setEdges(arrangedEdges)
-            setTimeout(() => fitView())
+            fitView()
           })
           .catch((e: unknown) => {
             context?.onError?.(e)
@@ -309,7 +309,7 @@ export interface LayoutSupport {
  *     setEdges(arrangedEdges)
  *
  *     // fit the graph into the view
- *     window.requestAnimationFrame(() => fitView())
+ *     fitView()
  *   }, [nodes, edges, buildGraph, transferLayout, setNodes, setEdges, fitView, getZoom])
  *
  *   return (

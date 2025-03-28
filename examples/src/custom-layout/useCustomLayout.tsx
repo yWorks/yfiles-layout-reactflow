@@ -39,6 +39,6 @@ export function useCustomLayout() {
     setEdges(arrangedEdges)
 
     // fit the graph into the view
-    setTimeout(() => fitView(), 100)
+    fitView()
   }, [getNodes, getEdges, buildGraph, transferLayout, setNodes, setEdges, fitView, getZoom])
 }

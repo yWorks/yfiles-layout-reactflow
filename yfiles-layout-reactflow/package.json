@@ -46,7 +46,7 @@
   "peerDependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@xyflow/react": "^12.4.4",
+    "@xyflow/react": "^12.5.1",
     "@yfiles/yfiles": ">=30"
   },
   "devDependencies": {

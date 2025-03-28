@@ -107,7 +107,6 @@ const LayoutFlow = () => {
           onClick={() =>
             runLayout({
               name: 'GenericLabeling',
-              layoutOptions: { scope: 'node-labels' },
               layoutData: {
                 edgeLabelPreferredPlacements: labelPreferredPlacement
               }
@@ -122,7 +121,7 @@ const LayoutFlow = () => {
             runLayout({
               name: 'HierarchicalLayout',
               layoutOptions: {
-                edgeLabelPlacement: 'integrated',
+                edgeLabelPlacement: 'generic',
                 nodeLabelPlacement: 'consider'
               },
               layoutData: {

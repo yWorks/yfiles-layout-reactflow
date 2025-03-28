@@ -121,7 +121,7 @@ const LayoutFlow = () => {
             runLayout({
               name: 'HierarchicalLayout',
               layoutOptions: {
-                edgeLabelPlacement: 'generic',
+                edgeLabelPlacement: 'integrated',
                 nodeLabelPlacement: 'consider'
               },
               layoutData: {

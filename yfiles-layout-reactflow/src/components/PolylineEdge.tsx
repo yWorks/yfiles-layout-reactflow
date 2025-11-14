@@ -1,4 +1,4 @@
-import { BaseEdge, EdgeLabelRenderer, EdgeProps } from '@xyflow/react'
+import { BaseEdge, Edge, EdgeLabelRenderer, EdgeProps } from '@xyflow/react'
 import { GeneralPath } from '@yfiles/yfiles'
 import { ReactNode } from 'react'
 import { EdgeLabels, Label } from './Labels.tsx'
@@ -40,22 +40,21 @@ import { EdgeData, EdgeLayoutData } from '../layout/layout-types.ts'
  *
  * @param props - The properties of a React Flow edge
  */
-export function PolylineEdge(props: EdgeProps) {
-  const edgeData = props?.data as EdgeData
+export function PolylineEdge(props: EdgeProps<Edge<EdgeData>>) {
   const [edgePath] = getPolylinePath({
     sourceX: props.sourceX,
     sourceY: props.sourceY,
     targetX: props.targetX,
     targetY: props.targetY,
-    bends: edgeData?.yData?.bends ?? []
+    bends: props.data?.yData?.bends ?? []
   })
 
   let labels: (Label | string | ReactNode)[] = []
   if (props.label) {
     labels.push(props.label as string)
   }
-  if ((props.data?.labels as string[])?.length ?? 0 > 0) {
-    labels = labels.concat(edgeData?.labels)
+  if (props.data?.labels?.length ?? 0 > 0) {
+    labels = labels.concat(props.data?.labels)
   }
 
   return (
@@ -78,7 +77,7 @@ export function PolylineEdge(props: EdgeProps) {
         <EdgeLabels
           labels={labels}
           ownerId={props.id}
-          labelBoxes={edgeData?.yData?.labelBoxes ?? []}
+          labelBoxes={props.data?.yData?.labelBoxes ?? []}
           labelStyle={props.labelStyle}
           key={`${props.id}-edgeLabels`}
         ></EdgeLabels>

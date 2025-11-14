@@ -23,7 +23,9 @@ export {
   RadialLayoutDataProvider,
   TreeLayoutDataProvider,
   LayoutDataProvider,
+  NodeData,
   NodeLayoutData,
+  EdgeData,
   EdgeLayoutData
 } from './layout/layout-types.ts'
 export {

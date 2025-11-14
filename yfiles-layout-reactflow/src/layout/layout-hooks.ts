@@ -24,20 +24,19 @@ import {
 } from '@xyflow/react'
 import {
   CircularLayoutDataProvider,
-  EdgeLayoutData,
+  EdgeData,
   EdgeRouterDataProvider,
   GenericLabelingDataProvider,
   HierarchicalLayoutDataProvider,
   LayoutAlgorithmConfiguration,
   LayoutDataProvider,
   LayoutName,
+  NodeData,
   OrganicLayoutDataProvider,
   OrthogonalLayoutDataProvider,
   RadialLayoutDataProvider,
   RadialTreeLayoutDataProvider,
-  TreeLayoutDataProvider,
-  yEdge,
-  yNode
+  TreeLayoutDataProvider
 } from './layout-types.ts'
 import { checkLicense } from '../license/registerLicense.ts'
 import { LayoutSupport as LayoutExecutor } from './LayoutSupport.ts'
@@ -191,7 +190,10 @@ export function useLayout<
 >(
   context?: LayoutContext
 ): { runLayout: (configuration: LayoutConfiguration | LayoutName) => void; running: boolean } {
-  const { fitView, getZoom, getNodes, setNodes, getEdges, setEdges } = useReactFlow()
+  const { fitView, getZoom, getNodes, setNodes, getEdges, setEdges } = useReactFlow<
+    Node<NodeData>,
+    Edge<EdgeData>
+  >()
 
   const [running, setRunning] = useState(false)
 
@@ -221,11 +223,9 @@ export function useLayout<
           )
           .then(() => {
             const { arrangedNodes, arrangedEdges } = transferLayout(graph, context?.reactFlowRef)
-            //todo currently this causes warnings due to ports not being rendered yet, it seems to be an xyflow issue,
-            // have a look in the future.
             setNodes(arrangedNodes)
             setEdges(arrangedEdges)
-            fitView()
+            void fitView()
           })
           .catch((e: unknown) => {
             context?.onError?.(e)
@@ -402,6 +402,7 @@ export function useNodesMeasuredEffect(callback: () => void): void {
 
   return useEffect(() => {
     const nodes = getNodes()
+
     // make sure that the callback is only executed once
     if (
       nodesInitialized &&
@@ -419,24 +420,23 @@ export function useNodesMeasuredEffect(callback: () => void): void {
 }
 
 function buildGraph(
-  nodesArg: Node[],
-  edgesArg: Edge[],
+  nodes: Node<NodeData>[],
+  edges: Edge<EdgeData>[],
   zoom: number,
   reactFlowRef?: RefObject<HTMLElement>
 ): IGraph {
   if (!checkLicense()) {
     return new Graph()
   }
-  const nodes = nodesArg as yNode[]
-  const edges = edgesArg as yEdge[]
+
   const builder = new GraphBuilder()
   const nodesSource = builder.createNodesSource({
     data: nodes,
     id: node => node.id,
     parentId: node => node.parentId,
     layout: node => {
-      const width = node.width ? node.width : node.measured?.width ? node.measured?.width : 1
-      const height = node.height ? node.height : node.measured?.height ? node.measured?.height : 1
+      const width = node.width ?? node.measured?.width ?? 1
+      const height = node.height ?? node.measured?.height ?? 1
 
       return Rect.from([node.position.x, node.position.y, width, height])
     }
@@ -452,10 +452,7 @@ function buildGraph(
     targetId: edge => edge.target
   })
   const edgeCreator = edgesSource.edgeCreator
-  edgeCreator.bendsProvider = edge =>
-    (edge.data?.yData as EdgeLayoutData)?.bends?.map((bend: { x: number; y: number }) =>
-      Point.from(bend)
-    )
+  edgeCreator.bendsProvider = edge => edge.data?.yData?.bends?.map(bend => Point.from(bend))
   const labelsSource = edgeCreator.createLabelsSource({
     data: edge => {
       let labels = []

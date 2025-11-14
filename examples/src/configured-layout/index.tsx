@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
-import { ReactFlow,
+import {
   addEdge,
   Connection,
   Edge,
   EdgeProps,
   Node,
   Panel,
+  ReactFlow,
   ReactFlowProvider,
   useEdgesState,
   useNodesState
@@ -103,7 +104,8 @@ const LayoutFlow = () => {
               layoutOptions: { layoutOrientation: 'left-to-right' },
               layoutData: {
                 childOrder: {
-                  outEdgeComparators: () => (edge1: EdgeProps, edge2: EdgeProps) => parseInt(edge1.target) - parseInt(edge2.target)
+                  outEdgeComparators: () => (edge1: EdgeProps, edge2: EdgeProps) =>
+                    parseInt(edge1.target) - parseInt(edge2.target)
                 }
               }
             })

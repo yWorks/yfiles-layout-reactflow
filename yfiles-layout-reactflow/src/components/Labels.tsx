@@ -1,4 +1,4 @@
-import { NodeProps } from '@xyflow/react'
+import { Node, NodeProps } from '@xyflow/react'
 import LabelText from './LabelText.tsx'
 import { CSSProperties, ReactNode } from 'react'
 import { NodeData } from '../layout/layout-types.ts'
@@ -82,8 +82,7 @@ export interface EdgeLabelsProps {
  * }
  * ```
  */
-export function NodeLabel(props: NodeProps) {
-  const { data, id } = props as { data: NodeData; id: string }
+export function NodeLabel({ data, id }: NodeProps<Node<NodeData>>) {
   if (!data?.label) {
     return
   }

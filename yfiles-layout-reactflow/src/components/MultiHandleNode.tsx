@@ -1,4 +1,4 @@
-import { Handle, NodeProps, Position, useUpdateNodeInternals } from '@xyflow/react'
+import { Handle, Node, NodeProps, Position, useUpdateNodeInternals } from '@xyflow/react'
 import { ComponentType, RefObject, useEffect, useLayoutEffect, useRef } from 'react'
 import { NodeLabel } from './Labels.tsx'
 import { NodeData } from '../layout/layout-types.ts'
@@ -86,8 +86,7 @@ export function withMultiHandles(Component: ComponentType<NodeProps>) {
   }
 }
 
-function MultiHandles(props: NodeProps) {
-  const { data, id } = props as { data: NodeData; id: string }
+function MultiHandles({ data, id }: NodeProps<Node<NodeData>>) {
   const updateNodeInternals = useUpdateNodeInternals()
 
   const sourceHandlesRef = useRef(null)
@@ -102,7 +101,9 @@ function MultiHandles(props: NodeProps) {
     const { leftBorder, topBorder } = getParentBorders(sourceHandlesRef)
     setHandlesPosition(sourceHandlesRef, leftBorder, topBorder)
     setHandlesPosition(targetHandlesRef, leftBorder, topBorder)
-  }, [data, id])
+    updateNodeInternals(id)
+  }, [data, id, updateNodeInternals])
+
   return (
     <>
       <div ref={sourceHandlesRef} className="handles" style={{ position: 'absolute' }}>

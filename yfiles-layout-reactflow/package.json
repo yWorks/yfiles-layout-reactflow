@@ -44,17 +44,17 @@
     }
   },
   "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "@xyflow/react": "^12.5.1",
+    "react": ">=19",
+    "react-dom": ">=19",
+    "@xyflow/react": ">=12",
     "@yfiles/yfiles": ">=30"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.52.2",
-    "@types/react": "^19.0.12",
-    "@types/react-dom": "^19.0.4",
+    "@types/react": "^19.2.4",
+    "@types/react-dom": "^19.2.3",
     "prettier": "^3.5.3",
-    "tsup": "^8.4.0",
+    "tsup": "^8.5.1",
     "typescript": "^5.8.2"
   },
   "files": [

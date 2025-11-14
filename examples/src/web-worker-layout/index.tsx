@@ -1,11 +1,12 @@
 import { useCallback } from 'react'
-import { ReactFlow,
+import {
   addEdge,
   Connection,
   Edge,
   Node,
   NodeProps,
   Panel,
+  ReactFlow,
   ReactFlowProvider,
   useEdgesState,
   useNodesState
@@ -14,6 +15,7 @@ import '@xyflow/react/dist/style.css'
 import SimpleData from '../data/SimpleData'
 import {
   MultiHandleNode,
+  NodeData,
   PolylineEdge,
   useLayout,
   useNodesMeasuredEffect
@@ -43,7 +45,7 @@ const LayoutFlow = () => {
     [setEdges]
   )
 
-  const { runLayout, running } = useLayout<NodeProps<Node<{ label: string }>>>({ layoutWorker })
+  const { runLayout, running } = useLayout<NodeProps<Node<NodeData>>>({ layoutWorker })
 
   // run initial layout
   useNodesMeasuredEffect(async () => {

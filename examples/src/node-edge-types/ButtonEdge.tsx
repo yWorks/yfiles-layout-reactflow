@@ -1,6 +1,12 @@
-import { BaseEdge, Edge, EdgeLabelRenderer, EdgeProps /*, getBezierPath*/, useReactFlow } from '@xyflow/react'
+import {
+  BaseEdge,
+  Edge,
+  EdgeLabelRenderer,
+  EdgeProps /*, getBezierPath*/,
+  useReactFlow
+} from '@xyflow/react'
 import './buttonedge.css'
-import { getPolylinePath } from '@yworks/yfiles-layout-reactflow'
+import { EdgeData, getPolylinePath } from '@yworks/yfiles-layout-reactflow'
 
 // ButtonEdge from https://reactflow.dev/examples/edges/custom-edges sample as polyline edge
 
@@ -15,7 +21,7 @@ export default function CustomEdge({
   style = {},
   markerEnd,
   data
-}: EdgeProps<Edge<{yData:{bends: { x: number; y: number }[]}}>>) {
+}: EdgeProps<Edge<EdgeData>>) {
   const { setEdges } = useReactFlow()
 
   // const [edgePath, labelX, labelY] = getBezierPath({

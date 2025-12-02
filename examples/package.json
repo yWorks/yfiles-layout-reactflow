@@ -1,7 +1,7 @@
 {
   "name": "@yworks/yfiles-layout-reactflow-examples",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@yworks/yfiles-layout-reactflow": "^2.0.0",
+    "@yworks/yfiles-layout-reactflow": "^3.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0",

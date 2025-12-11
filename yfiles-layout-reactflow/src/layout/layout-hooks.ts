@@ -221,9 +221,11 @@ export function useLayout<
             layoutData,
             context?.reactFlowRef
           )
-          .then(() => {
+          .then(async () => {
             const { arrangedNodes, arrangedEdges } = transferLayout(graph, context?.reactFlowRef)
             setNodes(arrangedNodes)
+            // wait for the next frame to ensure that the nodes are updated before the edges
+            await new Promise(resolve => setTimeout(resolve, 0))
             setEdges(arrangedEdges)
             void fitView()
           })

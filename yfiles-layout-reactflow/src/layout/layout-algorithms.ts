@@ -156,8 +156,7 @@ function translateLayoutDataDescriptor<TNodeData, TEdgeData>(
     if (originalFunction) {
       // @ts-expect-error property-groupNodePadding-does-not-exist-on-type-LayoutDataProvider
       if (layoutDataDescriptor.groupNodePadding) {
-        return (translatedLayoutDataDescriptor.groupNodePadding = (item: IModelItem) =>
-          translateNodeMargins(originalFunction(item.tag) as Insets))
+        // we already added the padding in a mapping with GROUP_NODE_PADDING_DATA_KEY
       } else if (key === 'edgeLabelPreferredPlacements') {
         translatedLayoutDataDescriptor[key] = (item: IModelItem) =>
           translateEdgeLabelPreferredPlacement(

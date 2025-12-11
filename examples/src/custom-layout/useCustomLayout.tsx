@@ -14,7 +14,7 @@ export function useCustomLayout() {
 
   const { buildGraph, transferLayout } = useLayoutSupport()
 
-  return useCallback(() => {
+  return useCallback(async () => {
     // create a graph from data
     const graph = buildGraph(getNodes(), getEdges(), getZoom())
 
@@ -42,6 +42,8 @@ export function useCustomLayout() {
     // transfer the new coordinates to the data
     const { arrangedEdges, arrangedNodes } = transferLayout(graph)
     setNodes(arrangedNodes)
+    // wait for the next frame to ensure that the nodes are updated before the edges
+    await new Promise(resolve => setTimeout(resolve, 0))
     setEdges(arrangedEdges)
 
     // fit the graph into the view

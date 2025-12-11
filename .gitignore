@@ -27,8 +27,6 @@ dist-ssr
 *.sw?
 examples/src/yfiles-license.json
 **/license.json
-examples/package-lock.json
-package-lock.json
 
 doc/.astro/
 doc/build/

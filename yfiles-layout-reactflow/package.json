@@ -44,8 +44,8 @@
     }
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-dom": ">=19",
+    "react": ">=18",
+    "react-dom": ">=18",
     "@xyflow/react": ">=12",
     "@yfiles/yfiles": ">=30"
   },

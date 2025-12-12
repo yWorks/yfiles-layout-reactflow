@@ -12,11 +12,11 @@
   },
   "dependencies": {
     "@yworks/yfiles-layout-reactflow": "^3.0.0",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "react-router-dom": "^7.10.1",
     "@xyflow/react": "^12.10.0",
-    "@yfiles/yfiles": "../yfiles-30.0.4+debug.tgz"
+    "@yfiles/yfiles": "^30.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.51.1",

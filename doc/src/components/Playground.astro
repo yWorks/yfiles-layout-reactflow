@@ -1,11 +1,7 @@
 ---
-let playgroundBase = import.meta.env.PLAYGROUND_BASE || ""
-if (!playgroundBase && import.meta.env.PROD) {
-    playgroundBase = 'https://docs.yworks.com'
-    }
 const { code, data, css } = Astro.props;
 ---
-<link rel="stylesheet" href={`${playgroundBase}/playground-lib/yfiles-playground.css`} ></link>
+<link rel="stylesheet" href="/playground-lib/yfiles-playground.css"></link>
 <y-play-yfiles-layout-reactflow id="my-playground" options="autoload executeOnLoad" yfiles="viewer" style="margin-top: 1em; height: 900px;" theme="dark">
   <code data-init>
   </code>
@@ -16,4 +12,4 @@ const { code, data, css } = Astro.props;
 
   </code>
 </y-play-yfiles-layout-reactflow>
-<script src={`${playgroundBase}/playground-lib/yfiles-playground.js`} type="module" async></script>
+<script src="/playground-lib/yfiles-playground.js" type="module" async></script>

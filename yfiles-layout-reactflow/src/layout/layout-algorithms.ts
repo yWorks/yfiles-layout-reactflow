@@ -284,7 +284,7 @@ function translateEdgeLabelPreferredPlacement(
 }
 
 function getGroupNodePadding(node: INode, rootElement: HTMLElement): YFilesInsets {
-  const nodeElement = rootElement.querySelector(`[data-id="${node.tag.id}"]`)
+  const nodeElement = getNodeElementById(rootElement, node.tag.id)
   if (nodeElement) {
     const computedStyle = window.getComputedStyle(nodeElement)
     const paddingTop = parseInt(computedStyle.getPropertyValue('padding-top')) ?? 0
@@ -294,6 +294,20 @@ function getGroupNodePadding(node: INode, rootElement: HTMLElement): YFilesInset
     return new YFilesInsets(paddingTop, paddingLeft, paddingBottom, paddingRight)
   }
   return new YFilesInsets(0, 0, 0, 0)
+}
+
+function getNodeElementById(rootElement: HTMLElement, id: string): Element | null {
+  const elements = rootElement.querySelectorAll(`[data-id="${id}"]`)
+  if (elements.length > 1) {
+    // distinguish between react-flow nodes and edges
+    const element = elements
+      .values()
+      .find(element => element.classList.toString().includes('react-flow__node'))
+    if (element) {
+      return element
+    }
+  }
+  return elements.item(0)
 }
 
 export function getRootNode(

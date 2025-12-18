@@ -14,7 +14,7 @@ the (majority of) edges of the graph show the same overall orientation, for exam
 the ordering of the nodes within each layer is chosen in such a way that the number of edge crossings is small.
 
 <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', margin: '40px 0'}}>
-  <img src={`${import.meta.env.BASE_URL}/hierarchic-layout.png`} style={{maxWidth: "80%", objectFit: "cover"}} alt="Hierachic layout with groups"></img>
+  <img src={`${import.meta.env.BASE_URL}/hierarchic-layout.png`} style={{maxWidth: "80%", objectFit: "cover"}} alt="Hierarchical layout with groups"></img>
 </div>
 
 The hierarchical layout algorithm offers extensive customization options through a wide array of properties accessible
@@ -126,7 +126,8 @@ const nodeTypes = {
     useNodesMeasuredEffect(() =>
       runLayout({
         name: "HierarchicalLayout",
-        layoutOptions
+        layoutOptions,
+        layoutData
       })
     )
 

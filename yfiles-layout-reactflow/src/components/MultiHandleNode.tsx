@@ -1,6 +1,7 @@
-import { Handle, NodeProps, Position, useUpdateNodeInternals } from 'reactflow'
-import { ComponentType, MutableRefObject, useEffect, useRef } from 'react'
+import { Handle, Node, NodeProps, Position, useUpdateNodeInternals } from '@xyflow/react'
+import { ComponentType, RefObject, useEffect, useLayoutEffect, useRef } from 'react'
 import { NodeLabel } from './Labels.tsx'
+import { NodeData } from '../layout/layout-types.ts'
 
 /**
  * A node component with multiple handles and a label that supports the results of a yFiles layout
@@ -85,14 +86,13 @@ export function withMultiHandles(Component: ComponentType<NodeProps>) {
   }
 }
 
-function MultiHandles(props: NodeProps) {
-  const { data, id } = props
+function MultiHandles({ data, id }: NodeProps<Node<NodeData>>) {
   const updateNodeInternals = useUpdateNodeInternals()
 
   const sourceHandlesRef = useRef(null)
   const targetHandlesRef = useRef(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     updateNodeInternals(id)
   }, [data, id, updateNodeInternals])
 
@@ -101,7 +101,8 @@ function MultiHandles(props: NodeProps) {
     const { leftBorder, topBorder } = getParentBorders(sourceHandlesRef)
     setHandlesPosition(sourceHandlesRef, leftBorder, topBorder)
     setHandlesPosition(targetHandlesRef, leftBorder, topBorder)
-  }, [data, id])
+    updateNodeInternals(id)
+  }, [data, id, updateNodeInternals])
 
   return (
     <>
@@ -163,7 +164,7 @@ function MultiHandles(props: NodeProps) {
   )
 }
 
-function getParentBorders(handlesRef: MutableRefObject<null>) {
+function getParentBorders(handlesRef: RefObject<null>) {
   let leftBorderWidth = 1
   let topBorderWidth = 1
   if (handlesRef.current) {
@@ -178,7 +179,7 @@ function getParentBorders(handlesRef: MutableRefObject<null>) {
 }
 
 function setHandlesPosition(
-  handlesRef: MutableRefObject<null> | null,
+  handlesRef: RefObject<null> | null,
   leftBorder: number,
   topBorder: number
 ) {

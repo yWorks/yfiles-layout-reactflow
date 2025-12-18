@@ -27,9 +27,9 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
    npm create vite@6.1.1 my-yfiles-layout-app -- --template react-ts
    ```
 
-   Install the ReactFlow:
+   Install the `@xyflow/react` package:
    ```bash
-   npm install reactflow
+   npm install @xyflow/react
    ```
 
    Add the yFiles dependency:
@@ -44,9 +44,9 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
 
    ```json
       dependencies: {
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "reactflow": "^11.11.0",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
+        "@xyflow/react": "^12.9.3",
         "@yfiles/yfiles": "./lib/yfiles-30.0.0+dev.tgz"
      }
    ```
@@ -99,7 +99,7 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
    ```tsx
    // Flow.tsx
    import { useCallback } from 'react'
-   import ReactFlow, {
+   import { ReactFlow,
      addEdge,
      Connection,
      EdgeProps,
@@ -108,8 +108,8 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
      ReactFlowProvider,
      useEdgesState,
      useNodesState
-   } from 'reactflow'
-   import 'reactflow/dist/style.css'
+   } from '@xyflow/react'
+   import '@xyflow/react/dist/style.css'
    import { MultiHandleNode, PolylineEdge, useLayout } from '@yworks/yfiles-layout-reactflow'
 
    import initialNodes from './nodes.json'

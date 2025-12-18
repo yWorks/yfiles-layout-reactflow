@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
-import ReactFlow, {
+import {
   addEdge,
   Connection,
   Edge,
@@ -7,11 +7,12 @@ import ReactFlow, {
   Node,
   NodeProps,
   Panel,
+  ReactFlow,
   ReactFlowProvider,
   useEdgesState,
   useNodesState
-} from 'reactflow'
-import 'reactflow/dist/style.css'
+} from '@xyflow/react'
+import '@xyflow/react/dist/style.css'
 import {
   EdgeLabelPreferredPlacement,
   LabelData,
@@ -69,8 +70,8 @@ const LayoutFlow = () => {
   )
 
   const { runLayout, running } = useLayout<
-    NodeProps<{ label: string | ReactNode }>,
-    EdgeProps<{ labels: (string | ReactNode)[] }>
+    NodeProps<Node<{ label: string | ReactNode }>>,
+    EdgeProps<Edge<{ labels: (string | ReactNode)[] }>>
   >()
 
   // run initial layout
@@ -79,7 +80,7 @@ const LayoutFlow = () => {
       name: 'HierarchicalLayout',
       layoutOptions: {
         edgeLabelPlacement: 'integrated',
-        nodeLabelPlacement: 'consider',
+        nodeLabelPlacement: 'consider'
       },
       layoutData: {
         edgeLabelPreferredPlacements: labelPreferredPlacement
@@ -106,7 +107,6 @@ const LayoutFlow = () => {
           onClick={() =>
             runLayout({
               name: 'GenericLabeling',
-              layoutOptions: { scope: 'node-labels' },
               layoutData: {
                 edgeLabelPreferredPlacements: labelPreferredPlacement
               }
@@ -122,7 +122,7 @@ const LayoutFlow = () => {
               name: 'HierarchicalLayout',
               layoutOptions: {
                 edgeLabelPlacement: 'integrated',
-                nodeLabelPlacement: 'consider',
+                nodeLabelPlacement: 'consider'
               },
               layoutData: {
                 edgeLabelPreferredPlacements: labelPreferredPlacement

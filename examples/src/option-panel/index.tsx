@@ -1,15 +1,16 @@
 import { FormEvent, useCallback, useState } from 'react'
-import ReactFlow, {
+import {
   addEdge,
   Connection,
   Edge,
   Node,
   Panel,
+  ReactFlow,
   ReactFlowProvider,
   useEdgesState,
   useNodesState
-} from 'reactflow'
-import 'reactflow/dist/style.css'
+} from '@xyflow/react'
+import '@xyflow/react/dist/style.css'
 import {
   HierarchicalLayoutOptions,
   LayoutAlgorithmOptions,

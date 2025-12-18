@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LayoutDescriptor } from '@yfiles/yfiles'
-import { ReactNode } from 'react'
+import { CSSProperties, ReactNode } from 'react'
 import { Label, LabelBox } from '../components/Labels.tsx'
-import { Position } from 'reactflow'
+import { Position } from '@xyflow/react'
 
 /**
  * The result of the layout algorithm that provides all the necessary information
@@ -16,17 +16,17 @@ export interface NodeLayoutData {
    */
   labelBoxes: LabelBox[]
   /**
-   * The id, the location and the side of the handle on the source node of the edge.
+   * The id, the location, and the side of the handle on the source node of the edge.
    * This information will be used by the {@link MultiHandleNode} to arrange the node
    * handles.
    */
-  sourceHandles: { id: string; location: { x: number; y: number }; position: Position }
+  sourceHandles: { id: string; location: { x: number; y: number }; position: Position }[]
   /**
-   * The id, the location and the side of the handle on the target node of the edge.
+   * The id, the location, and the side of the handle on the target node of the edge.
    * This information will be used by the {@link MultiHandleNode} to arrange the node
    * handles.
    */
-  targetHandles: { id: string; location: { x: number; y: number }; position: Position }
+  targetHandles: { id: string; location: { x: number; y: number }; position: Position }[]
 }
 
 /**
@@ -55,6 +55,32 @@ export interface EdgeLayoutData {
    * This information will be used by the {@link PolylineEdge} to draw the edge path.
    */
   targetPoint: { x: number; y: number }
+}
+
+/**
+ * The data that can be attached to a node in the graph.
+ * This type extends the node data with layout-specific information.
+ */
+export type NodeData = {
+  /** The CSS properties to style the node's label. */
+  labelStyle?: CSSProperties
+  /** The CSS class name to style the node. */
+  className?: string
+  /** The text to display as the node's label. */
+  label?: string
+  /** The layout-specific information calculated by the layout algorithm. */
+  yData?: NodeLayoutData
+}
+
+/**
+ * The data that can be attached to an edge in the graph.
+ * This type extends the edge data with layout-specific information.
+ */
+export type EdgeData = {
+  /** The layout-specific information calculated by the layout algorithm. */
+  yData?: EdgeLayoutData
+  /** The texts to display as the edge's labels. */
+  labels?: string[]
 }
 
 /**
@@ -252,7 +278,9 @@ export interface OrganicScopeDataProvider<TNodeData> {
   /** Provides which nodes should be placed. */
   nodes?: (node: TNodeData) => boolean
   /** Provides when to place a node. */
-  scopeModes?: (node: TNodeData) => 'affected' | 'fixed' | 'include-close-nodes' | 'include-extended-neighborhood'
+  scopeModes?: (
+    node: TNodeData
+  ) => 'affected' | 'fixed' | 'include-close-nodes' | 'include-extended-neighborhood'
 }
 
 /**

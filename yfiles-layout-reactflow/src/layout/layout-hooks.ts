@@ -21,15 +21,17 @@ import {
   Position,
   useNodesInitialized,
   useReactFlow
-} from 'reactflow'
+} from '@xyflow/react'
 import {
   CircularLayoutDataProvider,
+  EdgeData,
   EdgeRouterDataProvider,
   GenericLabelingDataProvider,
   HierarchicalLayoutDataProvider,
   LayoutAlgorithmConfiguration,
   LayoutDataProvider,
   LayoutName,
+  NodeData,
   OrganicLayoutDataProvider,
   OrthogonalLayoutDataProvider,
   RadialLayoutDataProvider,
@@ -188,7 +190,10 @@ export function useLayout<
 >(
   context?: LayoutContext
 ): { runLayout: (configuration: LayoutConfiguration | LayoutName) => void; running: boolean } {
-  const { fitView, getZoom, getNodes, setNodes, getEdges, setEdges } = useReactFlow()
+  const { fitView, getZoom, getNodes, setNodes, getEdges, setEdges } = useReactFlow<
+    Node<NodeData>,
+    Edge<EdgeData>
+  >()
 
   const [running, setRunning] = useState(false)
 
@@ -216,11 +221,13 @@ export function useLayout<
             layoutData,
             context?.reactFlowRef
           )
-          .then(() => {
+          .then(async () => {
             const { arrangedNodes, arrangedEdges } = transferLayout(graph, context?.reactFlowRef)
             setNodes(arrangedNodes)
+            // wait for the next frame to ensure that the nodes are updated before the edges
+            await new Promise(resolve => setTimeout(resolve, 16))
             setEdges(arrangedEdges)
-            setTimeout(() => fitView())
+            void fitView()
           })
           .catch((e: unknown) => {
             context?.onError?.(e)
@@ -304,7 +311,7 @@ export interface LayoutSupport {
  *     setEdges(arrangedEdges)
  *
  *     // fit the graph into the view
- *     window.requestAnimationFrame(() => fitView())
+ *     fitView()
  *   }, [nodes, edges, buildGraph, transferLayout, setNodes, setEdges, fitView, getZoom])
  *
  *   return (
@@ -402,7 +409,11 @@ export function useNodesMeasuredEffect(callback: () => void): void {
     if (
       nodesInitialized &&
       shouldLayout &&
-      nodes.every(node => typeof node.width !== 'undefined' && typeof node.height !== 'undefined')
+      nodes.every(
+        node =>
+          (typeof node.width !== 'undefined' || typeof node.measured?.width !== 'undefined') &&
+          (typeof node.height !== 'undefined' || typeof node.measured?.height !== 'undefined')
+      )
     ) {
       setShouldLayout(false)
       callback()
@@ -411,8 +422,8 @@ export function useNodesMeasuredEffect(callback: () => void): void {
 }
 
 function buildGraph(
-  nodes: Node[],
-  edges: Edge[],
+  nodes: Node<NodeData>[],
+  edges: Edge<EdgeData>[],
   zoom: number,
   reactFlowRef?: RefObject<HTMLElement>
 ): IGraph {
@@ -424,8 +435,13 @@ function buildGraph(
   const nodesSource = builder.createNodesSource({
     data: nodes,
     id: node => node.id,
-    parentId: node => node.parentNode,
-    layout: node => Rect.from([node.position.x, node.position.y, node.width ?? 1, node.height ?? 1])
+    parentId: node => node.parentId,
+    layout: node => {
+      const width = node.width ?? node.measured?.width ?? 1
+      const height = node.height ?? node.measured?.height ?? 1
+
+      return Rect.from([node.position.x, node.position.y, width, height])
+    }
   })
   nodesSource.nodeCreator.createLabelsSource({
     data: node => [node.data.label]
@@ -438,8 +454,7 @@ function buildGraph(
     targetId: edge => edge.target
   })
   const edgeCreator = edgesSource.edgeCreator
-  edgeCreator.bendsProvider = edge =>
-    edge.data?.yData?.bends?.map((bend: { x: number; y: number }) => Point.from(bend))
+  edgeCreator.bendsProvider = edge => edge.data?.yData?.bends?.map(bend => Point.from(bend))
   const labelsSource = edgeCreator.createLabelsSource({
     data: edge => {
       let labels = []

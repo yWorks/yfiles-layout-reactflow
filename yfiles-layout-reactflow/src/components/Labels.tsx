@@ -1,6 +1,7 @@
-import { NodeProps } from 'reactflow'
+import { Node, NodeProps } from '@xyflow/react'
 import LabelText from './LabelText.tsx'
 import { CSSProperties, ReactNode } from 'react'
+import { NodeData } from '../layout/layout-types.ts'
 
 /**
  * A label with a text and styling properties.
@@ -81,14 +82,12 @@ export interface EdgeLabelsProps {
  * }
  * ```
  */
-export function NodeLabel({ data, id }: NodeProps) {
+export function NodeLabel({ data, id }: NodeProps<Node<NodeData>>) {
   if (!data?.label) {
     return
   }
   const dataId = `node-label-${id}-0`
-  const labelBox = data?.yData?.labelBoxes?.find(
-    (layout: LabelBox) => layout.id === dataId
-  )
+  const labelBox = data?.yData?.labelBoxes?.find((layout: LabelBox) => layout.id === dataId)
 
   const nodeLabelProps = getTextProps(data?.label, labelBox, data?.labelStyle, data?.className)
 
@@ -133,9 +132,7 @@ export function EdgeLabels({ labels, ownerId, labelBoxes, labelStyle }: EdgeLabe
         }
 
         const dataId = `edge-label-${ownerId}-${index}`
-        const labelBox = labelBoxes.find(
-          (labelBox: LabelBox) => labelBox.id === dataId
-        )
+        const labelBox = labelBoxes.find((labelBox: LabelBox) => labelBox.id === dataId)
 
         const edgeTextProps = getTextProps(label, labelBox, labelStyle)
 
@@ -168,7 +165,7 @@ function getTextProps(
       transform: labelBox?.transform,
       label: label.label,
       labelStyle: label.labelStyle ?? labelStyle,
-      className: label?.className ?? className,
+      className: label?.className ?? className
     }
   }
   return {

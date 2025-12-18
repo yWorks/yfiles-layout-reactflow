@@ -1,4 +1,4 @@
-import { Edge, Node } from 'reactflow'
+import { Edge, Node } from '@xyflow/react'
 
 export default {
   nodes: [
@@ -18,7 +18,7 @@ export default {
       id: '2a',
       data: { label: 'Node A.1' },
       position: { x: 0, y: 0 },
-      parentNode: '2',
+      parentId: '2',
       className: 'node'
     },
     {
@@ -38,7 +38,7 @@ export default {
       data: { label: 'Node B.1' },
       position: { x: 0, y: 0 },
       className: 'node',
-      parentNode: '4',
+      parentId: '4',
       extent: 'parent'
     },
     {
@@ -46,21 +46,21 @@ export default {
       data: { label: 'Group B.A' },
       position: { x: 0, y: 0 },
       className: 'group',
-      parentNode: '4'
+      parentId: '4'
     },
     {
       id: '4b1',
       data: { label: 'Node B.A.1' },
       position: { x: 0, y: 0 },
       className: 'node',
-      parentNode: '4b'
+      parentId: '4b'
     },
     {
       id: '4b2',
       data: { label: 'Node B.A.2' },
       position: { x: 0, y: 0 },
       className: 'node',
-      parentNode: '4b'
+      parentId: '4b'
     }
   ],
   edges: [

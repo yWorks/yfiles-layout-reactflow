@@ -1,7 +1,8 @@
-import { BaseEdge, EdgeLabelRenderer, EdgeProps } from 'reactflow'
+import { BaseEdge, Edge, EdgeLabelRenderer, EdgeProps } from '@xyflow/react'
 import { GeneralPath } from '@yfiles/yfiles'
 import { ReactNode } from 'react'
 import { EdgeLabels, Label } from './Labels.tsx'
+import { EdgeData, EdgeLayoutData } from '../layout/layout-types.ts'
 
 /**
  * An edge component that supports bends and the result of a yFiles layout
@@ -39,7 +40,7 @@ import { EdgeLabels, Label } from './Labels.tsx'
  *
  * @param props - The properties of a React Flow edge
  */
-export function PolylineEdge(props: EdgeProps) {
+export function PolylineEdge(props: EdgeProps<Edge<EdgeData>>) {
   const [edgePath] = getPolylinePath({
     sourceX: props.sourceX,
     sourceY: props.sourceY,
@@ -52,13 +53,26 @@ export function PolylineEdge(props: EdgeProps) {
   if (props.label) {
     labels.push(props.label as string)
   }
-  if (props.data?.labels?.length > 0) {
+  if (props.data?.labels?.length ?? 0 > 0) {
     labels = labels.concat(props.data?.labels)
   }
 
   return (
     <>
-      <BaseEdge path={edgePath} {...props} />
+      <BaseEdge
+        path={edgePath}
+        id={props.id}
+        style={props.style}
+        interactionWidth={props.interactionWidth}
+        markerStart={props.markerStart}
+        markerEnd={props.markerEnd}
+        label={props.label}
+        labelStyle={props.labelStyle}
+        labelShowBg={props.labelShowBg}
+        labelBgPadding={props.labelBgPadding}
+        labelBgStyle={props.labelBgStyle}
+        labelBgBorderRadius={props.labelBgBorderRadius}
+      />
       <EdgeLabelRenderer>
         <EdgeLabels
           labels={labels}

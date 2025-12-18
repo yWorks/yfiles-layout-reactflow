@@ -1,12 +1,22 @@
 {
   "name": "@yworks/yfiles-layout-reactflow",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "author": {
     "name": "yFiles for HTML team @ yWorks GmbH",
     "email": "yfileshtml@yworks.com"
   },
   "description": "yFiles Layouts for React Flow - A layout library for React Flow providing powerful yFiles layout algorithms and supporting components",
-  "keywords": ["react", "yfiles", "javascript", "typescript", "library", "graph", "diagram", "layout", "reactflow"],
+  "keywords": [
+    "react",
+    "yfiles",
+    "javascript",
+    "typescript",
+    "library",
+    "graph",
+    "diagram",
+    "layout",
+    "reactflow"
+  ],
   "homepage": "https://docs.yworks.com/yfiles-layout-reactflow",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -36,16 +46,16 @@
   "peerDependencies": {
     "react": ">=18",
     "react-dom": ">=18",
-    "reactflow": ">=11",
+    "@xyflow/react": ">=12",
     "@yfiles/yfiles": ">=30"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.42.3",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "prettier": "^3.2.5",
-    "tsup": "^8.0.1",
-    "typescript": "^5.4.2"
+    "@microsoft/api-extractor": "^7.52.2",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "prettier": "^3.5.3",
+    "tsup": "^8.5.1",
+    "typescript": "^5.8.2"
   },
   "files": [
     "LICENSE",

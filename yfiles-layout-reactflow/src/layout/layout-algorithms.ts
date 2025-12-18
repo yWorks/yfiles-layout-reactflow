@@ -48,35 +48,35 @@ export async function getLayoutAlgorithm(
 ): Promise<ILayoutAlgorithm> {
   switch (layoutDescriptor.name) {
     case 'GenericLabeling': {
-      return new GenericLabeling(layoutDescriptor.properties)
+      return new GenericLabeling(layoutDescriptor.properties ?? {})
     }
     case 'RadialTreeLayout': {
       return new TreeReductionStage({
-        coreLayout: new RadialTreeLayout(layoutDescriptor.properties),
+        coreLayout: new RadialTreeLayout(layoutDescriptor.properties ?? {}),
         nonTreeEdgeRouter: new OrganicEdgeRouter()
       })
     }
     case 'HierarchicalLayout': {
-      return new HierarchicalLayout(layoutDescriptor.properties)
+      return new HierarchicalLayout(layoutDescriptor.properties ?? {})
     }
     case 'CircularLayout': {
-      return new CircularLayout(layoutDescriptor.properties)
+      return new CircularLayout(layoutDescriptor.properties ?? {})
     }
     case 'OrganicLayout': {
-      return new OrganicLayout(layoutDescriptor.properties)
+      return new OrganicLayout(layoutDescriptor.properties ?? {})
     }
     case 'OrthogonalLayout': {
-      return new OrthogonalLayout(layoutDescriptor.properties)
+      return new OrthogonalLayout(layoutDescriptor.properties ?? {})
     }
     case 'EdgeRouter': {
-      return new EdgeRouter(layoutDescriptor.properties)
+      return new EdgeRouter(layoutDescriptor.properties ?? {})
     }
     case 'RadialLayout': {
-      return new RadialLayout(layoutDescriptor.properties)
+      return new RadialLayout(layoutDescriptor.properties ?? {})
     }
     case 'TreeLayout': {
       return new TreeReductionStage({
-        coreLayout: new TreeLayout(layoutDescriptor.properties),
+        coreLayout: new TreeLayout(layoutDescriptor.properties ?? {}),
         nonTreeEdgeRouter: new EdgeRouter()
       })
     }
@@ -156,8 +156,7 @@ function translateLayoutDataDescriptor<TNodeData, TEdgeData>(
     if (originalFunction) {
       // @ts-expect-error property-groupNodePadding-does-not-exist-on-type-LayoutDataProvider
       if (layoutDataDescriptor.groupNodePadding) {
-        return (translatedLayoutDataDescriptor.groupNodePadding = (item: IModelItem) =>
-          translateNodeMargins(originalFunction(item.tag) as Insets))
+        // we already added the padding in a mapping with GROUP_NODE_PADDING_DATA_KEY
       } else if (key === 'edgeLabelPreferredPlacements') {
         translatedLayoutDataDescriptor[key] = (item: IModelItem) =>
           translateEdgeLabelPreferredPlacement(

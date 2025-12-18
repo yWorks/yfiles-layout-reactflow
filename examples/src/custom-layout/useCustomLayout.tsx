@@ -1,14 +1,20 @@
 import { useCallback } from 'react'
-import { EdgePortCandidates, HierarchicalLayout, HierarchicalLayoutData, IEdge, PortSides } from '@yfiles/yfiles'
+import {
+  EdgePortCandidates,
+  HierarchicalLayout,
+  HierarchicalLayoutData,
+  IEdge,
+  PortSides
+} from '@yfiles/yfiles'
 import { useLayoutSupport } from '@yworks/yfiles-layout-reactflow'
-import { useReactFlow } from 'reactflow'
+import { useReactFlow } from '@xyflow/react'
 
 export function useCustomLayout() {
   const { getNodes, getEdges, setNodes, setEdges, fitView, getZoom } = useReactFlow()
 
   const { buildGraph, transferLayout } = useLayoutSupport()
 
-  return useCallback(() => {
+  return useCallback(async () => {
     // create a graph from data
     const graph = buildGraph(getNodes(), getEdges(), getZoom())
 
@@ -36,9 +42,11 @@ export function useCustomLayout() {
     // transfer the new coordinates to the data
     const { arrangedEdges, arrangedNodes } = transferLayout(graph)
     setNodes(arrangedNodes)
+    // wait for the next frame to ensure that the nodes are updated before the edges
+    await new Promise(resolve => setTimeout(resolve, 0))
     setEdges(arrangedEdges)
 
     // fit the graph into the view
-    setTimeout(() => fitView(), 100)
+    void fitView()
   }, [getNodes, getEdges, buildGraph, transferLayout, setNodes, setEdges, fitView, getZoom])
 }

@@ -32,7 +32,7 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
    from scratch, we recommend using vite:
 
    ```bash
-   npm create vite@6.1.1 my-yfiles-layout-app -- --template react-ts
+   npm create vite@latest my-yfiles-layout-app -- --template react-ts
    ```
 
    Install the ReactFlow:
@@ -42,7 +42,7 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
 
    Add the yFiles dependency:
    ```bash
-   npm install <yFiles package path>/lib/yfiles-30.0.0+dev.tgz
+   npm install <yFiles package path>/lib-dev/yfiles-30.0.4+dev.tgz
    ```
 
    <details>
@@ -52,10 +52,10 @@ to yFiles is to use the [yFiles Dev Suite](https://www.npmjs.com/package/yfiles-
 
    ```json
       dependencies: {
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "reactflow": "^11.11.0",
-        "@yfiles/yfiles": "./lib/yfiles-30.0.0+dev.tgz"
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
+        "@xyflow/react": "^12.10.0",
+        "@yfiles/yfiles": "./lib-dev/yfiles-30.0.4+dev.tgz"
      }
    ```
    </details>

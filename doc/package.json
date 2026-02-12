@@ -12,9 +12,7 @@
     "dist": "npm run build-docs && npm run build"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/mdx": "^4.0.8",
-    "@astrojs/rss": "^4.0.11"
+    "@astrojs/mdx": "^4.0.8"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^6.0.2",

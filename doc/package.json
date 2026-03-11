@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@astrojs/tailwind": "^6.0.2",
-    "@microsoft/api-extractor": "^7.55.2",
+    "@microsoft/api-extractor": "^7.57.7",
     "@prettier/sync": "^0.6.1",
     "@types/node": "^22.13.1",
     "astro": "^5.16.7",

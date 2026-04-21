@@ -19,7 +19,7 @@
     "@microsoft/api-extractor": "^7.58.2",
     "@prettier/sync": "^0.6.1",
     "@types/node": "^22.13.1",
-    "astro": "^5.18.1",
+    "astro": "^6.1.6",
     "fs-extra": "^11.3.3",
     "sass": "^1.97.2",
     "typescript": "^5.9.3"

@@ -1,6 +1,9 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
+    # Don't auto-create pull requests just for version bumps
+    # (security pull requests are handled separately)
+    open-pull-requests-limit: 0
     directory: "/"
     schedule:
       interval: "daily"

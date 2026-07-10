@@ -44,10 +44,10 @@
     }
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18",
     "@xyflow/react": ">=12",
-    "@yfiles/yfiles": ">=30"
+    "@yfiles/yfiles": ">=30",
+    "react": ">=18",
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.52.2",

@@ -14,7 +14,7 @@
     "@yfiles/yfiles": "^31.0.0",
     "@yworks/yfiles-layout-reactflow": "^3.0.0",
     "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react-dom": "^19.2.7",
     "react-router-dom": "^7.10.1"
   },
   "devDependencies": {

@@ -8,7 +8,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "build-docs": "node tools/build-docs.js",
+    "build-docs": "node tools/build-docs.js && node tools/generate-ai-docs.js",
     "dist": "npm run build-docs && npm run build"
   },
   "dependencies": {

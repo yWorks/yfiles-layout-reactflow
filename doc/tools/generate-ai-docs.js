@@ -1,0 +1,204 @@
+import fs from 'fs'
+import path from 'path'
+import prettier from '@prettier/sync'
+
+function getMarkdownFiles(directory) {
+  const entries = fs.readdirSync(directory, { withFileTypes: true })
+  const files = []
+
+  for (const entry of entries) {
+    const entryPath = path.join(directory, entry.name)
+
+    if (entry.isDirectory()) {
+      files.push(...getMarkdownFiles(entryPath))
+    } else if (
+      path.extname(entry.name).toLowerCase() === '.md' ||
+      path.extname(entry.name).toLowerCase() === '.mdx'
+    ) {
+      files.push(entryPath)
+    }
+  }
+
+  return files
+}
+
+function removeFrontMatter(content) {
+  return content.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n?/, '').trim()
+}
+
+function removeImports(content) {
+  return content.replace(
+    /^\s*import\s+(?:Playground|TypeLink)\s+from\s+['"][^'"]+['"]\s*;?\s*$/gm,
+    ''
+  )
+}
+
+function moveH1toH2(content) {
+  return content.replace(/^#(?!#)\s+/gm, '## ')
+}
+
+function replaceTypeLinks(content) {
+  return content
+    .replace(/<TypeLink\s+type=["']([^"']+)["']\s+member=["']([^"']+)["']\s*\/>/gm, '**$1.$2**')
+    .replace(/<TypeLink\s+type=["']([^"']+)["']\s*\/>/gm, '**$1**')
+}
+
+function formatCode(code) {
+  try {
+    return prettier.format(code, {
+      parser: 'typescript',
+      singleQuote: true,
+      printWidth: 40,
+      trailingComma: 'none'
+    })
+  } catch (error) {
+    console.warn('Could not format Playground code:', error.message)
+    return code.trim()
+  }
+}
+
+function replacePlaygrounds(content) {
+  const playgroundStart = /<Playground\b/g
+  let result = ''
+  let searchFrom = 0
+
+  while (true) {
+    playgroundStart.lastIndex = searchFrom
+    const match = playgroundStart.exec(content)
+
+    if (!match) {
+      result += content.slice(searchFrom)
+      break
+    }
+
+    const start = match.index
+
+    // Find code={`...`}
+    const codeAttribute = /code\s*=\s*\{\s*`/g
+    codeAttribute.lastIndex = playgroundStart.lastIndex
+
+    const codeMatch = codeAttribute.exec(content)
+
+    if (!codeMatch) {
+      result += content.slice(searchFrom)
+      break
+    }
+
+    const codeStart = codeMatch.index + codeMatch[0].length
+
+    // Find the first unescaped closing backtick
+    let codeEnd = codeStart
+
+    while (codeEnd < content.length) {
+      if (content[codeEnd] === '`') {
+        let backslashCount = 0
+        let position = codeEnd - 1
+
+        while (position >= codeStart && content[position] === '\\') {
+          backslashCount++
+          position--
+        }
+
+        if (backslashCount % 2 === 0) {
+          break
+        }
+      }
+
+      codeEnd++
+    }
+
+    if (codeEnd >= content.length) {
+      result += content.slice(searchFrom)
+      break
+    }
+
+    // Find the end of the Playground component
+    const componentEndMarker = content.indexOf('/>', codeEnd)
+
+    if (componentEndMarker === -1) {
+      result += content.slice(searchFrom)
+      break
+    }
+
+    const code = content.slice(codeStart, codeEnd).replace(/\\`/g, '`').replace(/\\\$/g, '$').trim()
+
+    const prettyCode = formatCode(code)
+
+    const formattedCode = ['### Source Code Example', '', '```jsx', prettyCode, '```'].join('\n')
+
+    result += content.slice(searchFrom, start)
+    result += formattedCode
+
+    searchFrom = componentEndMarker + 2
+  }
+
+  return result
+}
+
+function combineFiles(inputDirectories, outputFile) {
+  try {
+    const allFiles = []
+
+    for (const directory of inputDirectories) {
+      if (fs.existsSync(directory)) {
+        const files = getMarkdownFiles(directory)
+        allFiles.push(...files)
+      } else {
+        console.warn(`Directory not found: ${directory}`)
+      }
+    }
+
+    if (allFiles.length === 0) {
+      console.log('No .md(x) files found.')
+      return
+    }
+
+    const modifiedContents = allFiles.map(filePath => {
+      const content = fs.readFileSync(filePath, 'utf8')
+
+      let modifiedContent = removeFrontMatter(content)
+      modifiedContent = removeImports(modifiedContent)
+      modifiedContent = moveH1toH2(modifiedContent)
+      modifiedContent = replaceTypeLinks(modifiedContent)
+      modifiedContent = replacePlaygrounds(modifiedContent)
+
+      return modifiedContent
+    })
+
+    const combinedContent = modifiedContents.join('\n\n')
+
+    // fs-extra's outputFile creates parent directories automatically.
+    // Replicate that behavior with the built-in fs module.
+    fs.mkdirSync(path.dirname(outputFile), { recursive: true })
+    fs.writeFileSync(outputFile, combinedContent, 'utf8')
+
+    console.log(`Combined ${allFiles.length} files into ${outputFile}`)
+  } catch (error) {
+    console.error('Error combining files:', error)
+    process.exit(1)
+  }
+}
+
+// Prepare the output folder in Astro's /public/ directory.
+const outDir = './public/ai'
+
+fs.mkdirSync(path.join(outDir, 'skill/references'), { recursive: true })
+
+// Place SKILL.md in /ai/skill/.
+fs.copyFileSync('./ai/skill-template.md', path.join(outDir, 'skill/SKILL.md'))
+
+// Place autogenerated skill references in /ai/skill/references.
+combineFiles(
+  [
+    './src/content/components',
+    './src/content/hooks',
+    './src/content/types',
+    './src/content/functions'
+  ],
+  path.join(outDir, 'skill/references/api.md')
+)
+
+combineFiles(
+  ['./src/content/features', './src/content/layouts'],
+  path.join(outDir, 'skill/references/features.md')
+)

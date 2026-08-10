@@ -1,0 +1,382 @@
+---
+import { SITE } from '../config'
+
+type Props = {
+  prompt: string
+  label?: string
+}
+
+const {
+  prompt,
+  label = 'Copy prompt',
+} = Astro.props
+
+---
+<div
+  class="copy-prompt-shell"
+  data-feedback="false"
+  data-copy-error="false"
+  data-text={prompt}>
+  <button class="y-button y-button--flat copy-prompt-btn" title="Copy prompt to clipboard for pasting into agent prompt." data-component-name={SITE.name}>
+    <span class="icon-container" aria-hidden="true">
+      {/* Stack Icon */}
+      <svg
+        class="icon icon-1"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        xmlns="http://www.w3.org/2000/svg"
+      ><path
+        d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"
+      ></path></svg>
+
+      {/* Cube Icon */}
+      <svg
+        class="icon icon-2"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        fill-rule="evenodd"
+        xmlns="http://www.w3.org/2000/svg"
+      ><path
+        d="M9.205 8.658v-2.26c0-.19.072-.333.238-.428l4.543-2.616c.619-.357 1.356-.523 2.117-.523 2.854 0 4.662 2.212 4.662 4.566 0 .167 0 .357-.024.547l-4.71-2.759a.797.797 0 00-.856 0l-5.97 3.473zm10.609 8.8V12.06c0-.333-.143-.57-.429-.737l-5.97-3.473 1.95-1.118a.433.433 0 01.476 0l4.543 2.617c1.309.76 2.189 2.378 2.189 3.948 0 1.808-1.07 3.473-2.76 4.163zM7.802 12.703l-1.95-1.142c-.167-.095-.239-.238-.239-.428V5.899c0-2.545 1.95-4.472 4.591-4.472 1 0 1.927.333 2.712.928L8.23 5.067c-.285.166-.428.404-.428.737v6.898zM12 15.128l-2.795-1.57v-3.33L12 8.658l2.795 1.57v3.33L12 15.128zm1.796 7.23c-1 0-1.927-.332-2.712-.927l4.686-2.712c.285-.166.428-.404.428-.737v-6.898l1.974 1.142c.167.095.238.238.238.428v5.233c0 2.545-1.974 4.472-4.614 4.472zm-5.637-5.303l-4.544-2.617c-1.308-.761-2.188-2.378-2.188-3.948A4.482 4.482 0 014.21 6.327v5.423c0 .333.143.571.428.738l5.947 3.449-1.95 1.118a.432.432 0 01-.476 0zm-.262 3.9c-2.688 0-4.662-2.021-4.662-4.519 0-.19.024-.38.047-.57l4.686 2.71c.286.167.571.167.856 0l5.97-3.448v2.26c0 .19-.07.333-.237.428l-4.543 2.616c-.619.357-1.356.523-2.117.523zm5.899 2.83a5.947 5.947 0 005.827-4.756C22.287 18.339 24 15.84 24 13.296c0-1.665-.713-3.282-1.998-4.448.119-.5.19-.999.19-1.498 0-3.401-2.759-5.947-5.946-5.947-.642 0-1.26.095-1.88.31A5.962 5.962 0 0010.205 0a5.947 5.947 0 00-5.827 4.757C1.713 5.447 0 7.945 0 10.49c0 1.666.713 3.283 1.998 4.448-.119.5-.19 1-.19 1.499 0 3.401 2.759 5.946 5.946 5.946.642 0 1.26-.095 1.88-.309a5.96 5.96 0 004.162 1.713z"
+      ></path></svg>
+
+      {/* Pi/Circle Icon */}
+      <svg
+        class="icon icon-3"
+        viewBox="82.65 82.65 634.71 634.71"
+        fill="currentColor"
+        fill-rule="evenodd"
+        xmlns="http://www.w3.org/2000/svg"
+      ><path
+        d="M165.29 165.29H517.36V400H400V517.36H282.65V634.72H165.29ZM282.65 282.65V400H400V282.65Z"
+      ></path><path d="M517.36 400H634.72V634.72H517.36Z"></path></svg>
+
+      {/* Grid/Chip Icon */}
+      <svg
+        class="icon icon-4"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        fill-rule="evenodd"
+        xmlns="http://www.w3.org/2000/svg"><path d="M16 6H8v12h8V6zm4 16H4V2h16v20z"></path>
+      </svg>
+    </span>
+
+    <span class="y-button__content">{label}</span>
+  </button>
+
+  {/* Preview tooltip with feedback */}
+  <span class="copy-prompt-preview" aria-live="polite">
+    <span class="preview-inner">
+      <span class="preview-text">
+        <span class="quote-left">&ldquo;</span>
+        <span class="text-content">{prompt}</span>
+        <span class="quote-right">&rdquo;</span>
+      </span>
+      <span class="copy-feedback">
+        <span class="feedback-icon feedback-icon-success">✓</span>
+        <span class="feedback-icon feedback-icon-error">!</span>
+        <span class="feedback-msg feedback-msg-success">Copied!</span>
+        <span class="feedback-msg feedback-msg-error">Could not copy</span>
+      </span>
+    </span>
+  </span>
+</div>
+
+<style lang="css" is:global>
+  .y-button {
+    --button-background: 0, 173, 204;
+    --button-on-background: 255, 255, 255;
+    --success: #00adcc;
+    --failure: #d73a3a;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.571em;
+    padding: 0.63em 1.715em;
+    border: 1px solid rgb(var(--button-background));
+    border-radius: 100px;
+    background-color: rgb(var(--button-background));
+    color: rgb(var(--button-on-background));
+    font: inherit;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    overflow: hidden;
+    text-decoration: none;
+    appearance: none;
+    user-select: none;
+    transition:
+      background 400ms,
+      opacity 0.3s,
+      box-shadow 0.15s ease;
+  }
+
+  .y-button:hover {
+    box-shadow:
+      rgba(0, 0, 0, 0.2) 0 3px 3px -2px,
+      rgba(0, 0, 0, 0.14) 0 3px 4px 0,
+      rgba(0, 0, 0, 0.12) 0 1px 8px 0;
+  }
+
+  .copy-prompt-shell {
+    display: inline-flex;
+    flex-direction: column;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .icon-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    margin-right: 0.5rem;
+  }
+
+  .icon {
+    width: 15px;
+    height: 15px;
+    transition: transform 300ms ease-out;
+  }
+
+  .icon-1 {
+    transform: rotate(-6deg);
+  }
+
+  .copy-prompt-btn:hover .icon-1 {
+    transform: rotate(-12deg) translateX(-0.25rem);
+  }
+
+  .icon-2 {
+    margin-left: 0.25rem;
+  }
+
+  .copy-prompt-btn:hover .icon-2 {
+    transform: translate(-1px, -1px) rotate(6deg) scale(1.1);
+  }
+
+  .icon-3 {
+    margin-left: 0.25rem;
+  }
+
+  .copy-prompt-btn:hover .icon-3 {
+    transform: translate(1px, 2px) rotate(-6deg) scale(1.1);
+  }
+
+  .icon-4 {
+    margin-left: 0.125rem;
+    transform: rotate(6deg);
+  }
+
+  .copy-prompt-btn:hover .icon-4 {
+    transform: rotate(12deg) translateX(0.25rem);
+  }
+
+  .copy-prompt-preview {
+    display: none;
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  @media (min-width: 640px) {
+    .copy-prompt-preview {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .copy-prompt-shell:hover .copy-prompt-preview,
+  .copy-prompt-shell:focus-within .copy-prompt-preview,
+  .copy-prompt-shell[data-feedback='true'] .copy-prompt-preview {
+    opacity: 1;
+  }
+
+  .preview-inner {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .preview-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition:
+      opacity 200ms ease-out,
+      transform 200ms ease-out;
+  }
+
+  .copy-prompt-shell[data-feedback='true'] .preview-text {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+
+  .quote-left,
+  .quote-right {
+    position: relative;
+    top: 1px;
+    display: inline-flex;
+    width: 0.75rem;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.875rem;
+    line-height: 1;
+  }
+
+  .quote-right {
+    margin-left: 0.25rem;
+  }
+
+  .text-content {
+    max-width: 20rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .copy-feedback {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    opacity: 0;
+    transform: translateY(0.25rem);
+    transition:
+      opacity 200ms ease-out,
+      transform 200ms ease-out;
+  }
+
+  .copy-prompt-shell[data-feedback='true'] .copy-feedback {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .feedback-icon {
+    display: inline-flex;
+    width: 0.75rem;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .feedback-icon-success,
+  .feedback-msg-success {
+    color: var(--success);
+  }
+
+  .feedback-icon-error,
+  .feedback-msg-error {
+    display: none;
+    color: var(--failure);
+  }
+
+  .copy-prompt-shell[data-copy-error='true'] .feedback-icon-success,
+  .copy-prompt-shell[data-copy-error='true'] .feedback-msg-success {
+    display: none;
+  }
+
+  .copy-prompt-shell[data-copy-error='true'] .feedback-icon-error {
+    display: inline-flex;
+  }
+
+  .copy-prompt-shell[data-copy-error='true'] .feedback-msg-error {
+    display: inline;
+  }
+</style>
+
+<script>
+;(function () {
+  const { Matomo } = window as any
+  if (!Matomo) {
+    console.error('Matomo not loaded')
+  }
+  const matomoEnabled = /docs\.yworks\.com/.test(location.href) && !/staging/.test(location.href)
+
+  let matomoTracker: any
+  if (matomoEnabled) {
+    matomoTracker = Matomo.getTracker('//trk.yworks.com/matomo.php', '1')
+  }
+
+  function sendAnalyticsEvent(eventCategory: string, eventAction: string, name: string) {
+    if (matomoTracker) {
+      matomoTracker.trackEvent(eventCategory, eventAction, name)
+    }
+  }
+
+  // Wait for DOM to be ready
+  function init() {
+    const copyPromptShellList = document.querySelectorAll('.copy-prompt-shell')
+    for (let i = 0; i < copyPromptShellList.length; i++) {
+      const copyPromptShell = copyPromptShellList.item(i)
+      const copyPromptBtn = copyPromptShell.querySelector('.copy-prompt-btn')
+
+      if (!copyPromptBtn) return
+
+      const textToCopy = copyPromptShell.getAttribute('data-text')
+
+      if (!textToCopy) {
+        console.warn('No text provided for CopyPromptButton')
+        return
+      }
+
+      let resetTimer: number
+
+      copyPromptBtn.addEventListener('click', async function (evt) {
+        sendAnalyticsEvent('copy-prompt-button', 'copy-clicked', (copyPromptBtn as HTMLButtonElement).dataset.componentName)
+        evt.preventDefault()
+        let copied: boolean
+        try {
+          // Try modern Clipboard API first
+          await navigator.clipboard.writeText(textToCopy)
+          copied = true
+        } catch {
+          // Fallback for older browsers
+          try {
+            const input = document.createElement('input')
+            input.value = textToCopy
+            input.style.cssText = 'position:absolute;left:-9999px;top:-9999px;opacity:0;'
+            document.body.appendChild(input)
+            input.focus()
+            input.select()
+            input.setSelectionRange(0, input.value.length) // for iOS
+
+            const selection = window.getSelection()
+            const range = document.createRange()
+            range.selectNodeContents(input)
+            selection?.removeAllRanges()
+            selection?.addRange(range)
+
+            copied = true
+            input.remove()
+            selection?.removeAllRanges()
+          } catch {
+            copied = false
+          }
+        }
+
+        // Update shell state for feedback display
+        copyPromptShell.setAttribute('data-copy-error', String(!copied))
+        copyPromptShell.setAttribute('data-feedback', 'true')
+
+        // Reset feedback after 5 seconds
+        clearTimeout(resetTimer)
+        resetTimer = window.setTimeout(function () {
+          copyPromptShell.setAttribute('data-feedback', 'false')
+        }, 5000)
+      })
+    }
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init)
+  } else {
+    init()
+  }
+})()</script>

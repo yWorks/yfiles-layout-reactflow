@@ -1,0 +1,47 @@
+---
+title: AI Quick Start
+section: 2
+tags: []
+---
+
+import CopyPromptButton from '../../components/CopyPromptButton.astro'
+
+# AI Quick Start
+
+If you are using an AI-powered development environment or an LLM-based agent, you can accelerate the setup process by providing the right context and prompts.
+
+## Initial Setup Prompt
+
+Start by asking your agent to prepare the environment:
+
+<CopyPromptButton prompt="fetch the https://docs.yworks.com/yfiles-layout-reactflow/ai/agent-start.md and follow its instructions"/>
+
+This will guide the agent to:
+1.  Download and install the necessary **yFiles for HTML** dependency.
+2.  Install the **@xyflow/react** package.
+3.  Install the **yFiles Layout Algorithms for React Flow** component.
+4.  Set up the specialized **agent skill** for yFiles layout in React Flow.
+
+After these steps are completed, the session must be restarted for the changes to take effect.
+
+## Building and Customizing the Application
+
+Once the environment is prepared, you can prompt the agent to build a sample application, integrate the component into your existing codebase, or enhance its functionality.
+
+Here are some example prompts you can use to get started:
+
+**Create a basic layout view:**
+```text
+Create a new React Flow component that uses the yFiles layout component to visualize a sample graph with a Hierarchical layout.
+  ```
+
+**Configure the layout algorithm:**
+```text
+Modify the existing React Flow component to use the 'OrganicLayout' instead of 'HierarchicalLayout' and configure it to have a minimum node distance of 50.
+  ```
+
+**Add interactive layout controls:**
+```text
+Add a toolbar to the React Flow component that allows users to switch between 'HierarchicalLayout', 'OrganicLayout', and 'TreeLayout' at runtime.
+```
+

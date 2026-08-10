@@ -18,6 +18,14 @@ This is the parent repository for the *yFiles Layout Algorithms for React Flow* 
 
 Please refer to the [yfiles-layout-reactflow library README](yfiles-layout-reactflow/README.md) for detailed instructions.
 
+### AI-Powered Setup
+
+If you are using an AI-powered development environment or an LLM-based agent, you can accelerate the setup process by providing the following prompt:
+
+```text
+fetch the https://docs.yworks.com/yfiles-layout-reactflow/ai/agent-start.md and follow its instructions
+```
+
 ## Running it
 
 1. Run `npm install` on the toplevel repository.

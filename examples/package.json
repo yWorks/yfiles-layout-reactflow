@@ -1,7 +1,7 @@
 {
   "name": "@yworks/yfiles-layout-reactflow-examples",
   "private": true,
-  "version": "2.0.0",
+  "version": "3.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,20 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@xyflow/react": "^12.10.0",
+    "@xyflow/react": "^12.11.3",
     "@yfiles/yfiles": "^31.0.0",
-    "@yworks/yfiles-layout-reactflow": "^3.0.0",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "react-router-dom": "^7.10.1"
+    "@yworks/yfiles-layout-reactflow": "^4.0.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.51.1",
-    "@types/node": "^22.13.14",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
-    "typescript": "^5.8.2",
-    "vite": "^8.0.5"
+    "@types/node": "^25.0.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
+    "typescript": "^6.0.3",
+    "vite": "^8.2.1"
   }
 }

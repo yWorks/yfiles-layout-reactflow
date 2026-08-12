@@ -1,6 +1,6 @@
 {
   "name": "@yworks/yfiles-layout-reactflow",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "author": {
     "name": "yFiles for HTML team @ yWorks GmbH",
     "email": "yfileshtml@yworks.com"
@@ -22,8 +22,8 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "dev": "tsup --watch --sourcemap --dts --format esm --entry.index src/index.ts --entry.WebWorkerSupport src/layout/WebWorkerSupport.ts && api-extractor run --local",
-    "build": "tsup --clean --dts --format esm --entry.index src/index.ts --entry.WebWorkerSupport src/layout/WebWorkerSupport.ts && api-extractor run --local"
+    "dev": "tsdown --watch --sourcemap --dts --format esm --entry.index src/index.ts --entry.WebWorkerSupport src/layout/WebWorkerSupport.ts && api-extractor run --local",
+    "build": "tsdown --clean --dts --format esm --entry.index src/index.ts --entry.WebWorkerSupport src/layout/WebWorkerSupport.ts && api-extractor run --local"
   },
   "repository": {
     "type": "git",
@@ -47,15 +47,16 @@
     "react": ">=18",
     "react-dom": ">=18",
     "@xyflow/react": ">=12",
-    "@yfiles/yfiles": ">=30"
+    "@yfiles/yfiles": ">=31"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.52.2",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "prettier": "^3.5.3",
-    "tsup": "^8.5.1",
-    "typescript": "^5.8.2"
+    "@microsoft/api-extractor": "^7.39.5",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "prettier": "^3.9.6",
+    "tsdown": "^0.22.14",
+    "@tsdown/css": "^0.22.14",
+    "typescript": "^6.0.3"
   },
   "files": [
     "LICENSE",

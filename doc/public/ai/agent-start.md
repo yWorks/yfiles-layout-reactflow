@@ -44,7 +44,7 @@ registerLicense(yFilesLicense)
 ## 5. Install the component skill
 
 ```bash
-npx skills add -y https://docs.yworks.com/yfiles-layout-reactflow/ai/skill
+npx skills add -y https://docs.yworks.com/yfiles-layout-reactflow/ai/skill.zip
 ```
 
 **Stop execution here. Do not proceed further until the user has restarted the session.**

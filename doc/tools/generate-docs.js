@@ -54,6 +54,7 @@ export function generateDocs(componentName, config) {
     const tokenRange = getExcerptTokens(functionMember, functionMember.returnTypeTokenRange)
     return tokenRange.some(
       token =>
+        token.canonicalReference === '@types/react!React.JSX.Element:interface' ||
         token.canonicalReference === '@types/react!JSX.Element:interface' ||
         token.canonicalReference === '@types/react!React.ReactElement:interface'
     )
@@ -62,6 +63,8 @@ export function generateDocs(componentName, config) {
   function isHOCFunction(member) {
     const tokenRange = getExcerptTokens(member, member.variableTypeTokenRange)
     return (
+      tokenRange[tokenRange.length - 1].canonicalReference ===
+      '@types/react!React.JSX.Element:interface' ||
       tokenRange[tokenRange.length - 1].canonicalReference ===
         '@types/react!JSX.Element:interface' ||
       tokenRange[tokenRange.length - 1].canonicalReference ===

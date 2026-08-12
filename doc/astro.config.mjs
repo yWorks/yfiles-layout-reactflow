@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
 import mdx from '@astrojs/mdx'
+import zipSkill from './src/integrations/zip-skill'
 
 const base = process.env.BASE_PATH || 'dist'
 
@@ -11,7 +12,7 @@ export default defineConfig({
     format: 'file'
   },
   integrations: [
-    tailwind(), mdx()
+    tailwind(), mdx(), zipSkill()
   ],
   redirects: {
     '/': `/${base}/introduction/welcome`
